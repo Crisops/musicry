@@ -1,5 +1,7 @@
 ---
 import '@/styles/global.css'
+import AsideRight from '@/components/astro/AsideRight.astro'
+import AsideLeft from '@/components/astro/AsideLeft.astro'
 ---
 
 <!doctype html>
@@ -8,19 +10,59 @@ import '@/styles/global.css'
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
     <title>Astro Basics</title>
   </head>
-  <body>
-    <slot />
+  <body class="bg-rich-black-dark">
+    <div id="app" class="relative h-screen">
+      <aside
+        class="bg-rich-black-light hidden flex-col rounded-tr-xl rounded-br-xl [grid-area:al] lg:flex"
+      >
+        <AsideLeft />
+      </aside>
+      <main
+        class="bg-night overflow-y-auto [grid-area:main] lg:rounded-bl-xl 2xl:rounded-br-xl"
+      >
+        <slot />
+      </main>
+      <aside
+        class="bg-rich-black-light hidden flex-col rounded-tl-xl rounded-bl-xl [grid-area:ar] 2xl:flex"
+      >
+        <AsideRight />
+      </aside>
+      <footer class="bg-rich-black-light p-2 [grid-area:player]">footer</footer>
+    </div>
   </body>
 </html>
 
 <style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
+  #app {
+    display: grid;
+    grid-template-columns: 320px 1fr 320px;
+    gap: 8px;
+    grid-template-rows: 1fr 80px;
+    grid-template-areas:
+      'al main ar'
+      'player player player';
+  }
+
+  @media (max-width: 1536px) {
+    #app {
+      grid-template-columns: 320px 1fr;
+      grid-template-rows: 1fr 80px;
+      grid-template-areas:
+        'al main'
+        'player player';
+    }
+  }
+
+  @media (width <= 64rem) {
+    #app {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 80px;
+      gap: 0;
+      grid-template-areas:
+        'main'
+        'player';
+    }
   }
 </style>
