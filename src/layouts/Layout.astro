@@ -5,7 +5,7 @@ import AsideLeft from '@/components/astro/AsideLeft.astro'
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -35,6 +35,10 @@ import AsideLeft from '@/components/astro/AsideLeft.astro'
 </html>
 
 <style>
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+
   #app {
     display: grid;
     grid-template-columns: 320px 1fr 320px;
@@ -58,7 +62,7 @@ import AsideLeft from '@/components/astro/AsideLeft.astro'
   @media (width <= 64rem) {
     #app {
       grid-template-columns: 1fr;
-      grid-template-rows: 1fr 80px;
+      grid-template-rows: 1fr 50px;
       gap: 0;
       grid-template-areas:
         'main'
