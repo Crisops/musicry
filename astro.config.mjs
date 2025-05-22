@@ -7,6 +7,14 @@ import vercel from '@astrojs/vercel'
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
+  image: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+    ],
+  },
   adapter: vercel(),
   vite: {
     plugins: [tailwindcss()],
