@@ -2,7 +2,7 @@ import { defineMiddleware } from 'astro:middleware'
 import { supabase } from '@/lib/supabase'
 import picomatch from 'picomatch'
 
-const protectedRoutesPages = ['/dashboard(|/)']
+const protectedRoutesPages = ['/admin/dashboard(|/)']
 const redirectRoutesPages = ['/signin(|/)', '/register(|/)']
 const proptectedAPIRoutes = [
   '/api/users(|/)',
@@ -16,11 +16,13 @@ const proptectedAPIRoutes = [
 export const onRequest = defineMiddleware(
   async ({ url, cookies, redirect }, next) => {
     if (picomatch.isMatch(url.pathname, protectedRoutesPages)) {
+      console.log('llega')
       const accessToken = cookies.get('sb-access-token')
       const refreshToken = cookies.get('sb-refresh-token')
+      const EMAIL_ADMIN = import.meta.env.EMAIL_ADMIN
 
       if (!accessToken || !refreshToken) {
-        return redirect('/signin')
+        return redirect('/')
       }
 
       const { data, error } = await supabase.auth.setSession({
@@ -31,7 +33,7 @@ export const onRequest = defineMiddleware(
       if (error) {
         cookies.delete('sb-access-token', { path: '/' })
         cookies.delete('sb-refresh-token', { path: '/' })
-        return redirect('/signin')
+        return redirect('/')
       }
 
       cookies.set('sb-access-token', data?.session?.access_token!, {
@@ -45,6 +47,11 @@ export const onRequest = defineMiddleware(
         path: '/',
         secure: true,
       })
+      if (data.user?.email === EMAIL_ADMIN) {
+        return next()
+      } else {
+        return redirect('/')
+      }
     }
 
     if (picomatch.isMatch(url.pathname, redirectRoutesPages)) {
@@ -52,7 +59,7 @@ export const onRequest = defineMiddleware(
       const refreshToken = cookies.get('sb-refresh-token')
 
       if (accessToken && refreshToken) {
-        return redirect('/dashboard')
+        return redirect('/')
       }
     }
 
