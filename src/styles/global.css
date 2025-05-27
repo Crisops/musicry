@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@plugin 'tailwind-scrollbar' {
+  nocompatible: true;
+}
 @plugin './hero.ts';
 @source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
@@ -9,8 +12,8 @@
   --color-rich-black-light: #0d1117;
   --color-rich-dark-jungle: #171e28;
   --color-argentinian-blue: #69b7ff;
-  --color-silver-blue: #588cc5;
-  --color-oxford-blue: #0a2038;
+  --color-blue-silver: #588cc5;
+  --color-blue-oxford: #0a2038;
   --color-gray-jet: #363636;
   --color-gray-jet-aplha-95: rgba(54, 54, 54, 0.95);
   --color-gray-jet-aplha-95: rgba(54, 54, 54, 0.9);
@@ -32,6 +35,7 @@
   --color-gray-jet-aplha-95: rgba(54, 54, 54, 0.1);
   --color-gray-jet-aplha-95: rgba(54, 54, 54, 0.05);
   --color-gray-dim: #676767;
+  --color-gray-davy: #545454;
   --color-platinum: #dfdfdf;
   --color-sealsalt: #f7f7f7;
 }
