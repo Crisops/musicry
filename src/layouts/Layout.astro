@@ -1,7 +1,7 @@
 ---
 import '@/styles/global.css'
-import AsideRight from '@/components/astro/AsideRight.astro'
-import AsideLeft from '@/components/astro/AsideLeft.astro'
+import AsideRight from '@/components/astro/aside-right.astro'
+import AsideLeft from '@/components/astro/aside-left.astro'
 ---
 
 <!doctype html>
@@ -20,7 +20,7 @@ import AsideLeft from '@/components/astro/AsideLeft.astro'
         <AsideLeft />
       </aside>
       <main
-        class="bg-night overflow-y-auto [grid-area:main] lg:rounded-bl-xl 2xl:rounded-br-xl"
+        class="bg-night overflow-hidden [grid-area:main] lg:rounded-bl-xl 2xl:rounded-br-xl"
       >
         <slot />
       </main>
