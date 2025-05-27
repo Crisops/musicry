@@ -1,0 +1,45 @@
+---
+import { Play } from '@lucide/astro'
+import Button from '@/components/shared/button'
+
+interface Props {
+  id: string
+  title: string
+  artist: string
+  imageUrl: string
+}
+
+const { id, title, artist, imageUrl }: Props = Astro.props
+---
+
+<article
+  id={id}
+  class="group transition-background bg-rich-black-light hover:bg-rich-dark-jungle/60 rounded-tl-small rounded-bl-small rounded-br-small relative flex w-full items-center gap-2 overflow-hidden"
+>
+  <div class="relative aspect-square h-auto w-16 flex-none">
+    <img
+      src={imageUrl}
+      alt="song"
+      class="absolute h-full w-full object-cover"
+    />
+  </div>
+  <div class="flex flex-auto flex-col truncate">
+    <h4 class="text-platinum text-small truncate font-semibold">
+      {title}
+    </h4>
+    <p class="text-gray-dim text-xs">
+      {artist}
+    </p>
+  </div>
+  <div
+    class="absolute right-2 bottom-2 z-10 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
+  >
+    <Button
+      client:visible
+      isIconOnly
+      className="text-platinum bg-blue-silver rounded-small h-8 w-8 min-w-8"
+    >
+      <Play fill="currentColor" size={16} color="currentColor" />
+    </Button>
+  </div>
+</article>
