@@ -1,4 +1,10 @@
-const Greeting = () => {
+import type { HTMLProps } from 'react'
+
+interface GreetingProps {
+  className: HTMLProps<HTMLElement>['className']
+}
+
+const Greeting = ({ className }: GreetingProps) => {
   const hours = new Date().getHours()
   let greeting: string = ''
 
@@ -11,7 +17,11 @@ const Greeting = () => {
   }
 
   return (
-    <h3 className="text-platinum text-xl font-bold lg:text-2xl">{greeting}</h3>
+    <div className={className}>
+      <h3 className="text-2xl font-bold text-current lg:text-2xl">
+        {greeting}
+      </h3>
+    </div>
   )
 }
 
