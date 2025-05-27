@@ -1,0 +1,30 @@
+---
+import Button from '@/components/shared/button'
+import { Link } from '@heroui/react'
+import { LayoutDashboard } from 'lucide-react'
+import { getUserAuth } from '@/utils/get-user-auth'
+import AuthUser from '@/components/react/auth-user'
+const user = await getUserAuth()
+---
+
+<header
+  id="settings-top-bar"
+  class="bg-rich-black-light flex h-24 items-center justify-between px-5"
+>
+  <h2 class="text-platinum text-large font-bold">Musicry</h2>
+  <div class="flex items-center gap-2">
+    {
+      user?.role === 'authenticated' && (
+        <Button
+          className="text-platinum bg-rich-dark-jungle h-9 rounded-md text-xs"
+          as={Link}
+          href="/admin/dashboard"
+        >
+          <LayoutDashboard color="currentColor" size={15} /> Panel de
+          administración
+        </Button>
+      )
+    }
+    <AuthUser client:load user={user} />
+  </div>
+</header>
