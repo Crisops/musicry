@@ -1,0 +1,40 @@
+---
+import type { Tables } from '@/types/database.types'
+import { Link } from '@heroui/link'
+import { Image } from 'astro:assets'
+
+interface Props {
+  id: Tables<'albums'>['id']
+  title: Tables<'albums'>['title']
+  artist: Tables<'albums'>['artist']
+  imageUrl: Tables<'albums'>['imageUrl']
+}
+
+const { id, title, artist, imageUrl }: Props = Astro.props
+---
+
+<li class="hover:bg-rich-dark-jungle/30 transition-background flex-grow">
+  <Link
+    client:visible
+    href={`/albums/${id}`}
+    className="hover:opacity-disabled flex w-full items-center gap-1.5 px-3 py-1.5"
+  >
+    <div class="relative aspect-square h-auto w-11">
+      <Image
+        class="absolute h-full w-full rounded-md object-cover"
+        src={imageUrl ?? ''}
+        alt={title}
+        width={44}
+        height={44}
+      />
+    </div>
+    <div class="flex-initial flex-col items-start justify-center">
+      <h4 class="text-sealsalt text-small font-semibold">
+        {title}
+      </h4>
+      <p class="text-gray-dim text-xs">
+        {artist}
+      </p>
+    </div>
+  </Link>
+</li>
