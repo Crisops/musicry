@@ -20,7 +20,7 @@ import AsideLeft from '@/components/astro/aside-left.astro'
         <AsideLeft />
       </aside>
       <main
-        class="bg-night overflow-hidden [grid-area:main] lg:rounded-bl-xl 2xl:rounded-br-xl"
+        class="bg-night relative overflow-hidden [grid-area:main] lg:rounded-bl-xl 2xl:rounded-br-xl"
       >
         <slot />
       </main>
@@ -35,8 +35,48 @@ import AsideLeft from '@/components/astro/aside-left.astro'
 </html>
 
 <style>
-  body {
-    font-family: 'Poppins', sans-serif;
+  html {
+    font-family: 'CircularStd', system-ui, sans-serif;
+  }
+
+  @font-face {
+    font-family: 'CircularStd';
+    src: url('/fonts/CircularStd-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'CircularStd';
+    src: url('/fonts/CircularStd-Book.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'CircularStd';
+    src: url('/fonts/CircularStd-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'CircularStd';
+    src: url('/fonts/CircularStd-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'CircularStd';
+    src: url('/fonts/CircularStd-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
   }
 
   #app {
