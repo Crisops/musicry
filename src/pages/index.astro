@@ -6,7 +6,14 @@ import FeaturedSection from '@/components/astro/featured-section.astro'
 ---
 
 <Layout>
+  <div
+    class="to-night via-night absolute block h-1/2 w-full bg-gradient-to-br from-[#242D3B] from-5% lg:hidden"
+  >
+  </div>
   <TopBar />
-  <Greeting className="text-platinum flex h-24 w-full items-center px-3" />
+  <Greeting
+    client:visible
+    className="text-platinum relative flex h-24 w-full items-center justify-between px-3"
+  />
   <FeaturedSection />
 </Layout>
