@@ -23,11 +23,11 @@ const { id, title, artist, imageUrl }: Props = Astro.props
       class="absolute h-full w-full object-cover"
     />
   </div>
-  <div class="flex flex-auto flex-col truncate">
-    <h4 class="text-platinum text-small truncate font-semibold">
+  <div class="flex flex-auto flex-col pr-1">
+    <h4 class="text-platinum md:text-small text-xs font-semibold">
       {title}
     </h4>
-    <p class="text-gray-dim text-xs">
+    <p class="text-gray-dim hidden text-xs md:block">
       {artist}
     </p>
   </div>
