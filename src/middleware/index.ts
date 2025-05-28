@@ -16,10 +16,8 @@ const proptectedAPIRoutes = [
 export const onRequest = defineMiddleware(
   async ({ url, cookies, redirect }, next) => {
     if (picomatch.isMatch(url.pathname, protectedRoutesPages)) {
-      console.log('llega')
       const accessToken = cookies.get('sb-access-token')
       const refreshToken = cookies.get('sb-refresh-token')
-      const EMAIL_ADMIN = import.meta.env.EMAIL_ADMIN
 
       if (!accessToken || !refreshToken) {
         return redirect('/')
@@ -47,11 +45,6 @@ export const onRequest = defineMiddleware(
         path: '/',
         secure: true,
       })
-      if (data.user?.email === EMAIL_ADMIN) {
-        return next()
-      } else {
-        return redirect('/')
-      }
     }
 
     if (picomatch.isMatch(url.pathname, redirectRoutesPages)) {
