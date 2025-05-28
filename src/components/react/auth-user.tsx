@@ -1,19 +1,15 @@
 import type { User } from '@supabase/supabase-js'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import FormRegister from '@/components/react/form-register'
-import PopoverLogOut from '@/components/react/popover'
-import AvatarUser from '@/components/react/avatar-user'
-import Button from '@/components/shared/button'
-import { LogOut } from 'lucide-react'
+import TopBarUserControls from './top-bar-user-controls'
 
 interface AuthUserProps {
+  isAdmin: boolean
   user?: User
 }
 
-const AuthUser = ({ user }: AuthUserProps) => {
+const AuthUser = ({ user, isAdmin }: AuthUserProps) => {
   const [auth, setAuth] = useState<boolean>(false)
-
-  const imageRef = useRef<HTMLImageElement>(null!)
 
   useEffect(() => {
     user ? setAuth(true) : setAuth(false)
@@ -31,33 +27,17 @@ const AuthUser = ({ user }: AuthUserProps) => {
   }
 
   return (
-    <>
+    <div className="flex items-center gap-2">
       {auth && user ? (
-        <PopoverLogOut
-          classNames={{
-            base: 'before:bg-rich-black-dark',
-            arrow: 'text-rich-black-dark',
-          }}
-          showArrow
-          trigger={<AvatarUser user={user} imageRef={imageRef} />}
-          portalContainer={document.getElementById('settings-top-bar')!}
-        >
-          <Button
-            startContent={<LogOut size={15} />}
-            className="text-platinum data-[hover=true]:bg-rich-black-light w-full text-xs"
-            radius="none"
-            onPress={handleSignOut}
-            variant="light"
-            size="sm"
-          >
-            Cerrar sesión
-          </Button>
-          <></>
-        </PopoverLogOut>
+        <TopBarUserControls
+          isAdmin={isAdmin}
+          user={user}
+          handleSignOut={handleSignOut}
+        />
       ) : (
         <FormRegister />
       )}
-    </>
+    </div>
   )
 }
 
