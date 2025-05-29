@@ -3,7 +3,7 @@ import {
   Button as ButtonHero,
 } from '@heroui/button'
 
-interface ButtonProps extends ButtonPropsHero {
+export interface ButtonProps extends ButtonPropsHero {
   children: React.ReactNode
 }
 
