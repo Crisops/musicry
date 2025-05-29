@@ -2,6 +2,7 @@
 import '@/styles/global.css'
 import AsideRight from '@/components/astro/aside-right.astro'
 import AsideLeft from '@/components/astro/aside-left.astro'
+import Player from '@/components/react/player'
 ---
 
 <!doctype html>
@@ -29,7 +30,9 @@ import AsideLeft from '@/components/astro/aside-left.astro'
       >
         <AsideRight />
       </aside>
-      <footer class="bg-rich-black-light p-2 [grid-area:player]">footer</footer>
+      <footer class="bg-rich-black-light px-3 [grid-area:player]">
+        <Player client:visible />
+      </footer>
     </div>
   </body>
 </html>
@@ -37,6 +40,10 @@ import AsideLeft from '@/components/astro/aside-left.astro'
 <style>
   html {
     font-family: 'CircularStd', system-ui, sans-serif;
+  }
+
+  body {
+    overflow: hidden;
   }
 
   @font-face {
