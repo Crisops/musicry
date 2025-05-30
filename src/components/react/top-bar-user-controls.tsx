@@ -1,21 +1,19 @@
-import type { User } from '@supabase/supabase-js'
 import PopoverLogOut from '@/components/react/popover'
 import AvatarUser from '@/components/react/avatar-user'
 import Button from '@/components/shared/button'
 import { LayoutDashboard, LogOut } from 'lucide-react'
 import { Link } from '@heroui/react'
+import { useAuth } from '@/hooks/use-auth'
+import ButtonSignOut from '@/components/react/button-signout'
 
 interface TopBarUserControlsProps {
   isAdmin: boolean
-  user: User
-  handleSignOut: () => void
 }
 
 export default function TopBarUserControls({
   isAdmin,
-  user,
-  handleSignOut,
 }: TopBarUserControlsProps) {
+  const { user } = useAuth()
   return (
     <>
       {isAdmin && (
@@ -33,16 +31,15 @@ export default function TopBarUserControls({
         trigger={<AvatarUser user={user} />}
         portalContainer={document.getElementById('settings-top-bar')!}
       >
-        <Button
+        <ButtonSignOut
           startContent={<LogOut size={15} />}
-          className="text-platinum data-[hover=true]:bg-rich-black-light w-full text-xs"
+          className="text-platinum data-[hover=true]:bg-rich-black-light bg-rich-black-dark w-full text-xs"
           radius="sm"
-          onPress={handleSignOut}
           variant="light"
           size="sm"
         >
           Cerrar sesión
-        </Button>
+        </ButtonSignOut>
         <></>
       </PopoverLogOut>
     </>
