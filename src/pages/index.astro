@@ -1,7 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import TopBar from '@/components/astro/top-bar.astro'
-import Greeting from '@/components/react/greeting'
 import FeaturedSection from '@/components/astro/featured-section.astro'
 ---
 
@@ -11,9 +10,5 @@ import FeaturedSection from '@/components/astro/featured-section.astro'
   >
   </div>
   <TopBar />
-  <Greeting
-    client:visible
-    className="text-platinum relative flex h-24 w-full items-center justify-between px-3"
-  />
   <FeaturedSection />
 </Layout>
