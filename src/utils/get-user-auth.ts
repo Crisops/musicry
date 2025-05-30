@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
+import type { User } from '@supabase/supabase-js'
 
-export const getUserAuth = async () => {
+export const getUserAuth = async (): Promise<User | null> => {
   try {
     const {
       data: { user },
@@ -16,5 +17,6 @@ export const getUserAuth = async () => {
     return user
   } catch (error) {
     console.error(error)
+    return null
   }
 }
