@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import TopBarAuthControl from './top-bar-auth-control'
 import ButtonSignOut from '@/components/react/button-signout'
 import { LogOut } from 'lucide-react'
-import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/hooks/use-store'
 
 interface AuthUserProps {
   isAdmin: boolean
@@ -13,17 +13,19 @@ interface AuthUserProps {
 }
 
 const AuthUser = ({ user, isAdmin, className }: AuthUserProps) => {
-  const { user: userDB, handleGetUserAuth } = useAuth()
+  const { setIsAdmin, setUser } = useAuth((state) => state)
 
   useEffect(() => {
-    handleGetUserAuth(user)
-  }, [])
+    setUser(user)
+    setIsAdmin(isAdmin)
+  }, [user])
+
   return (
     <div className={cn('flex items-center gap-2', className)}>
       <ButtonSignOut isDeviceMovile isIconOnly size="sm" variant="solid">
         <LogOut size={15} />
       </ButtonSignOut>
-      <TopBarAuthControl user={userDB} isAdmin={isAdmin} />
+      <TopBarAuthControl />
     </div>
   )
 }

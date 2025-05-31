@@ -1,16 +1,15 @@
-import type { User } from '@supabase/supabase-js'
+import { useAuth } from '@/hooks/use-store'
 
-interface Props {
-  user: User | null
-}
+const AvatarUser = () => {
+  const { user } = useAuth((state) => state)
 
-const AvatarUser = ({ user }: Props) => {
+  if (!user) return null
   return (
     <div className="absolute size-6 h-full w-full rounded-full">
       <img
         className="absolute h-full w-full object-cover"
-        src={user?.user_metadata.avatar_url}
-        alt={user?.user_metadata.name}
+        src={user.user_metadata.avatar_url}
+        alt={user.user_metadata.name}
       />
     </div>
   )
