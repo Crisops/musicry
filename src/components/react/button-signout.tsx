@@ -1,5 +1,5 @@
 import Button, { type ButtonProps } from '@/components/shared/button'
-import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/hooks/use-store'
 import { cn } from '@/lib/utils'
 
 interface ButtonSignOutProps extends ButtonProps {
@@ -12,7 +12,15 @@ const ButtonSignOut = ({
   isDeviceMovile,
   ...props
 }: ButtonSignOutProps) => {
-  const { user, handleSignOut } = useAuth()
+  const { user, setUser } = useAuth((state) => state)
+
+  const handleSignOut = async () => {
+    const { status } = await fetch('/api/auth/signout')
+    if (status === 200) {
+      setUser(null)
+    }
+  }
+
   return (
     <Button
       {...props}
