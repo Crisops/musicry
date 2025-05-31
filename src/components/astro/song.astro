@@ -1,6 +1,5 @@
 ---
-import { Play } from '@lucide/astro'
-import Button from '@/components/shared/button'
+import ButtonPlay from '@/components/react/button-play'
 
 interface Props {
   id: string
@@ -34,12 +33,9 @@ const { id, title, artist, imageUrl }: Props = Astro.props
   <div
     class="absolute right-2 bottom-2 z-10 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
   >
-    <Button
+    <ButtonPlay
       client:visible
-      isIconOnly
-      className="text-platinum bg-blue-silver rounded-small h-8 w-8 min-w-8"
-    >
-      <Play fill="currentColor" size={16} color="currentColor" />
-    </Button>
+      className="data-[hover=true]:opacity-disabled rounded-small h-8 w-8 min-w-8 data-[hover=true]:hover:opacity-100"
+    />
   </div>
 </article>
