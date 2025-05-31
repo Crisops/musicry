@@ -1,11 +1,15 @@
 import type { HTMLProps } from 'react'
+import { useAuth } from '@/hooks/use-store'
 
 interface GreetingProps {
   className: HTMLProps<HTMLElement>['className']
 }
 
 const Greeting = ({ className }: GreetingProps) => {
+  const user = useAuth((state) => state.user)
+
   const hours = new Date().getHours()
+  const firstName: string = user?.user_metadata.full_name.split(' ')[0] ?? ''
   let greeting: string = ''
 
   if (hours < 12) {
@@ -18,8 +22,8 @@ const Greeting = ({ className }: GreetingProps) => {
 
   return (
     <div className={className}>
-      <h3 className="text-2xl font-bold text-current lg:text-2xl">
-        {greeting}
+      <h3 className="text-xl font-bold text-current lg:text-2xl">
+        {user ? `${greeting}, ${firstName}` : greeting}
       </h3>
     </div>
   )
