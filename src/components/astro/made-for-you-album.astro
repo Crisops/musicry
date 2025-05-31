@@ -1,0 +1,46 @@
+---
+import ButtonPlay from '@/components/react/button-play'
+import Link from '@/components/react/link'
+import { Image } from 'astro:assets'
+
+interface Props {
+  id: string
+  title: string
+  artist: string
+  imageUrl: string
+}
+
+const { id, title, artist, imageUrl }: Props = Astro.props
+---
+
+<article
+  class="group bg-rich-dark-jungle/50 hover:bg-rich-dark-jungle/40 transition-background relative w-full rounded-md duration-300"
+>
+  <div
+    class="absolute right-2 bottom-14 z-10 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
+  >
+    <ButtonPlay
+      client:visible
+      size="md"
+      radius="full"
+      className="data-[hover=true]:opacity-disabled h-10 w-10 data-[hover=true]:hover:opacity-100"
+    />
+  </div>
+  <Link
+    client:visible
+    href={`/albums/${id}`}
+    className="w- hover:opacity-disabled relative w-full p-2"
+  >
+    <Image
+      class="aspect-square h-auto w-full flex-none rounded-md object-cover"
+      src={imageUrl}
+      alt={`${title} - ${artist}`}
+      width={250}
+      height={250}
+    />
+  </Link>
+  <div class="flex flex-auto flex-col truncate p-2">
+    <h4 class="text-medium text-platinum truncate font-medium">{title}</h4>
+    <span class="text-gray-dim text-xs">{artist}</span>
+  </div>
+</article>
