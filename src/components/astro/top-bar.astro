@@ -1,9 +1,20 @@
 ---
 import { getUserAuth } from '@/utils/get-user-auth'
-import TopBarHeader from '@/components/react/top-bar-header'
+import AuthUser from '@/components/react/auth-user'
 const user = await getUserAuth()
 
 const isAdmin = user?.email === import.meta.env.EMAIL_ADMIN
 ---
 
-<TopBarHeader client:visible user={user} isAdmin={isAdmin} />
+<header
+  id="settings-top-bar"
+  class="bg-rich-black-light hidden h-24 items-center justify-between px-5 lg:flex"
+>
+  <h2 class="text-platinum text-large font-bold">Musicry</h2>
+  <AuthUser
+    client:visible
+    className="hidden md:flex"
+    user={user}
+    isAdmin={isAdmin}
+  />
+</header>
