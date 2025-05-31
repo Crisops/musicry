@@ -1,12 +1,11 @@
 ---
 import { menuItems } from '@/types/links'
-import { Link } from '@heroui/link'
+import Link from '@/components/react/link'
 ---
 
 <div class="border-rich-black-dark flex h-28 flex-col border-b-8">
   {
     menuItems.slice(0, 2).map((item) => (
-      // eslint-disable-next-line react/jsx-key
       <Link
         client:visible
         className="text-platinum bg-rich-black-light text-small justify-start transition-colors hover:bg-rich-dark-jungle/30 h-full pl-3 gap-1"
