@@ -3,17 +3,12 @@ import AvatarUser from '@/components/react/avatar-user'
 import Button from '@/components/shared/button'
 import { LayoutDashboard, LogOut } from 'lucide-react'
 import { Link } from '@heroui/react'
-import { useAuth } from '@/hooks/use-auth'
 import ButtonSignOut from '@/components/react/button-signout'
+import { useAuth } from '@/hooks/use-store'
 
-interface TopBarUserControlsProps {
-  isAdmin: boolean
-}
+export default function TopBarUserControls() {
+  const { isAdmin } = useAuth((state) => state)
 
-export default function TopBarUserControls({
-  isAdmin,
-}: TopBarUserControlsProps) {
-  const { user } = useAuth()
   return (
     <>
       {isAdmin && (
@@ -28,7 +23,7 @@ export default function TopBarUserControls({
       )}
       <PopoverLogOut
         placement="bottom-end"
-        trigger={<AvatarUser user={user} />}
+        trigger={<AvatarUser />}
         portalContainer={document.getElementById('settings-top-bar')!}
       >
         <ButtonSignOut
