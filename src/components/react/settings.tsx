@@ -1,17 +1,30 @@
-import { Drawer, DrawerContent } from '@heroui/drawer'
-import { useState } from 'react'
-import Button from '@/components/shared/button'
+import { useEffect, useState } from 'react'
+import type { User } from '@supabase/supabase-js'
+import { useAuth } from '@/hooks/use-store'
 import { Settings as SettingsIcon } from 'lucide-react'
+import { Drawer, DrawerContent } from '@heroui/drawer'
 import AuthUser from '@/components/react/auth-user'
-import { useAuth } from '@/hooks/use-auth'
+import Button from '@/components/shared/button'
 
-interface SettingsProps {
+const Settings = ({
+  user,
+  isAdmin,
+}: {
+  user: User | null
   isAdmin: boolean
-}
-
-const Settings = ({ isAdmin }: SettingsProps) => {
+}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
-  const { user } = useAuth()
+  const {
+    user: userDB,
+    isAdmin: adminUser,
+    setUser,
+    setIsAdmin,
+  } = useAuth((state) => state)
+
+  useEffect(() => {
+    setUser(user)
+    setIsAdmin(isAdmin)
+  }, [user])
 
   const handleOpenDrawer = () => {
     setIsOpen(!isOpen)
@@ -41,8 +54,8 @@ const Settings = ({ isAdmin }: SettingsProps) => {
         <DrawerContent>
           <div id="settings-top-bar-movile" className="flex justify-start p-3">
             <AuthUser
-              isAdmin={isAdmin}
-              user={user}
+              user={userDB}
+              isAdmin={adminUser}
               className="flex-row-reverse"
             />
           </div>
