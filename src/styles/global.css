@@ -39,3 +39,21 @@
   --color-platinum: #dfdfdf;
   --color-sealsalt: #f7f7f7;
 }
+
+.grid-section {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+@media (min-width: 550px) {
+  .grid-section {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-section {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
