@@ -1,8 +1,10 @@
 ---
 import { getUserAuth } from '@/utils/get-user-auth'
 import AuthUser from '@/components/react/auth-user'
-const user = await getUserAuth()
-
+let user = null
+if (!user) {
+  user = await getUserAuth()
+}
 const isAdmin = user?.email === import.meta.env.EMAIL_ADMIN
 ---
 
