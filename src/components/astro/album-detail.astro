@@ -10,14 +10,13 @@ const { album } = Astro.props
 ---
 
 <div class="relative flex w-full">
-  <div
-    class="absolute h-80 w-full bg-gradient-to-b from-[#e01707] to-transparent sm:h-full"
-  >
-  </div>
+  <div id="gradient-bg" class="absolute h-80 w-full sm:h-full"></div>
   <div class="relative flex h-full w-full items-end gap-4 sm:px-3 sm:pt-15">
     <div class="relative h-64 w-full flex-none sm:h-60 sm:w-60">
       <div class="absolute inset-0 z-10 bg-black/65 sm:hidden"></div>
       <Image
+        id="album-image"
+        crossorigin="anonymous"
         transition:name=`playlist ${album?.id} image`
         src={album?.imageUrl ?? ''}
         alt="Album 1"
@@ -57,3 +56,42 @@ const { album } = Astro.props
     </div>
   </div>
 </div>
+
+<script>
+  import { FastAverageColor } from 'fast-average-color'
+
+  const fac = new FastAverageColor()
+
+  const getColorImage = async () => {
+    const image = document.getElementById(
+      'album-image',
+    ) as HTMLImageElement | null
+    const gradient = document.getElementById(
+      'gradient-bg',
+    ) as HTMLElement | null
+
+    if (!image || !gradient) return
+
+    try {
+      const applyColor = async () => {
+        const { hex } = await fac.getColorAsync(image, {
+          algorithm: 'dominant',
+        })
+        gradient.style.background = `linear-gradient(to bottom, ${hex}, transparent)`
+      }
+
+      if (image.complete && image.naturalWidth > 0) {
+        await applyColor()
+      } else {
+        image.addEventListener('load', applyColor, { once: true })
+      }
+    } catch (error) {
+      console.log('Error extracting color:', error)
+      gradient.style.background =
+        'linear-gradient(to bottom, #e01707, transparent)'
+    }
+  }
+
+  document.addEventListener('astro:after-swap', getColorImage)
+  document.addEventListener('astro:page-load', getColorImage)
+</script>
