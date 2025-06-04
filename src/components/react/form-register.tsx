@@ -3,7 +3,7 @@ import { User } from 'lucide-react'
 
 const FormRegister = () => {
   return (
-    <form action="/api/auth/signin" method="POST">
+    <form action="/api/auth/signin" method="POST" data-astro-reload>
       <Button
         type="submit"
         value="google"
