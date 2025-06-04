@@ -1,6 +1,5 @@
 ---
 import ButtonPlay from '@/components/react/button-play'
-import Link from '@/components/react/link'
 import { Image } from 'astro:assets'
 
 interface Props {
@@ -26,21 +25,29 @@ const { id, title, artist, imageUrl }: Props = Astro.props
       className="data-[hover=true]:opacity-disabled h-10 w-10 data-[hover=true]:hover:opacity-100"
     />
   </div>
-  <Link
-    client:visible
-    href={`/albums/${id}`}
-    className="w- hover:opacity-disabled relative w-full p-2"
+  <a
+    href={`/album/${id}`}
+    class="tap-highlight-transparent data-[focus-visible=true]:outline-focus text-medium text-primary hover:opacity-hover active:opacity-disabled relative inline-flex w-full items-center p-2 no-underline outline-hidden transition-opacity data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-offset-2"
   >
     <Image
+      transition:name=`playlist ${id} image`
       class="aspect-square h-auto w-full flex-none rounded-md object-cover"
       src={imageUrl}
       alt={`${title} - ${artist}`}
       width={250}
       height={250}
     />
-  </Link>
+  </a>
   <div class="flex flex-auto flex-col truncate p-2">
-    <h4 class="text-medium text-platinum truncate font-medium">{title}</h4>
-    <span class="text-gray-dim text-xs">{artist}</span>
+    <h4
+      class="text-medium text-platinum truncate font-medium"
+      transition:name={`playlist ${id} title`}
+    >
+      {title}
+    </h4>
+    <span
+      class="text-gray-dim text-xs"
+      transition:name={`playlist ${id} artist`}>{artist}</span
+    >
   </div>
 </article>
