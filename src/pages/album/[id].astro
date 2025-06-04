@@ -1,0 +1,23 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import AlbumDetail from '@/components/astro/album-detail.astro'
+import ButtonPlay from '@/components/react/button-play'
+import TrackListWrapper from '@/components/astro/track-list-wrapper.astro'
+import { albums } from '@/types/test.design'
+const { id } = Astro.params
+const album = albums.find((album) => album.id === id)
+---
+
+<Layout>
+  <section class="relative flex h-full w-full flex-col">
+    <AlbumDetail album={album} />
+    <div class="flex items-center justify-end px-3 py-5 sm:justify-start">
+      <ButtonPlay
+        radius="full"
+        sizeIcon={22}
+        className="h-11 w-11 min-w-11 sm:size-14"
+      />
+    </div>
+    <TrackListWrapper />
+  </section>
+</Layout>
