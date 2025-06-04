@@ -3,6 +3,7 @@ import '@/styles/global.css'
 import AsideRight from '@/components/astro/aside-right.astro'
 import AsideLeft from '@/components/astro/aside-left.astro'
 import Player from '@/components/react/player'
+import { ClientRouter } from 'astro:transitions'
 ---
 
 <!doctype html>
@@ -12,6 +13,7 @@ import Player from '@/components/react/player'
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Astro Basics</title>
+    <ClientRouter fallback="none" />
   </head>
   <body class="bg-rich-black-dark">
     <div id="app" class="relative h-screen">
