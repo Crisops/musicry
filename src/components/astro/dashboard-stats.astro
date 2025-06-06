@@ -1,0 +1,21 @@
+---
+import { Library, ListMusic, UsersRound, User } from '@lucide/astro'
+import StastsCard from '@/components/astro/stasts-card.astro'
+---
+
+<div class="grid grid-cols-2 grid-rows-2 gap-2 xl:grid-cols-4 xl:grid-rows-1">
+  <StastsCard
+    icon={ListMusic}
+    title="Canciones totales"
+    value={14}
+    type="songs"
+  />
+  <StastsCard icon={Library} title="Albunes totales" value={4} type="albums" />
+  <StastsCard
+    icon={UsersRound}
+    title="Artistas totales"
+    value={15}
+    type="artists"
+  />
+  <StastsCard icon={User} title="Usuarios totales" value={3} type="users" />
+</div>
