@@ -42,7 +42,7 @@ export const trackListAlbumColumnsDashboard: TrackListAlbumColumns[] = [
     label: 'Artistas',
   },
   {
-    key: 'date',
+    key: 'created_at',
     label: 'Fecha de publicación',
   },
   {
@@ -131,6 +131,22 @@ export const tracks: Track[] = [
     title: 'La Corriente',
     artist: 'Bad Bunny, Tony Dize',
     created_at: '2022-12-19',
+    duration: '3:18',
+  },
+  {
+    id: '10',
+    image: 'https://i.scdn.co/image/ab67616d0000b27349d694203245f241a1bcaa72',
+    title: 'Yonaguni',
+    artist: 'Bad Bunny',
+    created_at: '2021-04-10',
+    duration: '2:53',
+  },
+  {
+    id: '11',
+    image: 'https://i.scdn.co/image/ab67616d0000b27349d694203245f241a1bcaa72',
+    title: 'Crippy',
+    artist: 'Bad Bunny',
+    created_at: '2020-09-01',
     duration: '3:18',
   },
 ]
