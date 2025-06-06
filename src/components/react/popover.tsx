@@ -1,7 +1,7 @@
 import Button from '@/components/shared/button'
 import {
   type PopoverProps,
-  Popover,
+  Popover as PopoverHero,
   PopoverTrigger,
   PopoverContent,
 } from '@heroui/popover'
@@ -10,9 +10,9 @@ interface Props extends PopoverProps {
   trigger: React.ReactNode
 }
 
-export default function PopoverLogOut({ children, trigger, ...props }: Props) {
+export default function Popover({ children, trigger, ...props }: Props) {
   return (
-    <Popover {...props}>
+    <PopoverHero {...props}>
       <PopoverTrigger>
         <Button isIconOnly radius="full" size="sm">
           {trigger}
@@ -21,6 +21,6 @@ export default function PopoverLogOut({ children, trigger, ...props }: Props) {
       <PopoverContent className="bg-rich-black-dark p-1.5">
         {children}
       </PopoverContent>
-    </Popover>
+    </PopoverHero>
   )
 }
