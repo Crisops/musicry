@@ -69,6 +69,7 @@ const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
           {...registerField('duration')}
           value={durationValue?.toString() || ''}
           label="Duración"
+          placeholder="Se calculará automáticamente (en segundos)"
           isInvalid={!!errors.duration}
           errorMessage={errors.duration?.message}
         />
