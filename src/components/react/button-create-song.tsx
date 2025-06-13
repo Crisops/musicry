@@ -1,7 +1,9 @@
 import { Plus } from 'lucide-react'
-import { useModal } from '@/hooks/useModal'
+import { useModal } from '@/hooks/use-modal'
 import Button from '@/components/shared/button'
 import Modal from '@/components/shared/modal'
+import FormCreateSong from '@/components/react/form-create-song'
+import { SongFormProvider } from '@/context/song-form-provider'
 
 const ButtonCreateSong = () => {
   const { sizeViewPort, isOpen, onOpen, onOpenChange } = useModal()
@@ -22,12 +24,10 @@ const ButtonCreateSong = () => {
           'Añadir canción'
         )}
       </Button>
-      <Modal
-        size={sizeViewPort < 700 ? 'full' : 'xl'}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
-        <h1>Modal Para crear una canción</h1>
+      <Modal isOpen={isOpen} hideCloseButton onOpenChange={onOpenChange}>
+        <SongFormProvider>
+          <FormCreateSong onCancel={onOpenChange} />
+        </SongFormProvider>
       </Modal>
     </>
   )
