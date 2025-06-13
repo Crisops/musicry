@@ -1,6 +1,6 @@
-import { Music } from 'lucide-react'
+import { Library, Music } from 'lucide-react'
 import ButtonCreateSong from '@/components/react/button-create-song'
-import ModalProvider from '@/context/ModalProvider'
+import ModalProvider from '@/context/modal-provider'
 import ButtonCreateAlbum from '@/components/react/button-create-album'
 
 interface TopTableDashboardProps {
@@ -12,13 +12,27 @@ const TopTableDashboard = ({ tap }: TopTableDashboardProps) => {
     <div className="relative w-full">
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-start">
-          <div className="text-blue-argentinian flex items-center gap-2">
-            <Music color="currentColor" />
-            <span className="text-sealsalt">Biblioteca de canciones</span>
+          <div
+            className={`flex items-center gap-2 ${
+              tap === 'songs' ? 'text-blue-argentinian' : 'text-indigo-400'
+            }`}
+          >
+            {tap === 'songs' ? (
+              <Music color="currentColor" />
+            ) : (
+              <Library color="currentColor" />
+            )}
+            <span className="text-sealsalt">
+              {tap === 'songs'
+                ? 'Biblioteca de canciones'
+                : 'Biblioteca de albunes'}
+            </span>
           </div>
           <div>
             <span className="text-gray-dim text-small">
-              Gestiona tus pistas de música
+              {tap === 'songs'
+                ? 'Gestiona tus pistas de música'
+                : 'Gestiona tus colecciones de álbunes'}
             </span>
           </div>
         </div>
