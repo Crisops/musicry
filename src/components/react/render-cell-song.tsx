@@ -1,7 +1,7 @@
 import type { Track } from '@/types/track'
 import { SongItem } from '@/components/react/song-item'
 import DeleteSong from '@/components/react/delete-song'
-import ModalProvider from '@/context/ModalProvider'
+import ModalProvider from '@/context/modal-provider'
 
 export const renderCellSong = (track: Track, columnKey: React.Key) => {
   const cellValue = track[columnKey as keyof Track]
