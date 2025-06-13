@@ -63,3 +63,27 @@ export const albums: Album[] = [
       'https://rtvc-assets-radionica3.s3.amazonaws.com/s3fs-public/field/images_to_insert/article/thriller_afiche.jpg',
   },
 ]
+
+export type AlbumSelect = {
+  key: string
+  label: string
+}
+
+export const albumsSelect: AlbumSelect[] = [
+  {
+    key: '550e8400-e29b-41d4-a716-446655440000',
+    label: 'Random Access Memories',
+  },
+  {
+    key: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
+    label: 'To Pimp a Butterfly',
+  },
+  {
+    key: '6ba7b810-9dad-11d1-80b4-00c04fd430c9',
+    label: 'Abbey Road',
+  },
+  {
+    key: '6ba7b810-9dad-11d1-80b4-00c04fd430d0',
+    label: '1989',
+  },
+]
