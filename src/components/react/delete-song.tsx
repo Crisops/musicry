@@ -1,4 +1,4 @@
-import { useModal } from '@/hooks/useModal'
+import { useModal } from '@/hooks/use-modal'
 import { Trash2 } from 'lucide-react'
 import Button from '@/components/shared/button'
 import Modal from '@/components/shared/modal'
@@ -16,7 +16,7 @@ const DeleteSong = () => {
       >
         <Trash2 size={20} />
       </Button>
-      <Modal size="lg" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <div>Modal para eliminar una cancion</div>
       </Modal>
     </>
