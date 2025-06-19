@@ -16,7 +16,7 @@ export const useForm = <T extends Record<string, any>>({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     watch,
   } = useFormHook<T>({ defaultValues: initialForm })
@@ -34,5 +34,6 @@ export const useForm = <T extends Record<string, any>>({
     errors,
     setValue,
     watch,
+    isSubmitting,
   }
 }
