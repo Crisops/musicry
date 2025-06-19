@@ -1,11 +1,15 @@
 import { Plus } from 'lucide-react'
 import { useModal } from '@/hooks/use-modal'
-import Button from '@/components/shared/button'
-import Modal from '@/components/shared/modal'
-import FormCreateSong from '@/components/react/form-create-song'
 import { SongFormProvider } from '@/context/song-form-provider'
+import Button from '@/components/shared/button'
+import FormCreateSong from '@/components/react/form-create-song'
+import Modal from '@/components/shared/modal'
 
-const ButtonCreateSong = () => {
+interface ButtonCreateSongProps {
+  user: User
+}
+
+const ButtonCreateSong = ({ user }: ButtonCreateSongProps) => {
   const { sizeViewPort, isOpen, onOpen, onOpenChange } = useModal()
   return (
     <>
@@ -25,7 +29,7 @@ const ButtonCreateSong = () => {
         )}
       </Button>
       <Modal isOpen={isOpen} hideCloseButton onOpenChange={onOpenChange}>
-        <SongFormProvider>
+        <SongFormProvider user={user}>
           <FormCreateSong onCancel={onOpenChange} />
         </SongFormProvider>
       </Modal>
