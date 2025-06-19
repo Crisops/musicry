@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css'
+import ToastProvider from '@/components/react/toast-provider'
 ---
 
 <!doctype html>
@@ -12,6 +13,7 @@ import '@/styles/global.css'
   </head>
   <body class="bg-rich-black-dark">
     <div class="relative h-screen">
+      <ToastProvider client:load />
       <main
         class="relative h-full w-full overflow-hidden px-3 sm:px-5 lg:px-10"
       >
