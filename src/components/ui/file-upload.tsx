@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils'
 import {
   forwardRef,
   useCallback,
@@ -8,16 +7,17 @@ import {
   type ChangeEvent,
 } from 'react'
 import { motion } from 'framer-motion'
-import { AlertCircle, Upload, X } from 'lucide-react'
-import { useDropzone } from 'react-dropzone'
-import Button from '@/components/shared/button'
-import Input from '@/components/react/input'
 import {
   DEFAULT_IMAGE_CONFIG,
   mainVariant,
   secondaryVariant,
 } from '@/config/file-upload'
+import { useDropzone } from 'react-dropzone'
+import { AlertCircle, Upload, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import Button from '@/components/shared/button'
 import type { InputProps } from '@heroui/input'
+import Input from '@/components/react/input'
 
 interface FileDisplayInfo {
   name: string
