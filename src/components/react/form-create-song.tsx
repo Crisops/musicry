@@ -1,9 +1,8 @@
+import { useSongForm } from '@/hooks/use-song-form'
 import Button from '@/components/shared/button'
 import Input from '@/components/react/input'
 import { FileUpload } from '@/components/ui/file-upload'
 import { Select } from '@/components/react/select'
-import { Form } from '@heroui/form'
-import { useSongForm } from '@/hooks/use-song-form'
 
 interface FormCreateSongProps {
   onCancel: (open: boolean) => void
@@ -16,21 +15,24 @@ const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
     errors,
     handleAudioFileChange,
     durationValue,
+    onSubmit,
+    isSubmitting,
   } = useSongForm()
 
   const { onChange, ref, ...props } = registerField('imageUrl')
   const { onChange: onChangeAudio, ...audioRest } = registerField('audioUrl')
 
-  const onSubmit = handleSubmit(async (data) => {
-    console.log(data)
-  })
-
   return (
-    <Form id="form-create-song" className="p-4" onSubmit={onSubmit}>
+    <form
+      id="form-create-song"
+      className="p-4"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="mb-8">
         <FileUpload
           type="file"
-          acceptedTypes={['image/jpeg', 'image/jpg']}
+          maxSizeMB={5}
+          acceptedTypes={['image/jpeg', 'image/jpg', 'image/webp']}
           onChange={onChange}
           {...props}
           ref={ref}
@@ -89,15 +91,16 @@ const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
             Cancelar
           </Button>
           <Button
+            isLoading={isSubmitting}
             type="submit"
             radius="sm"
             className={`${Object.keys(errors).length > 0 ? 'bg-blue-silver/10 text-sealsalt/10 pointer-events-none' : 'bg-blue-silver text-sealsalt pointer-events-auto'} text-small px-2`}
           >
-            Añadir canción
+            {isSubmitting ? 'Añadiendo...' : 'Añadir canción'}
           </Button>
         </div>
       </div>
-    </Form>
+    </form>
   )
 }
 
