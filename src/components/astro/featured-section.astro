@@ -3,13 +3,7 @@ import FeaturedSongsList from '@/components/astro/featured-songs-list.astro'
 import MadeForYou from '@/components/astro/made-for-you.astro'
 import Greeting from '@/components/react/greeting'
 import Settings from '@/components/react/settings'
-import { getUserAuth } from '@/utils/get-user-auth'
-// import Trending from '@/components/astro/trending.astro'
-let user = null
-if (!user) {
-  user = await getUserAuth()
-}
-const isAdmin = user?.email === import.meta.env.EMAIL_ADMIN
+const user = Astro.locals.user
 ---
 
 <section class="grid-row-1 grid h-full">
@@ -18,7 +12,7 @@ const isAdmin = user?.email === import.meta.env.EMAIL_ADMIN
   >
     <div class="relative flex h-24 w-full items-center justify-between px-3">
       <Greeting client:visible className="text-platinum" />
-      <Settings user={user} isAdmin={isAdmin} client:visible />
+      <Settings client:visible user={user} />
     </div>
     <div class="flex h-0 flex-col px-3">
       <FeaturedSongsList />

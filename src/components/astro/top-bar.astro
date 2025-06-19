@@ -1,11 +1,6 @@
 ---
-import { getUserAuth } from '@/utils/get-user-auth'
 import AuthUser from '@/components/react/auth-user'
-let user = null
-if (!user) {
-  user = await getUserAuth()
-}
-const isAdmin = user?.email === import.meta.env.EMAIL_ADMIN
+const user = Astro.locals.user
 ---
 
 <header
@@ -13,10 +8,5 @@ const isAdmin = user?.email === import.meta.env.EMAIL_ADMIN
   class="bg-rich-black-light hidden h-24 items-center justify-between px-5 lg:flex"
 >
   <h2 class="text-platinum text-large font-bold">Musicry</h2>
-  <AuthUser
-    client:visible
-    className="hidden md:flex"
-    user={user}
-    isAdmin={isAdmin}
-  />
+  <AuthUser client:visible className="hidden md:flex" user={user} />
 </header>

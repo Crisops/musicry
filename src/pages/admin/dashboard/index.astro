@@ -3,12 +3,13 @@ import LayoutDashboard from '@/layouts/layout-dashboard.astro'
 import HeaderDashboard from '@/components/astro/header-dashboard.astro'
 import DashboardStats from '@/components/astro/dashboard-stats.astro'
 import Tabs from '@/components/react/tabs'
+const user = Astro.locals.user
 ---
 
 <LayoutDashboard>
   <div class="relative flex h-full w-full flex-col">
     <HeaderDashboard />
     <DashboardStats />
-    <Tabs client:visible />
+    <Tabs client:visible user={user} />
   </div>
 </LayoutDashboard>
