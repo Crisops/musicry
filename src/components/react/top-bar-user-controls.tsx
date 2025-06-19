@@ -7,11 +7,11 @@ import ButtonSignOut from '@/components/react/button-signout'
 import { useAuth } from '@/hooks/use-store'
 
 export default function TopBarUserControls() {
-  const { isAdmin } = useAuth((state) => state)
+  const { user } = useAuth((state) => state)
 
   return (
     <>
-      {isAdmin && (
+      {user?.isAdmin && (
         <Button
           startContent={<LayoutDashboard size={15} color="currentColor" />}
           className="text-platinum bg-rich-dark-jungle h-9 rounded-md text-xs"

@@ -2,12 +2,17 @@ import TrackList from '@/components/react/track-list'
 import { trackListAlbumColumnsDashboard, tracks } from '@/types/track'
 import TopTableDashboard from '@/components/react/top-table-dashboard'
 
-const SongsTabContent = ({ tap }: { tap: 'songs' | 'albums' }) => {
+interface SongsTabContentProps {
+  tap: 'songs' | 'albums'
+  user: User
+}
+
+const SongsTabContent = ({ tap, user }: SongsTabContentProps) => {
   return (
     <div className="grid-row-1 grid h-full">
       <div className="scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-rich-dark-jungle overflow-y-auto">
         <TrackList
-          topContent={<TopTableDashboard tap={tap} />}
+          topContent={<TopTableDashboard tap={tap} user={user} />}
           selectionMode="single"
           classNames={{
             base: ['flex flex-col h-0'],

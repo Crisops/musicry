@@ -3,7 +3,7 @@ import { Album, Music } from 'lucide-react'
 import SongsTabContent from '@/components/react/songs-tab-content'
 import AlbumsTabContent from '@/components/react/albums-tab-content'
 
-const Tabs = () => {
+const Tabs = ({ user }: { user: User }) => {
   return (
     <div className="mt-10 flex h-full w-full flex-col gap-3">
       <TapsHero
@@ -27,7 +27,7 @@ const Tabs = () => {
             </div>
           }
         >
-          <SongsTabContent tap="songs" />
+          <SongsTabContent tap="songs" user={user} />
         </Tab>
         <Tab
           key="albums"

@@ -5,9 +5,10 @@ import ButtonCreateAlbum from '@/components/react/button-create-album'
 
 interface TopTableDashboardProps {
   tap: 'songs' | 'albums'
+  user: User
 }
 
-const TopTableDashboard = ({ tap }: TopTableDashboardProps) => {
+const TopTableDashboard = ({ tap, user }: TopTableDashboardProps) => {
   return (
     <div className="relative w-full">
       <div className="flex items-center justify-between">
@@ -37,7 +38,11 @@ const TopTableDashboard = ({ tap }: TopTableDashboardProps) => {
           </div>
         </div>
         <ModalProvider>
-          {tap === 'songs' ? <ButtonCreateSong /> : <ButtonCreateAlbum />}
+          {tap === 'songs' ? (
+            <ButtonCreateSong user={user} />
+          ) : (
+            <ButtonCreateAlbum />
+          )}
         </ModalProvider>
       </div>
     </div>
