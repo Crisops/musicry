@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 import type { Provider } from '@supabase/supabase-js'
 
-export const POST: APIRoute = async ({ request, redirect }) => {
+export const POST: APIRoute = async ({ request, redirect, cookies }) => {
   const formData = await request.formData()
   const provider = formData.get('provider')?.toString()
   const URL_SITE = import.meta.env.SITE_URL ?? 'http://localhost:4321'
@@ -10,6 +10,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const validProviders = ['google']
 
   if (provider && validProviders.includes(provider)) {
+    const supabase = await createClient(request, cookies)
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: provider as Provider,
       options: {
