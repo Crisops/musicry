@@ -6,8 +6,12 @@ import {
   type ChangeEvent,
   useEffect,
 } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { useForm } from '@/hooks/use-form'
+import { useModal } from '@/hooks/use-modal'
 import { type SongFormData } from '@/utils/validate-rules-form'
+import { Toast } from '@/utils/toast'
+import { uploadFile } from '@/utils/upload-files'
 import { initialFormSong } from '@/config/fields-form'
 
 interface SongFormContextType {
@@ -18,15 +22,23 @@ interface SongFormContextType {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => Promise<void>
   durationValue: string
+  onSubmit: (data: SongFormData) => Promise<void>
+  isSubmitting: boolean
 }
 
 export const SongFormContext = createContext<SongFormContextType | null>(null)
 
-export const SongFormProvider = ({ children }: { children: ReactNode }) => {
-  const { registerField, handleSubmit, errors, setValue, watch } =
+interface SongFormProviderProps {
+  children: ReactNode
+  user: User
+}
+
+export const SongFormProvider = ({ children, user }: SongFormProviderProps) => {
+  const { registerField, handleSubmit, errors, setValue, watch, isSubmitting } =
     useForm<SongFormData>({
       initialForm: initialFormSong,
     })
+  const { onOpenChange: closeModal } = useModal()
 
   const durationValue = watch('duration')?.toString() || ''
 
@@ -99,6 +111,57 @@ export const SongFormProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => cleanup, [cleanup])
 
+  const onSubmit = useCallback(async (data: SongFormData) => {
+    const { imageUrl, audioUrl, ...rest } = data
+
+    if (!user || !imageUrl || !audioUrl) return
+
+    try {
+      const idSong = uuidv4()
+      const folder = `${user.id}/${idSong}`
+      const [image, audio] = await Promise.all([
+        uploadFile({ bucket: 'songs', file: imageUrl[0], folder }),
+        uploadFile({ bucket: 'songs', file: audioUrl[0], folder }),
+      ])
+
+      if (image.error || audio.error) {
+        throw new Error('Error al subir el archivo')
+      }
+
+      const newSong = {
+        id: idSong,
+        ...rest,
+        imageUrl: image.url,
+        audioUrl: audio.url,
+      }
+      const response = await fetch('/api/admin/songs', {
+        method: 'POST',
+        body: JSON.stringify(newSong),
+      })
+
+      const { status, message } = await response.json()
+
+      if (status !== 200) {
+        throw new Error(message)
+      }
+
+      Toast().success({
+        title: '¡Listo!',
+        description: `La canción ${newSong.title} ha sido creada correctamente`,
+      })
+      closeModal(false)
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'No pudimos crear tu canción. Revisa los archivos y vuelve a intentarlo.'
+      Toast().error({
+        title: '¡Ups! Algo salió mal',
+        description: message,
+      })
+    }
+  }, [])
+
   return (
     <SongFormContext.Provider
       value={{
@@ -107,6 +170,8 @@ export const SongFormProvider = ({ children }: { children: ReactNode }) => {
         errors,
         handleAudioFileChange,
         durationValue,
+        onSubmit,
+        isSubmitting,
       }}
     >
       {children}
