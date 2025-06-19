@@ -6,10 +6,9 @@ interface GreetingProps {
 }
 
 const Greeting = ({ className }: GreetingProps) => {
-  const user = useAuth((state) => state.user)
-
+  const { user } = useAuth((state) => state)
   const hours = new Date().getHours()
-  const firstName: string = user?.user_metadata.full_name.split(' ')[0] ?? ''
+  const firstName: string = user?.full_name?.split(' ')[0] ?? ''
   let greeting: string = ''
 
   if (hours < 12) {

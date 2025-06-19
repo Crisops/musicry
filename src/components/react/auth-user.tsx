@@ -1,5 +1,4 @@
 import { useEffect, type HTMLProps } from 'react'
-import type { User } from '@supabase/supabase-js'
 import { cn } from '@/lib/utils'
 import TopBarAuthControl from './top-bar-auth-control'
 import ButtonSignOut from '@/components/react/button-signout'
@@ -7,17 +6,15 @@ import { LogOut } from 'lucide-react'
 import { useAuth } from '@/hooks/use-store'
 
 interface AuthUserProps {
-  isAdmin: boolean
-  user: User | null
+  user: User
   className?: HTMLProps<HTMLElement>['className']
 }
 
-const AuthUser = ({ user, isAdmin, className }: AuthUserProps) => {
-  const { setIsAdmin, setUser } = useAuth((state) => state)
+const AuthUser = ({ user, className }: AuthUserProps) => {
+  const { setUser } = useAuth((state) => state)
 
   useEffect(() => {
     setUser(user)
-    setIsAdmin(isAdmin)
   }, [user])
 
   return (
