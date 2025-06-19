@@ -1,5 +1,6 @@
 import type { TablesInsert } from '@/types/database.types'
 import type { RegisterOptions } from 'react-hook-form'
+import { DEFAULT_IMAGE_CONFIG } from '@/config/file-upload'
 
 export type SongFormData = Omit<
   TablesInsert<'songs'>,
@@ -58,7 +59,7 @@ const commonRules = {
         if (file.size > 1024 * 1024 * 5) {
           return 'La imagen no puede pesar más de 5MB.'
         }
-        if (!['image/jpeg', 'image/jpg'].includes(file.type)) {
+        if (!DEFAULT_IMAGE_CONFIG.acceptedTypes.includes(file.type)) {
           return 'El formato de la imagen no es válido.'
         }
         return true
