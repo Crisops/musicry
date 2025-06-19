@@ -19,9 +19,7 @@ export const secondaryVariant = {
   },
 }
 
-// Configuración por defecto para imágenes
 export const DEFAULT_IMAGE_CONFIG = {
   maxSizeMB: 5,
-  acceptedTypes: ['image/jpeg', 'image/jpg'],
-  acceptAttribute: '.jpg,.jpeg',
+  acceptedTypes: ['image/jpeg', 'image/jpg', 'image/webp'],
 }
