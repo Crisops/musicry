@@ -1,9 +1,15 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type { UserAuthStore } from '@/types/store.types'
 
-export const useAuth = create<UserAuthStore>((set) => ({
-  user: null,
-  isAdmin: false,
-  setUser: (user) => set({ user }),
-  setIsAdmin: (isAdmin) => set({ isAdmin }),
-}))
+export const useAuth = create<UserAuthStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      setUser: (user) => set({ user }),
+    }),
+    {
+      name: 'auth',
+    },
+  ),
+)
