@@ -2,6 +2,7 @@ import { Plus } from 'lucide-react'
 import { useModal } from '@/hooks/use-modal'
 import Button from '@/components/shared/button'
 import Modal from '@/components/shared/modal'
+import FormCreateAlbum from '@/components/react/form-create-album'
 
 const ButtonCreateAlbum = () => {
   const { sizeViewPort, isOpen, onOpen, onOpenChange } = useModal()
@@ -22,8 +23,8 @@ const ButtonCreateAlbum = () => {
           'Añadir albúm'
         )}
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <h1>Modal Para crear un Albúm</h1>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton>
+        <FormCreateAlbum onCancel={onOpenChange} />
       </Modal>
     </>
   )
