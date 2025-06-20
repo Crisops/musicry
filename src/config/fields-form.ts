@@ -1,4 +1,4 @@
-import type { SongFormData } from '@/utils/validate-rules-form'
+import type { AlbumFormData, SongFormData } from '@/utils/validate-rules-form'
 
 export const initialFormSong: SongFormData = {
   title: '',
@@ -7,4 +7,11 @@ export const initialFormSong: SongFormData = {
   duration: null,
   imageUrl: null,
   albumId: null,
+}
+
+export const initialFormAlbum: AlbumFormData = {
+  title: '',
+  artist: '',
+  imageUrl: null,
+  releaseYear: null,
 }

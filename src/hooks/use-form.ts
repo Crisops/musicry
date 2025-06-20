@@ -19,6 +19,7 @@ export const useForm = <T extends Record<string, any>>({
     formState: { errors, isSubmitting },
     setValue,
     watch,
+    control,
   } = useFormHook<T>({ defaultValues: initialForm })
 
   const registerField = (name: Path<T>) => {
@@ -35,5 +36,6 @@ export const useForm = <T extends Record<string, any>>({
     setValue,
     watch,
     isSubmitting,
+    control,
   }
 }
