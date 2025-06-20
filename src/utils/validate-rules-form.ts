@@ -12,10 +12,10 @@ export type SongFormData = Omit<
 
 export type AlbumFormData = Omit<
   TablesInsert<'albums'>,
-  'created_at' | 'id' | 'imageUrl' | 'releaseYear'
+  'created_at' | 'id' | 'imageUrl'
 > & {
   imageUrl: File | null
-  releaseYear: Date | null
+  releaseYear: string | null
 }
 
 const commonRules = {
