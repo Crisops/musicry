@@ -15,7 +15,7 @@ export type Database = {
           created_at: string
           id: string
           imageUrl: string | null
-          releaseYear: number | null
+          releaseYear: string | null
           title: string | null
         }
         Insert: {
@@ -23,7 +23,7 @@ export type Database = {
           created_at?: string
           id?: string
           imageUrl?: string | null
-          releaseYear?: number | null
+          releaseYear?: string | null
           title?: string | null
         }
         Update: {
@@ -31,7 +31,7 @@ export type Database = {
           created_at?: string
           id?: string
           imageUrl?: string | null
-          releaseYear?: number | null
+          releaseYear?: string | null
           title?: string | null
         }
         Relationships: []
