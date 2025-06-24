@@ -41,7 +41,7 @@ const TopTableDashboard = ({ tap, user }: TopTableDashboardProps) => {
           {tap === 'songs' ? (
             <ButtonCreateSong user={user} />
           ) : (
-            <ButtonCreateAlbum />
+            <ButtonCreateAlbum user={user} />
           )}
         </ModalProvider>
       </div>

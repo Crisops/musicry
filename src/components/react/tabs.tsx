@@ -9,8 +9,8 @@ const Tabs = ({ user }: { user: User }) => {
       <TapsHero
         classNames={{
           panel:
-            'h-full py-4 px-4 bg-rich-dark-jungle rounded-tl-md rounded-tr-md',
-          tabList: 'bg-rich-dark-jungle',
+            'h-full py-4 px-4 bg-rich-black-light rounded-tl-md rounded-tr-md',
+          tabList: 'bg-rich-black-light',
           cursor: 'bg-blue-silver',
           tabContent: 'text-gray-davy group-data-[selected=true]:text-sealsalt',
         }}
@@ -38,7 +38,7 @@ const Tabs = ({ user }: { user: User }) => {
             </div>
           }
         >
-          <AlbumsTabContent tap="albums" />
+          <AlbumsTabContent tap="albums" user={user} />
         </Tab>
       </TapsHero>
     </div>
