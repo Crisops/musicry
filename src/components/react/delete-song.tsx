@@ -9,10 +9,11 @@ const DeleteSong = () => {
   return (
     <>
       <Button
-        className="bg-transparent text-current data-[hover=true]:text-red-600"
+        className="data-[hover=true]:bg-danger/10 data-[hover=true]:text-danger text-current"
         onPress={onOpen}
         isIconOnly
-        radius="none"
+        radius="sm"
+        variant="light"
       >
         <Trash2 size={20} />
       </Button>
