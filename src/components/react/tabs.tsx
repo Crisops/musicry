@@ -8,8 +8,7 @@ const Tabs = ({ user }: { user: User }) => {
     <div className="mt-10 flex h-full w-full flex-col gap-3">
       <TapsHero
         classNames={{
-          panel:
-            'h-full py-4 px-4 bg-rich-black-light rounded-tl-md rounded-tr-md',
+          panel: 'h-full bg-rich-black-light rounded-tl-md rounded-tr-md',
           tabList: 'bg-rich-black-light',
           cursor: 'bg-blue-silver',
           tabContent: 'text-gray-davy group-data-[selected=true]:text-sealsalt',

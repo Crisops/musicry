@@ -10,7 +10,7 @@ interface TopTableDashboardProps {
 
 const TopTableDashboard = ({ tap, user }: TopTableDashboardProps) => {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full p-4">
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-start">
           <div
