@@ -20,10 +20,10 @@ const SongsTabContent = ({ tap, user }: SongsTabContentProps) => {
             th: ['bg-transparent', 'text-sealsalt', 'border-divider'],
             td: [
               'first:before:rounded-none last:before:rounded-none',
-              'before:bg-rich-black-light',
+              'before:bg-rich-black-dark',
               'data-[selected=true]:text-platinum',
-              'group-aria-[selected=false]/tr:group-data-[hover=true]/tr:before:bg-rich-black-light/60',
-              'group-aria-[selected=true]/tr:group-data-[hover=true]/tr:before:bg-rich-black-light',
+              'group-aria-[selected=false]/tr:group-data-[hover=true]/tr:before:bg-night/60',
+              'group-aria-[selected=true]/tr:group-data-[hover=true]/tr:before:bg-rich-black-dark',
             ],
             tr: ['text-gray-dim'],
           }}
