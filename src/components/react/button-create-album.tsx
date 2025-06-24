@@ -4,7 +4,11 @@ import Button from '@/components/shared/button'
 import Modal from '@/components/shared/modal'
 import FormCreateAlbum from '@/components/react/form-create-album'
 
-const ButtonCreateAlbum = () => {
+interface ButtonCreateAlbumProps {
+  user: User
+}
+
+const ButtonCreateAlbum = ({ user }: ButtonCreateAlbumProps) => {
   const { sizeViewPort, isOpen, onOpen, onOpenChange } = useModal()
   return (
     <>
@@ -24,7 +28,7 @@ const ButtonCreateAlbum = () => {
         )}
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton>
-        <FormCreateAlbum onCancel={onOpenChange} />
+        <FormCreateAlbum onCancel={onOpenChange} user={user} />
       </Modal>
     </>
   )
