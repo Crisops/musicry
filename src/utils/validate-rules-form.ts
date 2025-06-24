@@ -1,6 +1,7 @@
 import type { TablesInsert } from '@/types/database.types'
 import type { RegisterOptions } from 'react-hook-form'
 import { DEFAULT_IMAGE_CONFIG } from '@/config/file-upload'
+import { getLocalTimeZone, type DateValue } from '@internationalized/date'
 
 export type SongFormData = Omit<
   TablesInsert<'songs'>,
@@ -14,8 +15,8 @@ export type AlbumFormData = Omit<
   TablesInsert<'albums'>,
   'created_at' | 'id' | 'imageUrl'
 > & {
-  imageUrl: File | null
-  releaseYear: string | null
+  imageUrl: FileList | null
+  releaseYear: DateValue | null
 }
 
 const commonRules = {
@@ -23,7 +24,7 @@ const commonRules = {
     required:
       'El título es obligatorio y debe contener al menos un carácter válido.',
     pattern: {
-      value: /^[a-zA-Z0-9\s]+$/,
+      value: /^[a-zA-Z0-9\s]+(?:'[a-zA-Z\s]+)*$/,
       message: 'El título solo puede contener letras, números y espacios.',
     },
     minLength: {
@@ -117,20 +118,15 @@ export const albumValidationRules: Record<
   ...commonRules,
   releaseYear: {
     required: 'El año de lanzamiento es obligatorio.',
-    validate: (value: any) => {
+    validate: (value) => {
       if (!value) return 'La fecha es obligatoria.'
-      if (typeof value !== 'string') {
-        return 'Formato de fecha inválido.'
-      }
-
-      const date = new Date(value)
-      if (isNaN(date.getTime())) return 'La fecha no es válida.'
-
+      const date = new Date(value.toDate(getLocalTimeZone()))
       const now = new Date()
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
 
-      if (date > today) return 'La fecha no puede ser futura.'
-
+      if (date > today) {
+        return 'La fecha no puede ser futura.'
+      }
       return true
     },
   },
