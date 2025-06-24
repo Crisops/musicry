@@ -177,7 +177,7 @@ export const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
               Arrastre o suelte aquí su imagen o haga clic para seleccionar
             </p>
             <p className="text-gray-dim relative z-20 mt-1 font-sans text-sm">
-              Máximo 5MB • Formatos: JPG, JPEG
+              Máximo 5MB • Formatos: JPG, JPEG, WEBP
             </p>
             <div className="relative mx-auto mt-6 w-full max-w-xl">
               {files.length > 0 &&
