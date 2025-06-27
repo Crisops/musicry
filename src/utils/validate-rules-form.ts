@@ -24,7 +24,7 @@ const commonRules = {
     required:
       'El título es obligatorio y debe contener al menos un carácter válido.',
     pattern: {
-      value: /^[a-zA-Z0-9\s]+(?:'[a-zA-Z\s]+)*$/,
+      value: /^[a-zA-ZÀ-ÿ0-9\s]+(?:'[a-zA-ZÀ-ÿ\s]+)*$/,
       message: 'El título solo puede contener letras, números y espacios.',
     },
     minLength: {
@@ -39,7 +39,7 @@ const commonRules = {
   artist: {
     required: 'El nombre del artista es obligatorio.',
     pattern: {
-      value: /^[a-zA-Z0-9\s]+(?:,\s*[a-zA-Z0-9\s]+)*$/,
+      value: /^[a-zA-ZÀ-ÿ0-9\s]+(?:,\s*[a-zA-ZÀ-ÿ0-9\s]+)*$/,
       message:
         'El nombre del artista solo puede contener letras, números, espacios y comas para separar múltiples artistas',
     },
