@@ -4,14 +4,14 @@ import { type Icon as IconType } from '@lucide/astro'
 interface Props {
   icon: typeof IconType
   title: string
-  value: number
+  value: number | null
   type: 'songs' | 'albums' | 'artists' | 'users'
 }
 
 const { icon: Icon, title, value, type }: Props = Astro.props
 ---
 
-<div class="bg-rich-black-light rounded-lg p-4">
+<div class="bg-rich-black-light rounded-lg p-2 sm:p-3 md:p-4">
   <div class="flex w-full items-center gap-2">
     <div
       class:list={[
@@ -22,10 +22,12 @@ const { icon: Icon, title, value, type }: Props = Astro.props
         type === 'users' && 'bg-cyan-400/20 text-cyan-400',
       ]}
     >
-      <Icon />
+      <Icon class="size-5 sm:size-6" />
     </div>
     <div class="overflow-hidden">
-      <h3 class="text-small text-gray-dim truncate font-normal">{title}</h3>
+      <h3 class="text-tiny sm:text-small text-gray-dim truncate font-normal">
+        {title}
+      </h3>
       <spam class="text-sealsalt text-2xl font-bold">{value}</spam>
     </div>
   </div>
