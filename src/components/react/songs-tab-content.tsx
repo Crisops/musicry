@@ -1,19 +1,23 @@
-import TrackList from '@/components/react/track-list'
-import { trackListAlbumColumnsDashboard, tracks } from '@/types/track'
+import {
+  trackSongsPanelColumns,
+  type TrackSongsListPanelRows,
+} from '@/types/track'
 import TopTableDashboard from '@/components/react/top-table-dashboard'
+import TrackList from '@/components/react/track-list'
 
 interface SongsTabContentProps {
   tap: 'songs' | 'albums'
-  user: User
+  songs: TrackSongsListPanelRows[]
 }
 
-const SongsTabContent = ({ tap, user }: SongsTabContentProps) => {
+const SongsTabContent = ({ tap, songs }: SongsTabContentProps) => {
   return (
     <div className="grid-row-1 grid h-full">
       <div className="scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-rich-dark-jungle overflow-y-auto">
-        <TrackList
-          topContent={<TopTableDashboard tap={tap} user={user} />}
+        <TrackList<TrackSongsListPanelRows>
+          disableAnimation
           selectionMode="single"
+          topContent={<TopTableDashboard tap={tap} />}
           classNames={{
             base: ['flex flex-col h-0'],
             thead: ['border-b border-gray-dim'],
@@ -28,8 +32,8 @@ const SongsTabContent = ({ tap, user }: SongsTabContentProps) => {
             tr: ['text-gray-dim'],
           }}
           removeWrapper
-          rows={tracks}
-          columns={trackListAlbumColumnsDashboard}
+          rows={songs}
+          columns={trackSongsPanelColumns}
         />
       </div>
     </div>
