@@ -7,6 +7,7 @@ import {
   useEffect,
 } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { useAuth } from '@/hooks/use-store'
 import { useForm } from '@/hooks/use-form'
 import { useModal } from '@/hooks/use-modal'
 import { type SongFormData } from '@/utils/validate-rules-form'
@@ -30,10 +31,10 @@ export const SongFormContext = createContext<SongFormContextType | null>(null)
 
 interface SongFormProviderProps {
   children: ReactNode
-  user: User
 }
 
-export const SongFormProvider = ({ children, user }: SongFormProviderProps) => {
+export const SongFormProvider = ({ children }: SongFormProviderProps) => {
+  const user = useAuth((state) => state.user)
   const { registerField, handleSubmit, errors, setValue, watch, isSubmitting } =
     useForm<SongFormData>({
       initialForm: initialFormSong,
