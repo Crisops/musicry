@@ -145,7 +145,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      count_unique_artists: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
