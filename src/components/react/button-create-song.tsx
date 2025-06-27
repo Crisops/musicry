@@ -5,11 +5,7 @@ import Button from '@/components/shared/button'
 import FormCreateSong from '@/components/react/form-create-song'
 import Modal from '@/components/shared/modal'
 
-interface ButtonCreateSongProps {
-  user: User
-}
-
-const ButtonCreateSong = ({ user }: ButtonCreateSongProps) => {
+const ButtonCreateSong = () => {
   const { sizeViewPort, isOpen, onOpen, onOpenChange } = useModal()
   return (
     <>
@@ -29,7 +25,7 @@ const ButtonCreateSong = ({ user }: ButtonCreateSongProps) => {
         )}
       </Button>
       <Modal isOpen={isOpen} hideCloseButton onOpenChange={onOpenChange}>
-        <SongFormProvider user={user}>
+        <SongFormProvider>
           <FormCreateSong onCancel={onOpenChange} />
         </SongFormProvider>
       </Modal>
