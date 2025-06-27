@@ -1,15 +1,14 @@
 ---
-import LayoutDashboard from '@/layouts/layout-dashboard.astro'
-import HeaderDashboard from '@/components/astro/header-dashboard.astro'
 import DashboardStats from '@/components/astro/dashboard-stats.astro'
-import Tabs from '@/components/react/tabs'
-const user = Astro.locals.user
+import HeaderDashboard from '@/components/astro/header-dashboard.astro'
+import LayoutDashboard from '@/layouts/layout-dashboard.astro'
+import TabsWrapperContent from '@/components/astro/tabs-wrapper-content.astro'
 ---
 
 <LayoutDashboard>
   <div class="relative flex h-full w-full flex-col">
     <HeaderDashboard />
     <DashboardStats />
-    <Tabs client:visible user={user} />
+    <TabsWrapperContent />
   </div>
 </LayoutDashboard>

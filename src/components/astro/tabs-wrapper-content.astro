@@ -1,0 +1,31 @@
+---
+import Tabs from '@/components/react/tabs'
+import { createClient } from '@/lib/supabase/server'
+import type {
+  TrackAlbumListPanelRows,
+  TrackSongsListPanelRows,
+} from '@/types/track'
+
+const { request, cookies } = Astro
+
+const supabase = await createClient(request, cookies)
+
+const [songs, albums] = await Promise.all([
+  supabase
+    .from('songs')
+    .select('id, title, artist, imageUrl, release_year:created_at')
+    .overrideTypes<Array<TrackSongsListPanelRows>, { merge: false }>(),
+  supabase
+    .from('albums')
+    .select(
+      'id, title, artist, imageUrl, release_year:releaseYear, songs:songs!songs_albumId_fkey(id, title)',
+    )
+    .overrideTypes<Array<TrackAlbumListPanelRows>, { merge: false }>(),
+])
+
+if (!songs.data || !albums.data) {
+  throw new Error('No se encontraron canciones o albunes')
+}
+---
+
+<Tabs client:visible songs={songs.data} albums={albums.data} />
