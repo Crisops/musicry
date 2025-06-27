@@ -1,4 +1,4 @@
-import { trackListAlbumColumns, type Track } from '@/types/track'
+import { type Column, type BaseTrackRow } from '@/types/track'
 import {
   Table,
   TableHeader,
@@ -10,12 +10,16 @@ import {
 } from '@heroui/table'
 import { renderCellSong } from '@/components/react/render-cell-song'
 
-interface TrakListProps extends TableProps {
-  rows: Track[]
-  columns: typeof trackListAlbumColumns
+interface TrakListProps<T extends BaseTrackRow> extends TableProps {
+  rows: T[]
+  columns: Column[]
 }
 
-const TrackList = ({ rows, columns, ...props }: TrakListProps) => {
+const TrackList = <T extends BaseTrackRow>({
+  rows,
+  columns,
+  ...props
+}: TrakListProps<T>) => {
   return (
     <Table aria-label="Tabla de canciones del albúm" {...props}>
       <TableHeader columns={columns}>
