@@ -2,6 +2,7 @@ import { getLocalTimeZone, today } from '@internationalized/date'
 import { v4 as uuidv4 } from 'uuid'
 import { Controller } from 'react-hook-form'
 import { DateInput } from '@heroui/date-input'
+import { useAuth } from '@/hooks/use-store'
 import { useForm } from '@/hooks/use-form'
 import { useModal } from '@/hooks/use-modal'
 import type { TablesInsert } from '@/types/database.types'
@@ -15,11 +16,11 @@ import { FileUpload } from '@/components/ui/file-upload'
 import Input from '@/components/react/input'
 
 interface FormCreateAlbumProps {
-  user: User
   onCancel: (open: boolean) => void
 }
 
-const FormCreateAlbum = ({ user, onCancel }: FormCreateAlbumProps) => {
+const FormCreateAlbum = ({ onCancel }: FormCreateAlbumProps) => {
+  const user = useAuth((state) => state.user)
   const { registerField, handleSubmit, errors, isSubmitting, control } =
     useForm<AlbumFormData>({ initialForm: initialFormAlbum })
   const { onOpenChange: closeModal } = useModal()
