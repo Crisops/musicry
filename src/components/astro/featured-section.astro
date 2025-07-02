@@ -8,13 +8,13 @@ const user = Astro.locals.user
 
 <section class="grid-row-1 grid h-full">
   <div
-    class="scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-rich-dark-jungle overflow-y-auto"
+    class="lg:scrollbar lg:scrollbar-w-1 lg:scrollbar-thumb-rounded-full lg:scrollbar-thumb-rich-dark-jungle lg:overflow-y-auto"
   >
     <div class="relative flex h-24 w-full items-center justify-between px-3">
       <Greeting client:visible className="text-platinum" />
       <Settings client:visible user={user} />
     </div>
-    <div class="flex h-0 flex-col px-3">
+    <div class="flex flex-col px-3 lg:h-0">
       <FeaturedSongsList />
       <MadeForYou />
       <!-- <Trending /> -->
