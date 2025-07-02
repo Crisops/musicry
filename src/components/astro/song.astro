@@ -1,11 +1,12 @@
 ---
+import type { Tables } from '@/types/database.types'
 import ButtonPlay from '@/components/react/button-play'
 
 interface Props {
-  id: string
-  title: string
-  artist: string
-  imageUrl: string
+  id: Tables<'songs'>['id']
+  title: Tables<'songs'>['title']
+  artist: Tables<'songs'>['artist']
+  imageUrl: Tables<'songs'>['imageUrl']
 }
 
 const { id, title, artist, imageUrl }: Props = Astro.props
@@ -16,11 +17,7 @@ const { id, title, artist, imageUrl }: Props = Astro.props
   class="group transition-background bg-rich-black-light hover:bg-rich-dark-jungle/60 rounded-tl-small rounded-bl-small rounded-br-small relative flex w-full items-center gap-2 overflow-hidden"
 >
   <div class="relative aspect-square h-auto w-16 flex-none">
-    <img
-      src={imageUrl}
-      alt="song"
-      class="absolute h-full w-full object-cover"
-    />
+    <img src={imageUrl} alt="song" class="absolute h-full w-full object-cover" />
   </div>
   <div class="flex flex-auto flex-col pr-1">
     <h4 class="text-platinum md:text-small text-xs font-semibold">
