@@ -1,7 +1,7 @@
 interface ImportMetaEnv {
   readonly PUBLIC_SUPABASE_URL: string
   readonly PUBLIC_SUPABASE_ANON_KEY: string
-  readonly SITE_URL: string
+  readonly PUBLIC_SITE_URL: string
   readonly EMAIL_ADMIN: string
 }
 
