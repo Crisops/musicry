@@ -1,37 +1,43 @@
 ---
 import { Image } from 'astro:assets'
-import { type Album } from '@/types/test.design'
+import type { TrackAlbumPageColumns } from '@/types/track'
 
 interface Props {
-  album?: Album
+  album: TrackAlbumPageColumns | null
 }
 
 const { album } = Astro.props
+
+const releaseYear = album?.release_year?.split('-')[0]
+
+if (!album) return
+
+const songs =
+  album.songs.length > 1 ? `${album.songs.length} Canciones` : album.songs.length === 1 ? '1 Canción' : '0 Canciones'
 ---
 
 <div class="relative flex w-full">
-  <div id="gradient-bg" class="absolute h-80 w-full sm:h-full"></div>
   <div class="relative flex h-full w-full items-end gap-4 sm:px-3 sm:pt-15">
     <div class="relative h-64 w-full flex-none sm:h-60 sm:w-60">
       <div class="absolute inset-0 z-10 bg-black/65 sm:hidden"></div>
-      <Image
-        id="album-image"
-        crossorigin="anonymous"
-        transition:name=`playlist ${album?.id} image`
-        src={album?.imageUrl ?? ''}
-        alt="Album 1"
-        width={240}
-        height={240}
-        class="h-full w-full object-cover"
-      />
+      {
+        album?.imageUrl && (
+          <Image
+            id="album-image"
+            crossorigin="anonymous"
+            transition:name={`playlist ${album.id} image`}
+            src={album.imageUrl}
+            alt={`${album.title} - ${album.artist}`}
+            width={240}
+            height={240}
+            class="h-full w-full object-cover"
+          />
+        )
+      }
     </div>
-    <div
-      class="absolute bottom-0 left-0 z-10 flex-col gap-1 sm:relative sm:bottom-auto sm:left-auto sm:flex"
-    >
+    <div class="absolute bottom-0 left-0 z-10 flex-col gap-1 sm:relative sm:bottom-auto sm:left-auto sm:flex">
       <div>
-        <h5 class="text-platinum text-small hidden font-normal sm:block">
-          Albúm
-        </h5>
+        <h5 class="text-platinum text-small hidden font-normal sm:block">Albúm</h5>
       </div>
       <div class="max-w-xs p-3 sm:max-w-3xl sm:p-0">
         <h1
@@ -43,55 +49,13 @@ const { album } = Astro.props
       </div>
       <div class="hidden sm:block">
         <p class="text-platinum text-small font-light">
-          <span
-            class="font-medium"
-            transition:name={`playlist ${album?.id} artist`}
-            >{album?.artist}</span
-          >
-          <span class="font-medium">•</span> 4 Canciones
+          <span class="font-medium" transition:name={`playlist ${album?.id} artist`}>{album?.artist}</span>
           <span class="font-medium">•</span>
-          2024
+          {songs}
+          <span class="font-medium">•</span>
+          {releaseYear}
         </p>
       </div>
     </div>
   </div>
 </div>
-
-<script>
-  import { FastAverageColor } from 'fast-average-color'
-
-  const fac = new FastAverageColor()
-
-  const getColorImage = async () => {
-    const image = document.getElementById(
-      'album-image',
-    ) as HTMLImageElement | null
-    const gradient = document.getElementById(
-      'gradient-bg',
-    ) as HTMLElement | null
-
-    if (!image || !gradient) return
-
-    try {
-      const applyColor = async () => {
-        const { hex } = await fac.getColorAsync(image, {
-          algorithm: 'dominant',
-        })
-        gradient.style.background = `linear-gradient(to bottom, ${hex}, transparent)`
-      }
-
-      if (image.complete && image.naturalWidth > 0) {
-        await applyColor()
-      } else {
-        image.addEventListener('load', applyColor, { once: true })
-      }
-    } catch (error) {
-      console.log('Error extracting color:', error)
-      gradient.style.background =
-        'linear-gradient(to bottom, #e01707, transparent)'
-    }
-  }
-
-  document.addEventListener('astro:after-swap', getColorImage)
-  document.addEventListener('astro:page-load', getColorImage)
-</script>
