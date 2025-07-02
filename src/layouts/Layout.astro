@@ -15,24 +15,18 @@ import { ClientRouter } from 'astro:transitions'
     <title>Astro Basics</title>
     <ClientRouter fallback="none" />
   </head>
-  <body class="bg-rich-black-dark">
-    <div id="app" class="relative h-screen">
-      <aside
-        class="bg-rich-black-light hidden flex-col rounded-tr-xl rounded-br-xl [grid-area:al] lg:flex"
-      >
+  <body class="bg-rich-black-dark min-h-screen lg:overflow-hidden">
+    <div id="app" class="relative h-full lg:h-screen">
+      <aside class="bg-rich-black-light hidden flex-col rounded-tr-xl rounded-br-xl [grid-area:al] lg:flex">
         <AsideLeft />
       </aside>
-      <main
-        class="bg-night relative overflow-hidden [grid-area:main] lg:rounded-bl-xl 2xl:rounded-br-xl"
-      >
+      <main class="bg-night relative w-full [grid-area:main] lg:overflow-hidden lg:rounded-bl-xl 2xl:rounded-br-xl">
         <slot />
       </main>
-      <aside
-        class="bg-rich-black-light hidden flex-col rounded-tl-xl rounded-bl-xl [grid-area:ar] 2xl:flex"
-      >
+      <aside class="bg-rich-black-light hidden flex-col rounded-tl-xl rounded-bl-xl [grid-area:ar] 2xl:flex">
         <AsideRight />
       </aside>
-      <footer class="bg-rich-black-light px-3 [grid-area:player]">
+      <footer class="bg-rich-black-light hidden px-3 [grid-area:player] lg:block">
         <Player client:visible />
       </footer>
     </div>
@@ -60,14 +54,10 @@ import { ClientRouter } from 'astro:transitions'
     }
   }
 
-  @media (width <= 64rem) {
+  @media (width < 1024px) {
     #app {
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr 50px;
-      gap: 0;
-      grid-template-areas:
-        'main'
-        'player';
+      display: flex;
+      min-height: 100vh;
     }
   }
 </style>
