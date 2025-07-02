@@ -1,23 +1,62 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import { getAlbumById } from '@/lib/supabase/resources/albums'
 import AlbumDetail from '@/components/astro/album-detail.astro'
 import ButtonPlay from '@/components/react/button-play'
 import TrackListWrapper from '@/components/astro/track-list-wrapper.astro'
-import { albums } from '@/types/test.design'
+import type { TrackAlbumPageColumns } from '@/types/track'
+
 const { id } = Astro.params
-const album = albums.find((album) => album.id === id)
+const { request, cookies } = Astro
+
+let albums: TrackAlbumPageColumns | null = null
+
+if (id) {
+  albums = await getAlbumById(request, cookies, id)
+}
 ---
 
 <Layout>
   <section class="relative flex h-full w-full flex-col">
-    <AlbumDetail album={album} />
+    <div id="gradient-bg" class="absolute h-80 w-full sm:h-full"></div>
+    <AlbumDetail album={albums} />
     <div class="flex items-center justify-end px-3 py-5 sm:justify-start">
-      <ButtonPlay
-        radius="full"
-        sizeIcon={22}
-        className="h-11 w-11 min-w-11 sm:size-14"
-      />
+      <ButtonPlay radius="full" sizeIcon={22} className="h-11 w-11 min-w-11 sm:size-14" />
     </div>
-    <TrackListWrapper />
+    <TrackListWrapper songs={albums?.songs ?? []} />
   </section>
 </Layout>
+
+<script>
+  import { FastAverageColor } from 'fast-average-color'
+
+  const fac = new FastAverageColor()
+
+  const getColorImage = async () => {
+    const image = document.getElementById('album-image') as HTMLImageElement | null
+    const gradient = document.getElementById('gradient-bg') as HTMLElement | null
+
+    if (!image || !gradient) return
+
+    try {
+      const applyColor = async () => {
+        const { hex } = await fac.getColorAsync(image, {
+          algorithm: 'sqrt',
+        })
+        gradient.style.background = `linear-gradient(to top, #0a0d11, ${hex})`
+      }
+
+      if (image.complete && image.naturalWidth > 0) {
+        await applyColor()
+      } else {
+        image.addEventListener('load', applyColor, { once: true })
+      }
+    } catch (error) {
+      console.log('Error extracting color:', error)
+      gradient.style.background = 'linear-gradient(to top, #e01707, transparent)'
+    }
+  }
+
+  document.addEventListener('astro:after-swap', getColorImage)
+  document.addEventListener('astro:page-load', getColorImage)
+</script>
