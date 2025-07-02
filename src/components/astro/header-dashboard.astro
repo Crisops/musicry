@@ -1,16 +1,13 @@
 ---
-
+import { ArrowLeft } from '@lucide/astro'
 ---
 
-<header class="p my-7 flex items-center">
-  <div class="mb-8 flex items-center gap-3">
-    <div>
-      <h1 class="text-sealsalt text-3xl font-bold sm:text-4xl md:text-5xl">
-        Gestor Musical
-      </h1>
-      <p class="text-gray-dim text-small md:text-medium mt-1">
-        Gestiona tu catálogo de música
-      </p>
-    </div>
+<header class="my-7 flex items-center gap-3">
+  <a href="/" class="mt-0.5 self-start">
+    <ArrowLeft class="h-6 w-6" color="white" />
+  </a>
+  <div class="flexflex-col mb-8 justify-center gap-3">
+    <h1 class="text-sealsalt text-3xl font-bold sm:text-4xl md:text-5xl">Gestor Musical</h1>
+    <p class="text-gray-dim text-small md:text-medium mt-1">Gestiona tu catálogo de música</p>
   </div>
 </header>
