@@ -2,6 +2,8 @@ import { getLocalTimeZone, today } from '@internationalized/date'
 import { v4 as uuidv4 } from 'uuid'
 import { Controller } from 'react-hook-form'
 import { DateInput } from '@heroui/date-input'
+import type { TrackAlbumListPanelRows } from '@/types/track'
+import axiosClient from '@/lib/axios/client'
 import { useAuth } from '@/hooks/use-store'
 import { useForm } from '@/hooks/use-form'
 import { useModal } from '@/hooks/use-modal'
@@ -12,17 +14,19 @@ import { uploadFile } from '@/utils/upload-files'
 import { Toast } from '@/utils/toast'
 import { initialFormAlbum } from '@/config/fields-form'
 import Button from '@/components/shared/button'
-import { FileUpload } from '@/components/ui/file-upload'
 import Input from '@/components/react/input'
+import { FileUpload } from '@/components/ui/file-upload'
 
 interface FormCreateAlbumProps {
   onCancel: (open: boolean) => void
+  onAddItem: (item: TrackAlbumListPanelRows) => void
 }
 
-const FormCreateAlbum = ({ onCancel }: FormCreateAlbumProps) => {
+const FormCreateAlbum = ({ onCancel, onAddItem }: FormCreateAlbumProps) => {
   const user = useAuth((state) => state.user)
-  const { registerField, handleSubmit, errors, isSubmitting, control } =
-    useForm<AlbumFormData>({ initialForm: initialFormAlbum })
+  const { registerField, handleSubmit, errors, isSubmitting, control } = useForm<AlbumFormData>({
+    initialForm: initialFormAlbum,
+  })
   const { onOpenChange: closeModal } = useModal()
 
   const { onChange, ref, ...props } = registerField('imageUrl')
@@ -32,46 +36,52 @@ const FormCreateAlbum = ({ onCancel }: FormCreateAlbumProps) => {
 
     if (!user || !imageUrl || !releaseYear) return
 
-    try {
-      const idAlbum = uuidv4()
-      const folder = `${user.id}/${idAlbum}`
-      const { url, error } = await uploadFile({
-        bucket: 'albums',
-        file: imageUrl[0],
-        folder,
-      })
-      if (error) throw new Error(error)
-
-      const newAlbum: TablesInsert<'albums'> = {
-        id: idAlbum,
-        ...formData,
-        imageUrl: url,
-        releaseYear: releaseYear.toDate(getLocalTimeZone()).toISOString(),
-      }
-
-      const response = await fetch('/api/admin/albums', {
-        method: 'POST',
-        body: JSON.stringify(newAlbum),
-      })
-      if (!response.ok) throw new Error('Fallo al crear el albúm')
-      const { status, message } = await response.json()
-      if (status !== 200) throw new Error(message)
-
-      Toast().success({
-        title: 'Albúm creado correctamente',
-        description: `El albúm ${newAlbum.title} ha sido creado correctamente`,
-      })
-      closeModal(false)
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : 'No pudimos crear tu albúm. Intenta nuevamente.'
+    const idAlbum = uuidv4()
+    const folder = `${user.id}/${idAlbum}`
+    const { url, error } = await uploadFile({
+      bucket: 'albums',
+      file: imageUrl[0],
+      folder,
+    })
+    if (error) {
       Toast().error({
         title: '¡Ups! Algo salió mal',
-        description: message,
+        description: error,
       })
+      return
     }
+
+    const newAlbum: TablesInsert<'albums'> = {
+      id: idAlbum,
+      imageUrl: url,
+      releaseYear: releaseYear.toDate(getLocalTimeZone()).toISOString(),
+      ...formData,
+    }
+
+    const result = await axiosClient.post<TrackAlbumListPanelRows>('/api/admin/albums', newAlbum)
+
+    if (!result.success) {
+      Toast().error({
+        title: '¡Ups! Algo salió mal',
+        description: result.error.message,
+      })
+      return
+    }
+
+    if (result.status !== 200) {
+      Toast().error({
+        title: '¡Ups! Algo salió mal',
+        description: result.message || 'Error al crear el albúm',
+      })
+      return
+    }
+
+    onAddItem(result.data)
+    Toast().success({
+      title: '¡Muy bien!',
+      description: `El albúm ${newAlbum.title} ha sido creado correctamente`,
+    })
+    closeModal(false)
   })
 
   return (
