@@ -39,10 +39,6 @@ html {
   font-family: 'CircularStd', system-ui, sans-serif;
 }
 
-body {
-  overflow: hidden;
-}
-
 @font-face {
   font-family: 'CircularStd';
   src: url('/fonts/CircularStd-Medium.woff2') format('woff2');
@@ -86,17 +82,17 @@ body {
 .grid-section {
   display: grid;
   gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 }
 
-@media (min-width: 550px) {
+@media (max-width: 700px) {
   .grid-section {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 701px) {
   .grid-section {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
