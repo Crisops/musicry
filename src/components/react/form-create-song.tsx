@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react'
+import axiosClient from '@/lib/axios/client'
+import type { Tables } from '@/types/database.types'
 import { useSongForm } from '@/hooks/use-song-form'
 import Button from '@/components/shared/button'
 import Input from '@/components/react/input'
@@ -9,25 +12,34 @@ interface FormCreateSongProps {
 }
 
 const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
-  const {
-    registerField,
-    handleSubmit,
-    errors,
-    handleAudioFileChange,
-    durationValue,
-    onSubmit,
-    isSubmitting,
-  } = useSongForm()
+  const { registerField, handleSubmit, errors, handleAudioFileChange, durationValue, onSubmit, isSubmitting } =
+    useSongForm()
+  const [albums, setAlbums] = useState<Tables<'albums'>[]>([])
 
   const { onChange, ref, ...props } = registerField('imageUrl')
   const { onChange: onChangeAudio, ...audioRest } = registerField('audioUrl')
 
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      const result = await axiosClient.get<Tables<'albums'>[]>('/api/albums')
+      if (!result.success) {
+        console.error(result.error)
+        return
+      }
+
+      if (result.status !== 200) {
+        console.error(result.message)
+        return
+      }
+
+      setAlbums(result.data)
+    }
+
+    fetchAlbums()
+  }, [])
+
   return (
-    <form
-      id="form-create-song"
-      className="p-4"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form id="form-create-song" className="p-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-8">
         <FileUpload
           type="file"
@@ -80,6 +92,7 @@ const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
           label="Álbum (opcional)"
           isInvalid={!!errors.albumId}
           errorMessage={errors.albumId?.message}
+          items={albums}
         />
         <div className="flex justify-end gap-2">
           <Button
