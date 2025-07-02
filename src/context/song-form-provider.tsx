@@ -1,12 +1,8 @@
-import {
-  createContext,
-  useCallback,
-  useRef,
-  type ReactNode,
-  type ChangeEvent,
-  useEffect,
-} from 'react'
+import { createContext, useCallback, useRef, type ReactNode, type ChangeEvent, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import type { BaseTrackRow } from '@/types/track'
+import type { TablesInsert } from '@/types/database.types'
+import axiosClient from '@/lib/axios/client'
 import { useAuth } from '@/hooks/use-store'
 import { useForm } from '@/hooks/use-form'
 import { useModal } from '@/hooks/use-modal'
@@ -19,9 +15,7 @@ interface SongFormContextType {
   registerField: ReturnType<typeof useForm<SongFormData>>['registerField']
   handleSubmit: ReturnType<typeof useForm<SongFormData>>['handleSubmit']
   errors: ReturnType<typeof useForm<SongFormData>>['errors']
-  handleAudioFileChange: (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => Promise<void>
+  handleAudioFileChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>
   durationValue: string
   onSubmit: (data: SongFormData) => Promise<void>
   isSubmitting: boolean
@@ -31,14 +25,14 @@ export const SongFormContext = createContext<SongFormContextType | null>(null)
 
 interface SongFormProviderProps {
   children: ReactNode
+  onAddItem: (item: BaseTrackRow) => void
 }
 
-export const SongFormProvider = ({ children }: SongFormProviderProps) => {
+export const SongFormProvider = ({ children, onAddItem }: SongFormProviderProps) => {
   const user = useAuth((state) => state.user)
-  const { registerField, handleSubmit, errors, setValue, watch, isSubmitting } =
-    useForm<SongFormData>({
-      initialForm: initialFormSong,
-    })
+  const { registerField, handleSubmit, errors, setValue, watch, isSubmitting } = useForm<SongFormData>({
+    initialForm: initialFormSong,
+  })
   const { onOpenChange: closeModal } = useModal()
 
   const durationValue = watch('duration')?.toString() || ''
@@ -112,56 +106,56 @@ export const SongFormProvider = ({ children }: SongFormProviderProps) => {
 
   useEffect(() => cleanup, [cleanup])
 
-  const onSubmit = useCallback(async (data: SongFormData) => {
-    const { imageUrl, audioUrl, ...rest } = data
+  const onSubmit = useCallback(
+    async (data: SongFormData) => {
+      const { imageUrl, audioUrl, ...rest } = data
 
-    if (!user || !imageUrl || !audioUrl) return
-
-    try {
+      if (!user || !imageUrl || !audioUrl) return
       const idSong = uuidv4()
       const folder = `${user.id}/${idSong}`
       const [image, audio] = await Promise.all([
         uploadFile({ bucket: 'songs', file: imageUrl[0], folder }),
         uploadFile({ bucket: 'songs', file: audioUrl[0], folder }),
       ])
-
       if (image.error || audio.error) {
-        throw new Error('Error al subir el archivo')
+        Toast().error({
+          title: '¡Ups! Algo salió mal',
+          description: 'Error inesperado al subir archivos',
+        })
       }
 
-      const newSong = {
+      const newSong: TablesInsert<'songs'> = {
         id: idSong,
-        ...rest,
         imageUrl: image.url,
         audioUrl: audio.url,
-      }
-      const response = await fetch('/api/admin/songs', {
-        method: 'POST',
-        body: JSON.stringify(newSong),
-      })
-
-      const { status, message } = await response.json()
-
-      if (status !== 200) {
-        throw new Error(message)
+        ...rest,
       }
 
+      const result = await axiosClient.post<BaseTrackRow>('/api/admin/songs', newSong)
+
+      if (!result.success) {
+        Toast().error({
+          title: '¡Ups! Algo salió mal',
+          description: result.error.message,
+        })
+        return
+      }
+
+      if (result.status !== 200) {
+        Toast().error({
+          title: '¡Ups! Algo salió mal',
+          description: result.message || 'Error al crear la canción',
+        })
+      }
+      onAddItem(result.data)
       Toast().success({
         title: '¡Listo!',
-        description: `La canción ${newSong.title} ha sido creada correctamente`,
+        description: `La canción "${newSong.title}" ha sido creada correctamente`,
       })
       closeModal(false)
-    } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : 'No pudimos crear tu canción. Revisa los archivos y vuelve a intentarlo.'
-      Toast().error({
-        title: '¡Ups! Algo salió mal',
-        description: message,
-      })
-    }
-  }, [])
+    },
+    [user, onAddItem, closeModal],
+  )
 
   return (
     <SongFormContext.Provider
