@@ -3,26 +3,19 @@ import type { RegisterOptions } from 'react-hook-form'
 import { DEFAULT_IMAGE_CONFIG } from '@/config/file-upload'
 import { getLocalTimeZone, type DateValue } from '@internationalized/date'
 
-export type SongFormData = Omit<
-  TablesInsert<'songs'>,
-  'created_at' | 'id' | 'imageUrl' | 'audioUrl'
-> & {
-  imageUrl: FileList | null
+export type SongFormData = Omit<TablesInsert<'songs'>, 'created_at' | 'id' | 'imageUrl' | 'audioUrl'> & {
+  imageUrl: File[] | null
   audioUrl: FileList | null
 }
 
-export type AlbumFormData = Omit<
-  TablesInsert<'albums'>,
-  'created_at' | 'id' | 'imageUrl'
-> & {
-  imageUrl: FileList | null
+export type AlbumFormData = Omit<TablesInsert<'albums'>, 'created_at' | 'id' | 'imageUrl'> & {
+  imageUrl: File[] | null
   releaseYear: DateValue | null
 }
 
 const commonRules = {
   title: {
-    required:
-      'El título es obligatorio y debe contener al menos un carácter válido.',
+    required: 'El título es obligatorio y debe contener al menos un carácter válido.',
     pattern: {
       value: /^[a-zA-ZÀ-ÿ0-9\s]+(?:'[a-zA-ZÀ-ÿ\s]+)*$/,
       message: 'El título solo puede contener letras, números y espacios.',
@@ -39,7 +32,7 @@ const commonRules = {
   artist: {
     required: 'El nombre del artista es obligatorio.',
     pattern: {
-      value: /^[a-zA-ZÀ-ÿ0-9\s]+(?:,\s*[a-zA-ZÀ-ÿ0-9\s]+)*$/,
+      value: /^[a-zA-ZÀ-ÿ0-9\s]+(?:,\s*[a-zA-ZÀ-ÿ0-9]+(?:\s+[a-zA-ZÀ-ÿ0-9]+)*)*$/,
       message:
         'El nombre del artista solo puede contener letras, números, espacios y comas para separar múltiples artistas',
     },
@@ -54,67 +47,58 @@ const commonRules = {
   },
   imageUrl: {
     required: 'Debes seleccionar una imagen',
-    validate: (value: any) => {
-      if (value instanceof FileList) {
-        const file = value[0]
-        if (file.size > 1024 * 1024 * 5) {
-          return 'La imagen no puede pesar más de 5MB.'
-        }
-        if (!DEFAULT_IMAGE_CONFIG.acceptedTypes.includes(file.type)) {
-          return 'El formato de la imagen no es válido.'
-        }
-        return true
+    validate: (value: File[]) => {
+      const file = value[0]
+      if (file.size > 1024 * 1024 * 5) {
+        return 'La imagen no puede pesar más de 5MB.'
       }
-      return 'Debes subir una imagen válida.'
+      if (!DEFAULT_IMAGE_CONFIG.acceptedTypes.includes(file.type)) {
+        return 'El formato de la imagen no es válido.'
+      }
+      return true
     },
   },
 } as const
 
-export const songValidationRules: Record<keyof SongFormData, RegisterOptions> =
-  {
-    ...commonRules,
-    albumId: {
-      validate: (value: any) => {
-        if (!value || value === '') return true
-        const uuidRegex =
-          /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-        if (!uuidRegex.test(value)) {
-          return 'El ID del álbum no tiene un formato válido.'
-        }
+export const songValidationRules: Record<keyof SongFormData, RegisterOptions> = {
+  ...commonRules,
+  albumId: {
+    validate: (value: any) => {
+      if (!value || value === '') return true
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+      if (!uuidRegex.test(value)) {
+        return 'El ID del álbum no tiene un formato válido.'
+      }
 
+      return true
+    },
+  },
+  duration: {
+    required: 'La duración es obligatoria.',
+    pattern: {
+      value: /^[1-9]\d*$/,
+      message: 'La duración debe ser un número entero positivo sin espacios ni símbolos.',
+    },
+  },
+  audioUrl: {
+    required: 'Debes seleccionar un audio.',
+    validate: (value: any) => {
+      if (value instanceof FileList) {
+        const file = value[0]
+        if (file.size > 1024 * 1024 * 10) {
+          return 'El audio no puede pesar más de 10MB.'
+        }
+        if (!['audio/mpeg', 'audio/mp3', 'audio/wav'].includes(file.type)) {
+          return 'El formato de audio no es válido.'
+        }
         return true
-      },
+      }
+      return 'Debes subir un audio válido.'
     },
-    duration: {
-      required: 'La duración es obligatoria.',
-      pattern: {
-        value: /^[1-9]\d*$/,
-        message:
-          'La duración debe ser un número entero positivo sin espacios ni símbolos.',
-      },
-    },
-    audioUrl: {
-      required: 'Debes seleccionar un audio.',
-      validate: (value: any) => {
-        if (value instanceof FileList) {
-          const file = value[0]
-          if (file.size > 1024 * 1024 * 10) {
-            return 'El audio no puede pesar más de 10MB.'
-          }
-          if (!['audio/mpeg', 'audio/mp3', 'audio/wav'].includes(file.type)) {
-            return 'El formato de audio no es válido.'
-          }
-          return true
-        }
-        return 'Debes subir un audio válido.'
-      },
-    },
-  }
+  },
+}
 
-export const albumValidationRules: Record<
-  keyof AlbumFormData,
-  RegisterOptions
-> = {
+export const albumValidationRules: Record<keyof AlbumFormData, RegisterOptions> = {
   ...commonRules,
   releaseYear: {
     required: 'El año de lanzamiento es obligatorio.',
