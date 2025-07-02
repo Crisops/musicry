@@ -3,19 +3,26 @@ import {
   type TrackAlbumListPanelRows,
 } from '@/types/track'
 import TopTableDashboard from '@/components/react/top-table-dashboard'
-
 import TrackList from '@/components/react/track-list'
+
 interface AlbumsTabContentProps {
-  tap: 'songs' | 'albums'
   albums: TrackAlbumListPanelRows[]
+  tap: 'songs' | 'albums'
+  removeItem: (id: string) => void
+  appendItem: (item: TrackAlbumListPanelRows) => void
 }
 
-const AlbumsTabContent = ({ tap, albums }: AlbumsTabContentProps) => {
+const AlbumsTabContent = ({
+  tap,
+  albums,
+  removeItem,
+  appendItem,
+}: AlbumsTabContentProps) => {
   return (
     <div className="grid-row-1 grid h-full">
       <div className="scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-rich-dark-jungle overflow-y-auto">
         <TrackList<TrackAlbumListPanelRows>
-          topContent={<TopTableDashboard tap={tap} />}
+          topContent={<TopTableDashboard tap={tap} onAddItem={appendItem} />}
           selectionMode="single"
           classNames={{
             base: ['flex flex-col h-0'],
@@ -33,6 +40,8 @@ const AlbumsTabContent = ({ tap, albums }: AlbumsTabContentProps) => {
           removeWrapper
           rows={albums}
           columns={trackAlbumPanelColumns}
+          tap="album"
+          onRemoveItem={removeItem}
         />
       </div>
     </div>

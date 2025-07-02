@@ -1,11 +1,15 @@
 import { Plus } from 'lucide-react'
+import type { BaseTrackRow } from '@/types/track'
 import { useModal } from '@/hooks/use-modal'
 import { SongFormProvider } from '@/context/song-form-provider'
 import Button from '@/components/shared/button'
 import FormCreateSong from '@/components/react/form-create-song'
 import Modal from '@/components/shared/modal'
 
-const ButtonCreateSong = () => {
+interface ButtonCreateSongProps {
+  onAddItem: (item: BaseTrackRow) => void
+}
+const ButtonCreateSong = ({ onAddItem }: ButtonCreateSongProps) => {
   const { sizeViewPort, isOpen, onOpen, onOpenChange } = useModal()
   return (
     <>
@@ -25,7 +29,7 @@ const ButtonCreateSong = () => {
         )}
       </Button>
       <Modal isOpen={isOpen} hideCloseButton onOpenChange={onOpenChange}>
-        <SongFormProvider>
+        <SongFormProvider onAddItem={onAddItem}>
           <FormCreateSong onCancel={onOpenChange} />
         </SongFormProvider>
       </Modal>

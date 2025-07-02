@@ -1,10 +1,15 @@
 import { Plus } from 'lucide-react'
+import type { TrackAlbumListPanelRows } from '@/types/track'
 import { useModal } from '@/hooks/use-modal'
 import Button from '@/components/shared/button'
 import Modal from '@/components/shared/modal'
 import FormCreateAlbum from '@/components/react/form-create-album'
 
-const ButtonCreateAlbum = () => {
+interface ButtonCreateAlbumProps {
+  onAddItem: (item: TrackAlbumListPanelRows) => void
+}
+
+const ButtonCreateAlbum = ({ onAddItem }: ButtonCreateAlbumProps) => {
   const { sizeViewPort, isOpen, onOpen, onOpenChange } = useModal()
   return (
     <>
@@ -24,7 +29,7 @@ const ButtonCreateAlbum = () => {
         )}
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} hideCloseButton>
-        <FormCreateAlbum onCancel={onOpenChange} />
+        <FormCreateAlbum onCancel={onOpenChange} onAddItem={onAddItem} />
       </Modal>
     </>
   )

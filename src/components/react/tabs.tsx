@@ -1,5 +1,6 @@
 import { Tabs as TapsHero, Tab } from '@heroui/tabs'
 import { Album, Music } from 'lucide-react'
+import { useTrackCollection } from '@/hooks/use-track-collection'
 import type {
   TrackAlbumListPanelRows,
   TrackSongsListPanelRows,
@@ -13,6 +14,8 @@ interface TabsProps {
 }
 
 const Tabs = ({ songs, albums }: TabsProps) => {
+  const songsCollection = useTrackCollection(songs, 'songs')
+  const albumsCollection = useTrackCollection(albums, 'albums')
   return (
     <div className="mt-10 flex h-full w-full flex-col gap-3">
       <TapsHero
@@ -36,7 +39,12 @@ const Tabs = ({ songs, albums }: TabsProps) => {
             </div>
           }
         >
-          <SongsTabContent tap="songs" songs={songs} />
+          <SongsTabContent
+            tap="songs"
+            songs={songsCollection.items}
+            removeItem={songsCollection.removeItem}
+            appendItem={songsCollection.appendItem}
+          />
         </Tab>
         <Tab
           key="albums"
@@ -47,7 +55,12 @@ const Tabs = ({ songs, albums }: TabsProps) => {
             </div>
           }
         >
-          <AlbumsTabContent tap="albums" albums={albums} />
+          <AlbumsTabContent
+            tap="albums"
+            albums={albumsCollection.items}
+            removeItem={albumsCollection.removeItem}
+            appendItem={albumsCollection.appendItem}
+          />
         </Tab>
       </TapsHero>
     </div>

@@ -8,16 +8,23 @@ import TrackList from '@/components/react/track-list'
 interface SongsTabContentProps {
   tap: 'songs' | 'albums'
   songs: TrackSongsListPanelRows[]
+  removeItem: (id: string) => void
+  appendItem: (item: TrackSongsListPanelRows) => void
 }
 
-const SongsTabContent = ({ tap, songs }: SongsTabContentProps) => {
+const SongsTabContent = ({
+  tap,
+  songs,
+  removeItem,
+  appendItem,
+}: SongsTabContentProps) => {
   return (
     <div className="grid-row-1 grid h-full">
       <div className="scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-rich-dark-jungle overflow-y-auto">
         <TrackList<TrackSongsListPanelRows>
           disableAnimation
           selectionMode="single"
-          topContent={<TopTableDashboard tap={tap} />}
+          topContent={<TopTableDashboard tap={tap} onAddItem={appendItem} />}
           classNames={{
             base: ['flex flex-col h-0'],
             thead: ['border-b border-gray-dim'],
@@ -34,6 +41,8 @@ const SongsTabContent = ({ tap, songs }: SongsTabContentProps) => {
           removeWrapper
           rows={songs}
           columns={trackSongsPanelColumns}
+          tap="song"
+          onRemoveItem={removeItem}
         />
       </div>
     </div>
