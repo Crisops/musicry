@@ -6,12 +6,13 @@ import {
   type ModalProps,
 } from '@heroui/modal'
 
-const Modal = ({ children, ...props }: ModalProps) => {
+const Modal = ({ children, size, ...props }: ModalProps) => {
   const { width: sizeViewPort } = useDevice()
+  const sizeModal = sizeViewPort < 700 ? 'full' : (size ?? 'xl')
   return (
     <ModalHero
       {...props}
-      size={sizeViewPort < 700 ? 'full' : 'xl'}
+      size={sizeModal}
       placement="center"
       classNames={{
         base: ['bg-black min-h-72 overflow-y-auto'],
