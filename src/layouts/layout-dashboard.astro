@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css'
+import { ClientRouter } from 'astro:transitions'
 import ToastProvider from '@/components/react/toast-provider'
 ---
 
@@ -9,14 +10,13 @@ import ToastProvider from '@/components/react/toast-provider'
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <ClientRouter fallback="none" />
     <title>Dashboard</title>
   </head>
   <body class="bg-rich-black-dark">
     <div class="relative h-screen">
       <ToastProvider client:load />
-      <main
-        class="relative h-full w-full overflow-hidden px-3 sm:px-5 lg:px-10"
-      >
+      <main class="relative h-full w-full overflow-hidden px-3 sm:px-5 lg:px-10">
         <slot />
       </main>
     </div>
