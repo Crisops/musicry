@@ -1,12 +1,12 @@
 ---
 import Song from '@/components/astro/song.astro'
-import { getAllSongs } from '@/lib/supabase/resources/songs'
+import { getAllSongsRandom } from '@/lib/supabase/resources/songs'
 
 const { request, cookies } = Astro
 
-const featuredSongs = await getAllSongs(request, cookies)
+const featuredSongs = await getAllSongsRandom(request, cookies, 8)
 ---
 
 <div class="relative grid w-full grid-cols-2 grid-rows-3 gap-x-4 gap-y-4 md:grid-cols-3 xl:grid-cols-4 xl:grid-rows-2">
-  {featuredSongs.map((song) => <Song id={song.id} title={song.title} artist={song.artist} imageUrl={song.imageUrl} />)}
+  {featuredSongs.map((song) => <Song id={song.id} title={song.title} artist={song.artist} imageUrl={song.imageurl} />)}
 </div>
