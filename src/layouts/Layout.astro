@@ -27,7 +27,7 @@ import { ClientRouter } from 'astro:transitions'
         <AsideRight />
       </aside>
       <footer class="bg-rich-black-light hidden px-3 [grid-area:player] lg:block">
-        <Player client:visible />
+        <Player client:load transition:name="media-player" transition:persist />
       </footer>
     </div>
   </body>

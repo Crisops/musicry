@@ -15,7 +15,8 @@ const { id, title, artist, imageUrl }: Props = Astro.props
     class="absolute right-2 bottom-14 z-10 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
   >
     <ButtonPlay
-      client:visible
+      id={id}
+      client:load
       size="md"
       radius="full"
       className="data-[hover=true]:opacity-disabled h-10 w-10 data-[hover=true]:hover:opacity-100"
