@@ -1,6 +1,10 @@
 ---
 import MadeForYouAlbum from '@/components/astro/made-for-you-album.astro'
-import { albums } from '@/types/test.design'
+import { getAllAlbums } from '@/lib/supabase/resources/albums'
+
+const { request, cookies } = Astro
+
+const albums = await getAllAlbums(request, cookies)
 ---
 
 <div class="grid-section relative w-full">
