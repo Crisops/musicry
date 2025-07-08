@@ -4,16 +4,13 @@ import { getAlbumById } from '@/lib/supabase/resources/albums'
 import AlbumDetail from '@/components/astro/album-detail.astro'
 import ButtonPlay from '@/components/react/button-play'
 import TrackListWrapper from '@/components/astro/track-list-album.astro'
-import type { TrackAlbumPageColumns } from '@/types/track'
 
 const { id } = Astro.params
 const { request, cookies } = Astro
 
-let albums: TrackAlbumPageColumns | null = null
+if (!id) return
 
-if (id) {
-  albums = await getAlbumById(request, cookies, id)
-}
+const albums = await getAlbumById(request, cookies, id)
 ---
 
 <Layout>
@@ -21,7 +18,7 @@ if (id) {
     <div id="gradient-bg" class="absolute h-80 w-full sm:h-full"></div>
     <AlbumDetail album={albums} />
     <div class="flex items-center justify-end px-3 py-5 sm:justify-start">
-      <ButtonPlay radius="full" sizeIcon={22} className="h-11 w-11 min-w-11 sm:size-14" />
+      <ButtonPlay client:load id={id} radius="full" sizeIcon={22} className="h-11 w-11 min-w-11 sm:size-14" />
     </div>
     <TrackListWrapper songs={albums?.songs ?? []} />
   </section>
@@ -41,7 +38,7 @@ if (id) {
     try {
       const applyColor = async () => {
         const { hex } = await fac.getColorAsync(image, {
-          algorithm: 'sqrt',
+          algorithm: 'dominant',
         })
         gradient.style.background = `linear-gradient(to top, #0a0d11, ${hex})`
       }
