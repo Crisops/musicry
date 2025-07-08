@@ -1,24 +1,26 @@
+import { useRef } from 'react'
+import { useCurrentSong } from '@/hooks/use-current-song'
 import CurrentSong from '@/components/react/current-song'
 import ProgressSlider from '@/components/react/progress-slider'
 import PlaybackControls from '@/components/react/playback-controls'
 import VolumenControl from '@/components/react/volumen-control'
 
 const Player = () => {
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const { playNext, playPrevious } = useCurrentSong({ audioRef })
+
   return (
     <section className="relative hidden h-full w-full items-center justify-between lg:flex">
-      <CurrentSong
-        title="The Dark Side of the Moon"
-        artist="Pink Floyd"
-        imageUrl="https://www.lamusica.com.co/cdn/shop/products/81aTawcGdmL._SL1500.jpg?v=1590757797"
-      />
+      <audio ref={audioRef} />
+      <CurrentSong />
       <div className="flex flex-grow basis-0 items-center justify-center">
         <div className="flex w-full max-w-2xl flex-col items-center justify-center">
-          <PlaybackControls />
-          <ProgressSlider />
+          <PlaybackControls playNext={playNext} playPrevious={playPrevious} />
+          <ProgressSlider audioRef={audioRef} />
         </div>
       </div>
       <div className="hidden w-80 pr-3 2xl:block">
-        <VolumenControl />
+        <VolumenControl audioRef={audioRef} />
       </div>
     </section>
   )
