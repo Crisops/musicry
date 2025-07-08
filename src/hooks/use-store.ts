@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { UserAuthStore } from '@/types/store.types'
+import type { PlaySongStore, UserAuthStore } from '@/types/store.types'
 
 export const useAuth = create<UserAuthStore>()(
   persist(
@@ -13,3 +13,14 @@ export const useAuth = create<UserAuthStore>()(
     },
   ),
 )
+
+export const usePlaySong = create<PlaySongStore>((set) => ({
+  currentSong: { song: null, playlist: [] },
+  isPlaying: false,
+  volume: 75,
+  repeat: 'none',
+  setCurrentSong: (currentSong) => set({ currentSong }),
+  setIsPlaying: (isPlaying) => set({ isPlaying }),
+  setVolume: (volume) => set({ volume }),
+  setRepeat: (repeat) => set({ repeat }),
+}))
