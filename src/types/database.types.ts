@@ -149,6 +149,19 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      get_random_songs_with_album: {
+        Args: { song_limit?: number }
+        Returns: {
+          id: string
+          title: string
+          artist: string
+          imageurl: string
+          audiourl: string
+          duration: number
+          created_at: string
+          albumid: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
