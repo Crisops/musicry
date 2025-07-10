@@ -1,62 +1,93 @@
 import { useEffect, useCallback, useState, useMemo } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { usePlaySong } from '@/hooks/use-store'
-import type { PlaySongCurrent } from '@/types/store.types'
+import type { Song } from '@/types/store.types'
 
 interface useCurrentSongProps {
   audioRef: React.RefObject<HTMLAudioElement | null>
 }
 
 export const useCurrentSong = ({ audioRef }: useCurrentSongProps) => {
-  const { isPlaying, currentSong, setIsPlaying, setCurrentSong, volume, repeat } = usePlaySong(
+  const {
+    isPlaying,
+    currentSong,
+    shuffle,
+    shufflePlaylist,
+    volume,
+    repeat,
+    setIsPlaying,
+    setCurrentSong,
+    setShufflePlaylist,
+  } = usePlaySong(
     useShallow((state) => ({
       isPlaying: state.isPlaying,
       currentSong: state.currentSong,
-      setIsPlaying: state.setIsPlaying,
-      setCurrentSong: state.setCurrentSong,
+      shuffle: state.shuffle,
+      shufflePlaylist: state.shufflePlaylist,
       volume: state.volume,
       repeat: state.repeat,
+      setIsPlaying: state.setIsPlaying,
+      setCurrentSong: state.setCurrentSong,
+      setShufflePlaylist: state.setShufflePlaylist,
     })),
   )
   const [repeatCount, setRepeatCount] = useState<number>(0)
 
   const currentIndex = useMemo(() => {
-    if (!currentSong?.song || !currentSong?.playlist?.length) return -1
-    return currentSong.playlist.findIndex((song) => song.id === currentSong.song?.id)
-  }, [currentSong?.song?.id, currentSong?.playlist])
+    const currentSongList = shuffle ? shufflePlaylist : currentSong
+    if (!currentSongList?.song || !currentSongList?.playlist?.length) return -1
+    return currentSongList.playlist.findIndex((song) => song.id === currentSongList.song?.id)
+  }, [currentSong?.song?.id, currentSong?.playlist, shuffle, shufflePlaylist])
 
-  const getNextSong = useCallback((): PlaySongCurrent['song'] | null => {
-    if (!currentSong?.playlist?.length || currentIndex === -1) return null
-    const isLast = currentIndex === currentSong.playlist.length - 1
-    return isLast ? currentSong.playlist[0] : currentSong.playlist[currentIndex + 1]
-  }, [currentSong?.playlist, currentIndex])
+  const getNextSong = useCallback((): Song | null => {
+    const currentSongList = shuffle ? shufflePlaylist : currentSong
+    if (!currentSongList?.playlist?.length || currentIndex === -1) return null
+    const isLast = currentIndex === currentSongList.playlist.length - 1
+    return isLast ? currentSongList.playlist[0] : currentSongList.playlist[currentIndex + 1]
+  }, [currentSong?.playlist, currentIndex, shuffle, shufflePlaylist])
 
-  const getPreviousSong = useCallback((): PlaySongCurrent['song'] | null => {
-    if (!currentSong?.playlist?.length || currentIndex === -1) return null
+  const getPreviousSong = useCallback((): Song | null => {
+    const currentSongList = shuffle ? shufflePlaylist : currentSong
+    if (!currentSongList?.playlist?.length || currentIndex === -1) return null
     const isFirst = currentIndex === 0
-    return isFirst ? currentSong.playlist[currentSong.playlist.length - 1] : currentSong.playlist[currentIndex - 1]
-  }, [currentSong?.playlist, currentIndex])
+    return isFirst
+      ? currentSongList.playlist[currentSongList.playlist.length - 1]
+      : currentSongList.playlist[currentIndex - 1]
+  }, [currentSong?.playlist, currentIndex, shuffle, shufflePlaylist])
 
   const playNext = useCallback(() => {
     const next = getNextSong()
-    if (next && currentSong) {
-      setCurrentSong({ song: next, playlist: currentSong.playlist })
+    if (next) {
+      if (shuffle && shufflePlaylist?.playlist) {
+        setShufflePlaylist({ song: next, playlist: shufflePlaylist.playlist })
+      } else if (currentSong?.playlist) {
+        setCurrentSong({ song: next, playlist: currentSong.playlist })
+      }
     }
-  }, [getNextSong, currentSong?.playlist, setCurrentSong])
+  }, [getNextSong, shuffle, shufflePlaylist, currentSong, setCurrentSong, setShufflePlaylist])
 
   const playPrevious = useCallback(() => {
     const prev = getPreviousSong()
-    if (prev && currentSong) {
-      setCurrentSong({ song: prev, playlist: currentSong.playlist })
+    if (prev) {
+      if (shuffle && shufflePlaylist?.playlist) {
+        setShufflePlaylist({ song: prev, playlist: shufflePlaylist.playlist })
+      } else if (currentSong?.playlist) {
+        setCurrentSong({ song: prev, playlist: currentSong.playlist })
+      }
     }
-  }, [getPreviousSong, currentSong?.playlist, setCurrentSong])
+  }, [getPreviousSong, shuffle, shufflePlaylist, currentSong, setCurrentSong, setShufflePlaylist])
 
   useEffect(() => {
-    if (!audioRef.current || !currentSong?.song?.audioUrl) return
+    if (!audioRef.current) return
 
-    audioRef.current.src = currentSong.song.audioUrl
-    audioRef.current.load()
-  }, [currentSong?.song?.audioUrl])
+    const song = shuffle ? shufflePlaylist?.song : currentSong?.song
+    if (!song?.audioUrl) return
+
+    if (audioRef.current.src !== song.audioUrl) {
+      audioRef.current.src = song.audioUrl
+      audioRef.current.load()
+    }
+  }, [currentSong?.song?.id, shufflePlaylist?.song?.id])
 
   useEffect(() => {
     if (!audioRef.current) return
@@ -69,7 +100,7 @@ export const useCurrentSong = ({ audioRef }: useCurrentSongProps) => {
     } else {
       audioRef.current.pause()
     }
-  }, [isPlaying, currentSong?.song?.id, setIsPlaying])
+  }, [isPlaying, currentSong?.song?.id, shufflePlaylist?.song?.id, setIsPlaying])
 
   useEffect(() => {
     if (!audioRef.current || !currentSong?.song) return
