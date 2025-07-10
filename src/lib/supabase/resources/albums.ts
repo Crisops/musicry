@@ -3,11 +3,21 @@ import { createClient } from '@/lib/supabase/server'
 import type { AstroCookies } from 'astro'
 import type { TrackAlbumPageColumns } from '@/types/track'
 
-export const getAllAlbums = async (request: Request, cookies: AstroCookies): Promise<Tables<'albums'>[]> => {
+export const getAllAlbums = async (
+  request: Request,
+  cookies: AstroCookies,
+  limit?: number,
+): Promise<Tables<'albums'>[]> => {
   try {
     const supabase = await createClient(request, cookies)
 
-    const { data: albums, error } = await supabase.from('albums').select('*')
+    let query = supabase.from('albums').select('*')
+
+    if (limit) {
+      query = query.limit(limit)
+    }
+
+    const { data: albums, error } = await query
 
     if (error) {
       throw new Error('Error al obtener los álbumes')
