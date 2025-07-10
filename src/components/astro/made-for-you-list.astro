@@ -4,7 +4,7 @@ import MadeForYouAlbum from '@/components/astro/made-for-you-album.astro'
 
 const { request, cookies } = Astro
 
-const albums = await getAllAlbums(request, cookies)
+const albums = await getAllAlbums(request, cookies, 6)
 ---
 
 <div class="grid-section relative w-full">
