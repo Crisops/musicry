@@ -8,6 +8,7 @@
 
 @theme {
   --color-night: #0a0d11;
+  --color-night-alpha: rgba(10, 13, 17, 0.4);
   --color-rich-black-dark: #020406;
   --color-rich-black-light: #0d1117;
   --color-rich-dark-jungle: #171e28;
