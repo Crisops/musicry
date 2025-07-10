@@ -6,6 +6,7 @@ import { formatDate } from '@/utils/format-date'
 import { formatDuration } from '@/utils/format-duration'
 import DeleteItem from '@/components/react/delete-item'
 import { SongItem } from '@/components/react/song-item'
+import { IndexOrPlay } from '@/components/react/index-or-play'
 
 export const renderCellSong = <T extends BaseTrackRow>(
   track: T,
@@ -16,7 +17,7 @@ export const renderCellSong = <T extends BaseTrackRow>(
   const cellValue = track[columnKey as keyof T]
   switch (columnKey) {
     case 'index':
-      return <span>{(track as any).index}</span>
+      return <IndexOrPlay trackId={track.id} index={(track as any).index} />
     case 'title':
       return <SongItem imageUrl={track.imageUrl} title={track.title} artist={track.artist} />
     case 'release_year':
