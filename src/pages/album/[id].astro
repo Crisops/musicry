@@ -2,25 +2,34 @@
 import Layout from '@/layouts/Layout.astro'
 import { getAlbumById } from '@/lib/supabase/resources/albums'
 import AlbumDetail from '@/components/astro/album-detail.astro'
+import AlbumDetailMovile from '@/components/astro/album-detail-movile.astro'
 import ButtonPlay from '@/components/react/button-play'
-import TrackListWrapper from '@/components/astro/track-list-album.astro'
+import TrackListAlbum from '@/components/react/track-list-abum'
 
 const { id } = Astro.params
 const { request, cookies } = Astro
 
 if (!id) return
 
-const albums = await getAlbumById(request, cookies, id)
+const album = await getAlbumById(request, cookies, id)
 ---
 
 <Layout>
   <section class="relative flex h-full w-full flex-col">
     <div id="gradient-bg" class="absolute h-80 w-full sm:h-full"></div>
-    <AlbumDetail album={albums} />
-    <div class="flex items-center justify-end px-3 py-5 sm:justify-start">
-      <ButtonPlay client:load id={id} radius="full" sizeIcon={22} className="h-11 w-11 min-w-11 sm:size-14" />
+    <AlbumDetail album={album} />
+    <div class="flex items-center justify-between px-3 py-5 sm:justify-start">
+      <AlbumDetailMovile imageUrl={album?.imageUrl ?? ''} title={album?.title ?? ''} artist={album?.artist ?? ''} />
+      <ButtonPlay
+        client:load
+        id={id}
+        radius="full"
+        sizeIcon={22}
+        className="h-11 w-11 min-w-11 sm:size-14"
+        source="made-for-you"
+      />
     </div>
-    <TrackListWrapper songs={albums?.songs ?? []} />
+    <TrackListAlbum client:visible songs={album?.songs ?? []} />
   </section>
 </Layout>
 

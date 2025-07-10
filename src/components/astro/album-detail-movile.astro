@@ -1,0 +1,25 @@
+---
+import { Image } from 'astro:assets'
+
+interface Props {
+  imageUrl: string
+  title: string
+  artist: string
+}
+
+const { imageUrl, title, artist }: Props = Astro.props
+---
+
+<div class="z-10 flex items-center gap-1 sm:hidden">
+  <div class="aspect-square size-11 overflow-hidden rounded-full">
+    <Image src={imageUrl} alt={title} width={44} height={44} class="h-full w-full object-cover" />
+  </div>
+  <div class="flex flex-col">
+    <h4 class="text-platinum text-small font-semibold">
+      {title}
+    </h4>
+    <p class="text-gray-dim max-w-28 truncate text-xs">
+      {artist}
+    </p>
+  </div>
+</div>
