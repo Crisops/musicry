@@ -5,7 +5,7 @@ export type UserAuthStore = {
   setUser: (user: User | null) => void
 }
 
-type Song = Omit<Tables<'songs'>, 'albumId' | 'created_at'> & {
+export type Song = Omit<Tables<'songs'>, 'albumId' | 'created_at'> & {
   album: {
     id: Tables<'albums'>['id']
   }
@@ -14,15 +14,21 @@ type Song = Omit<Tables<'songs'>, 'albumId' | 'created_at'> & {
 export type PlaySongCurrent = {
   song: Song | null
   playlist: Song[]
-}
+} | null
 
 export type PlaySongStore = {
-  currentSong: PlaySongCurrent | null
+  currentSong: PlaySongCurrent
   isPlaying: boolean
   volume: number
   repeat: 'all' | 'one' | 'none'
-  setCurrentSong: (song: PlaySongCurrent | null) => void
+  shuffle: boolean
+  shufflePlaylist: PlaySongCurrent
+  originalPlaylist: Song[] | null
+  setCurrentSong: (song: PlaySongCurrent) => void
   setIsPlaying: (isPlaying: boolean) => void
   setVolume: (volume: number) => void
   setRepeat: (repeat: 'all' | 'one' | 'none') => void
+  setShuffle: (shuffle: boolean) => void
+  setShufflePlaylist: (shufflePlaylist: PlaySongCurrent) => void
+  setOriginalPlaylist: (originalPlaylist: Song[] | null) => void
 }

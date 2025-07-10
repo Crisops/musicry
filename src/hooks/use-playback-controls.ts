@@ -1,16 +1,30 @@
+import { useCallback, useEffect } from 'react'
+import type { Song } from '@/types/store.types'
 import { usePlaySong } from '@/hooks/use-store'
-import { useCallback } from 'react'
-import { useShallow } from 'zustand/react/shallow'
+import { shuffleMix } from '@/utils/shuffle-mix'
 
 export const usePlaybackControls = () => {
-  const { isPlaying, repeat, setIsPlaying, setRepeat } = usePlaySong(
-    useShallow((state) => ({
-      isPlaying: state.isPlaying,
-      repeat: state.repeat,
-      setIsPlaying: state.setIsPlaying,
-      setRepeat: state.setRepeat,
-    })),
-  )
+  const {
+    currentSong,
+    isPlaying,
+    repeat,
+    shuffle,
+    shufflePlaylist,
+    originalPlaylist,
+    setCurrentSong,
+    setIsPlaying,
+    setRepeat,
+    setShuffle,
+    setShufflePlaylist,
+    setOriginalPlaylist,
+  } = usePlaySong((state) => state)
+
+  useEffect(() => {
+    if (!shuffle || !currentSong?.playlist || shufflePlaylist?.playlist) return
+
+    const shuffled = shuffleMix<Song>(currentSong.playlist)
+    setShufflePlaylist({ song: currentSong.song, playlist: shuffled })
+  }, [shuffle])
 
   const handlePlaying = useCallback(() => {
     setIsPlaying(!isPlaying)
@@ -26,5 +40,33 @@ export const usePlaybackControls = () => {
     }
   }, [repeat, setRepeat])
 
-  return { handlePlaying, handleRepeat }
+  const handleShuffle = useCallback(() => {
+    const newShuffleState = !shuffle
+    setShuffle(newShuffleState)
+    if (newShuffleState) {
+      if (!originalPlaylist && currentSong?.playlist) {
+        setOriginalPlaylist(currentSong.playlist)
+      }
+    } else {
+      if (originalPlaylist && shufflePlaylist?.song) {
+        setCurrentSong({
+          song: shufflePlaylist.song,
+          playlist: originalPlaylist,
+        })
+      }
+      setShufflePlaylist(null)
+      setOriginalPlaylist(null)
+    }
+  }, [
+    shuffle,
+    setShuffle,
+    setShufflePlaylist,
+    currentSong,
+    originalPlaylist,
+    shufflePlaylist,
+    setCurrentSong,
+    setOriginalPlaylist,
+  ])
+
+  return { handlePlaying, handleRepeat, handleShuffle }
 }

@@ -1,4 +1,5 @@
 import { Play, Shuffle, SkipBack, SkipForward, Repeat, Pause, Repeat1 } from 'lucide-react'
+import { useShallow } from 'zustand/react/shallow'
 import { usePlaySong } from '@/hooks/use-store'
 import { usePlaybackControls } from '@/hooks/use-playback-controls'
 import PlaybackIconButton from '@/components/react/playback-icon-button'
@@ -9,12 +10,18 @@ interface PlaybackControlsProps {
 }
 
 const PlaybackControls = ({ playNext, playPrevious }: PlaybackControlsProps) => {
-  const { isPlaying, repeat } = usePlaySong((state) => state)
-  const { handlePlaying, handleRepeat } = usePlaybackControls()
+  const { isPlaying, repeat, shuffle } = usePlaySong(
+    useShallow((state) => ({
+      isPlaying: state.isPlaying,
+      repeat: state.repeat,
+      shuffle: state.shuffle,
+    })),
+  )
+  const { handlePlaying, handleRepeat, handleShuffle } = usePlaybackControls()
   return (
     <div className="flex w-full items-center justify-center gap-6">
-      <PlaybackIconButton>
-        <Shuffle size={16} />
+      <PlaybackIconButton onPress={handleShuffle} className={`${shuffle ? 'text-blue-argentinian' : 'text-white'}`}>
+        <Shuffle size={16} color="currentColor" />
       </PlaybackIconButton>
       <div className="flex items-center justify-center gap-3">
         <PlaybackIconButton onPress={playPrevious} aria-label="Reproducir canción anterior">
