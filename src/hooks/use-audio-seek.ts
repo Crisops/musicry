@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import { usePlaySong } from '@/hooks/use-store'
 
 interface useAudioSeekProps {
@@ -6,7 +7,13 @@ interface useAudioSeekProps {
 }
 
 export const useAudioSeek = ({ audioRef }: useAudioSeekProps) => {
-  const currentSong = usePlaySong((state) => state.currentSong)
+  const { song } = usePlaySong(
+    useShallow((s) => {
+      return {
+        song: s.shuffle ? s.shufflePlaylist?.song : s.currentSong?.song,
+      }
+    }),
+  )
   const [isDragging, setIsDragging] = useState<boolean>(false)
   const [dragTime, setDragTime] = useState<number>(0)
   const [currentTime, setCurrentTime] = useState<number>(0)
@@ -44,11 +51,11 @@ export const useAudioSeek = ({ audioRef }: useAudioSeekProps) => {
     return () => {
       audioElement.removeEventListener('timeupdate', updateCurrentTime)
     }
-  }, [isDragging, currentSong?.song?.id])
+  }, [isDragging, song?.id])
 
   return {
     currentTime,
-    duration: currentSong?.song?.duration ?? 0,
+    duration: song?.duration ?? 0,
     displayTime: isDragging ? dragTime : currentTime,
     isDragging,
     handleSeekChange,
