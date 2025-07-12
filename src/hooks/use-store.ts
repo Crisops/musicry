@@ -14,19 +14,27 @@ export const useAuth = create<UserAuthStore>()(
   ),
 )
 
-export const usePlaySong = create<PlaySongStore>((set) => ({
-  currentSong: { song: null, playlist: [] },
-  isPlaying: false,
-  volume: 75,
-  repeat: 'none',
-  shuffle: false,
-  shufflePlaylist: null,
-  originalPlaylist: null,
-  setCurrentSong: (currentSong) => set({ currentSong }),
-  setIsPlaying: (isPlaying) => set({ isPlaying }),
-  setVolume: (volume) => set({ volume }),
-  setRepeat: (repeat) => set({ repeat }),
-  setShuffle: (shuffle) => set({ shuffle }),
-  setShufflePlaylist: (shufflePlaylist) => set({ shufflePlaylist }),
-  setOriginalPlaylist: (originalPlaylist) => set({ originalPlaylist }),
-}))
+export const usePlaySong = create<PlaySongStore>()(
+  persist(
+    (set) => ({
+      currentSong: { song: null, playlist: [] },
+      isPlaying: false,
+      volume: 75,
+      repeat: 'none',
+      shuffle: false,
+      shufflePlaylist: null,
+      originalPlaylist: null,
+      setCurrentSong: (currentSong) => set({ currentSong }),
+      setIsPlaying: (isPlaying) => set({ isPlaying }),
+      setVolume: (volume) => set({ volume }),
+      setRepeat: (repeat) => set({ repeat }),
+      setShuffle: (shuffle) => set({ shuffle }),
+      setShufflePlaylist: (shufflePlaylist) => set({ shufflePlaylist }),
+      setOriginalPlaylist: (originalPlaylist) => set({ originalPlaylist }),
+    }),
+    {
+      name: 'play-volume',
+      partialize: (state) => ({ volume: state.volume }),
+    },
+  ),
+)
