@@ -48,7 +48,6 @@ const ButtonPlay = ({ id, sizeIcon = 16, source, ...props }: ButtonPropsPlay) =>
     if (source === 'playlist') {
       const list = shuffle ? shufflePlaylist?.playlist : currentSong?.playlist
       const selectedSong = list?.find((song) => song.id === id)
-      console.log('list', list)
       if (selectedSong && list) {
         if (shuffle) {
           setShufflePlaylist({ song: selectedSong, playlist: list })
@@ -59,12 +58,11 @@ const ButtonPlay = ({ id, sizeIcon = 16, source, ...props }: ButtonPropsPlay) =>
         return
       }
     }
-    const result = await axiosClient.get<PlaySongCurrent>(`/api/songs/${source}`, { params: { id } })
+    const result = await axiosClient.get<PlaySongCurrent>(`/api/songs/${source}.json`, { params: { id } })
     if (!result.success) {
-      console.error(result.error)
       Toast().error({
-        title: '¡Ups!',
-        description: result.error.message,
+        title: result.error.data.error,
+        description: result.error.data.message,
       })
       return
     }

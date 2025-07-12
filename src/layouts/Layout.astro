@@ -1,9 +1,10 @@
 ---
 import '@/styles/global.css'
+import { ClientRouter } from 'astro:transitions'
 import AsideRight from '@/components/astro/aside-right.astro'
 import AsideLeft from '@/components/astro/aside-left.astro'
 import Player from '@/components/react/player'
-import { ClientRouter } from 'astro:transitions'
+import ToastProvider from '@/components/react/toast-provider'
 ---
 
 <!doctype html>
@@ -17,6 +18,7 @@ import { ClientRouter } from 'astro:transitions'
   </head>
   <body class="bg-rich-black-dark min-h-screen lg:overflow-hidden">
     <div id="app" class="relative h-full lg:h-screen">
+      <ToastProvider client:load />
       <aside class="bg-rich-black-light hidden flex-col rounded-tr-xl rounded-br-xl [grid-area:al] lg:flex">
         <AsideLeft />
       </aside>
