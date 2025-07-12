@@ -86,6 +86,7 @@ export const useCurrentSong = ({ audioRef }: useCurrentSongProps) => {
     if (audioRef.current.src !== song.audioUrl) {
       audioRef.current.src = song.audioUrl
       audioRef.current.load()
+      audioRef.current.volume = volume / 100
     }
   }, [currentSong?.song?.id, shufflePlaylist?.song?.id])
 
