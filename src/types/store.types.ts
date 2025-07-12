@@ -1,8 +1,8 @@
 import type { Tables } from '@/types/database.types'
 
 export type UserAuthStore = {
-  user: User | null
-  setUser: (user: User | null) => void
+  user: User
+  setUser: (user: User) => void
 }
 
 export type Song = Omit<Tables<'songs'>, 'albumId' | 'created_at'> & {
