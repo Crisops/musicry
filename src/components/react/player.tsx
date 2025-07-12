@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { usePlaySong } from '@/hooks/use-store'
+import { useAuth, usePlaySong } from '@/hooks/use-store'
 import { useCurrentSong } from '@/hooks/use-current-song'
 import CurrentSong from '@/components/react/current-song'
 import ProgressSlider from '@/components/react/progress-slider'
@@ -7,13 +7,14 @@ import PlaybackControls from '@/components/react/playback-controls'
 import VolumenControl from '@/components/react/volumen-control'
 
 const Player = () => {
+  const user = useAuth((state) => state.user)
   const audioRef = useRef<HTMLAudioElement>(null)
   const { playNext, playPrevious } = useCurrentSong({ audioRef })
   const currentSong = usePlaySong((state) => state.currentSong)
 
   return (
     <>
-      {currentSong?.song && (
+      {currentSong?.song && user && (
         <section className="relative hidden h-full w-full items-center justify-between lg:flex">
           <audio ref={audioRef} />
           <CurrentSong />
