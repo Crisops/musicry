@@ -3,56 +3,61 @@ import picomatch from 'picomatch'
 import { createClient } from '@/lib/supabase/server'
 
 const protectedRoutesPages = ['/admin/dashboard(|/)']
-const proptectedAPIRoutes = [
-  '/api/users(|/)',
-  '/api/auth(|/)',
-  '/api/admin(|/)',
-  '/api/songs(|/)',
-  '/api/albums(|/)',
-  '/api/stats(|/)',
+const proptectedAPIRoutes = ['/api/users*', '/api/admin*', '/api/songs/*', '/api/albums*', '/api/stats*']
+const publicRoutes = [
+  '/',
+  '/api/auth/signin(|/)',
+  '/api/auth/signup(|/)',
+  '/api/auth/callback(|/)',
+  '/api/auth/signout(|/)',
 ]
-const publicRoutes = ['/', '/api/auth/(signin|signup|callback)']
 
-export const onRequest = defineMiddleware(
-  async ({ url, cookies, redirect, request, locals }, next) => {
-    const supabase = await createClient(request, cookies)
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
+export const onRequest = defineMiddleware(async ({ url, cookies, redirect, request, locals }, next) => {
+  const supabase = await createClient(request, cookies)
 
-    if (user) {
-      locals.user = {
-        id: user.id,
-        email: user.email,
-        full_name: user.user_metadata.full_name,
-        avatar_url: user.user_metadata.avatar_url,
-        isAdmin: user.email === import.meta.env.EMAIL_ADMIN,
-      }
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser()
+
+  if (error) {
+    console.log(error.name)
+  }
+
+  if (user && !error) {
+    locals.user = {
+      id: user.id,
+      email: user.email,
+      full_name: user.user_metadata.full_name,
+      avatar_url: user.user_metadata.avatar_url,
+      isAdmin: user.email === import.meta.env.EMAIL_ADMIN,
     }
+  }
 
-    if (picomatch.isMatch(url.pathname, publicRoutes)) {
-      return next()
+  if (!user) {
+    if (picomatch.isMatch(url.pathname, proptectedAPIRoutes)) {
+      return new Response(
+        JSON.stringify({
+          message: 'Lo siento, por favor inicia sesión para poder realizar esta acción',
+          error: 'No autorizado',
+        }),
+        {
+          status: 401,
+          headers: { 'Content-Type': 'application/json' },
+        },
+      )
     }
+  }
 
-    if (!user) {
+  if (picomatch.isMatch(url.pathname, publicRoutes)) {
+    return next()
+  }
+
+  if (picomatch.isMatch(url.pathname, protectedRoutesPages)) {
+    if (!locals.user?.isAdmin) {
       return redirect('/')
     }
+  }
 
-    if (picomatch.isMatch(url.pathname, protectedRoutesPages)) {
-      if (locals.user?.email !== import.meta.env.EMAIL_ADMIN) {
-        return redirect('/')
-      }
-    }
-
-    if (picomatch.isMatch(url.pathname, proptectedAPIRoutes)) {
-      const supabase = await createClient(request, cookies)
-      const { error } = await supabase.auth.getSession()
-      if (error) {
-        return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-          status: 401,
-        })
-      }
-    }
-    return next()
-  },
-)
+  return next()
+})
