@@ -8,5 +8,9 @@ const featuredSongs = await getAllSongsRandom(request, cookies, 8)
 ---
 
 <div class="relative grid w-full grid-cols-2 grid-rows-3 gap-x-4 gap-y-4 md:grid-cols-3 xl:grid-cols-4 xl:grid-rows-2">
-  {featuredSongs.map((song) => <Song id={song.id} title={song.title} artist={song.artist} imageUrl={song.imageurl} />)}
+  {
+    featuredSongs.map((song, index) => (
+      <Song index={index} id={song.id} title={song.title} artist={song.artist} imageUrl={song.imageurl} />
+    ))
+  }
 </div>

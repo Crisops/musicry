@@ -3,18 +3,19 @@ import type { Tables } from '@/types/database.types'
 import ButtonPlay from '@/components/react/button-play'
 
 interface Props {
+  index: number
   id: Tables<'songs'>['id']
   title: Tables<'songs'>['title']
   artist: Tables<'songs'>['artist']
   imageUrl: Tables<'songs'>['imageUrl']
 }
 
-const { id, title, artist, imageUrl }: Props = Astro.props
+const { index, id, title, artist, imageUrl }: Props = Astro.props
 ---
 
 <article
   id={id}
-  class="group transition-background bg-rich-black-light hover:bg-rich-dark-jungle/60 rounded-tl-small rounded-bl-small rounded-br-small relative flex w-full items-center gap-2 overflow-hidden"
+  class={`group transition-background bg-rich-black-light/55 lg:bg-rich-black-light lg:hover:bg-rich-dark-jungle/60 rounded-tl-small rounded-bl-small rounded-br-small relative  w-full items-center gap-2 overflow-hidden ${index >= 6 ? 'hidden lg:flex' : 'flex'}`}
 >
   <div class="relative aspect-square h-auto w-16 flex-none">
     <img src={imageUrl} alt="song" class="absolute h-full w-full object-cover" />
