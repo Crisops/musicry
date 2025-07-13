@@ -3,6 +3,7 @@ import '@/styles/global.css'
 import { ClientRouter } from 'astro:transitions'
 import AsideRight from '@/components/astro/aside-right.astro'
 import AsideLeft from '@/components/astro/aside-left.astro'
+import MobileFooterNav from '@/components/astro/mobile-footer-nav.astro'
 import Player from '@/components/react/player'
 import ToastProvider from '@/components/react/toast-provider'
 ---
@@ -31,6 +32,7 @@ import ToastProvider from '@/components/react/toast-provider'
       <footer class="bg-rich-black-light hidden px-3 [grid-area:player] lg:block">
         <Player client:load transition:name="media-player" transition:persist />
       </footer>
+      <MobileFooterNav />
     </div>
   </body>
 </html>

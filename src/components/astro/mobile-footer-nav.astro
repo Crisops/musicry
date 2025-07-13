@@ -1,0 +1,21 @@
+---
+import { menuItems } from '@/types/links'
+import Link from '@/components/astro/link.astro'
+---
+
+<footer class="bg-rich-black-light/90 fixed bottom-0 left-0 h-14 w-full lg:hidden">
+  <nav class="h-full w-full">
+    <ul class="flex h-full w-full items-center justify-evenly gap-2">
+      {
+        menuItems.map((item) => (
+          <li>
+            <Link href={item.href}>
+              <item.icon size={20} />
+              <span class="text-tiny">{item.name}</span>
+            </Link>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</footer>
