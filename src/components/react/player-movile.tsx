@@ -91,7 +91,7 @@ export const PlayerMovile = () => {
     >
       <div className="h-full w-full">
         {isExpanded ? (
-          <PlayerCurrentSongMovile onExpand={handleExpand} />
+          <PlayerCurrentSongMovile onExpand={handleExpand} currentSong={currentSong?.song} />
         ) : (
           <PlayerMovilePanel
             onExpand={handleExpand}
