@@ -15,9 +15,6 @@ export const GET: APIRoute = async ({ cookies, request, redirect }) => {
       })
     }
 
-    cookies.delete('sb-access-token', { path: '/' })
-    cookies.delete('sb-refresh-token', { path: '/' })
-
     return redirect('/')
   } catch (error) {
     console.error('Error en logout:', error)
