@@ -2,16 +2,21 @@ import { useCallback, useEffect, useState } from 'react'
 import { motion, useMotionValue, useTransform, animate, type PanInfo } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
 import { extractDominantColor, type ColorResult } from '@/utils/color-extractor'
+import { useAudioContext } from '@/hooks/use-audio-context'
+import { useAudioSeek } from '@/hooks/use-audio-seek'
 import { usePlaySong } from '@/hooks/use-store'
 import PlayerMovilePanel from '@/components/react/player-movile-panel'
 import PlayerCurrentSongMovile from '@/components/react/player-current-song-movile'
 
 export const PlayerMovile = () => {
-  const { currentSong } = usePlaySong(
+  const { isPlaying, currentSong } = usePlaySong(
     useShallow((state) => ({
+      isPlaying: state.isPlaying,
       currentSong: state.shuffle ? state.shufflePlaylist : state.currentSong,
     })),
   )
+  const { audioRef } = useAudioContext()
+  const audioSeekState = useAudioSeek({ audioRef })
 
   const y = useMotionValue(0)
   const height = useTransform(y, [-280, 0], ['calc(100vh - 3.5rem)', '3.5rem'])
@@ -91,11 +96,20 @@ export const PlayerMovile = () => {
     >
       <div className="h-full w-full">
         {isExpanded ? (
-          <PlayerCurrentSongMovile onExpand={handleExpand} currentSong={currentSong?.song} />
+          <PlayerCurrentSongMovile
+            onExpand={handleExpand}
+            currentSong={currentSong?.song}
+            audioSeekState={audioSeekState}
+            audioRef={audioRef}
+          />
         ) : (
           <PlayerMovilePanel
             onExpand={handleExpand}
             className={`${color?.isDark ? 'last:text-sealsalt [&_h4]:text-sealsalt [&_p]:text-neutral-400' : 'last:text-black [&_h4]:text-black [&_p]:text-neutral-800'} `}
+            audioSeekState={audioSeekState}
+            audioRef={audioRef}
+            currentSong={currentSong?.song}
+            isPlaying={isPlaying}
           />
         )}
       </div>

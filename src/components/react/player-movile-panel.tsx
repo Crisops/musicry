@@ -1,35 +1,37 @@
 import type { HTMLProps } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useShallow } from 'zustand/react/shallow'
 import { Play, Pause } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useAudioContext } from '@/hooks/use-audio-context'
-import { usePlaySong } from '@/hooks/use-store'
+import type { Song } from '@/types/store.types'
+import type { useAudioSeek } from '@/hooks/use-audio-seek'
 import { usePlaybackControls } from '@/hooks/use-playback-controls'
 import CurrentSong from '@/components/react/current-song'
 import ProgressSlider from '@/components/react/progress-slider'
 import PlaybackIconButton from '@/components/react/playback-icon-button'
 
+interface PlayerMovilePanelProps {
+  className?: HTMLProps<HTMLDivElement>['className']
+  onExpand: () => void
+  audioSeekState: ReturnType<typeof useAudioSeek>
+  audioRef: React.RefObject<HTMLAudioElement | null>
+  currentSong?: Song | null
+  isPlaying: boolean
+}
+
 const PlayerMovilePanel = ({
   className,
   onExpand,
-}: {
-  className?: HTMLProps<HTMLDivElement>['className']
-  onExpand: () => void
-}) => {
-  const { isPlaying, currentSong } = usePlaySong(
-    useShallow((state) => ({
-      isPlaying: state.isPlaying,
-      currentSong: state.currentSong,
-    })),
-  )
+  audioSeekState,
+  audioRef,
+  currentSong,
+  isPlaying,
+}: PlayerMovilePanelProps) => {
   const { handlePlaying } = usePlaybackControls()
-  const { audioRef } = useAudioContext()
   return (
     <AnimatePresence mode="wait">
-      {currentSong?.song && (
+      {currentSong && (
         <motion.div
-          key={currentSong.song.id}
+          key={currentSong.id}
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
           exit={{ opacity: 0, x: -100 }}
@@ -51,6 +53,7 @@ const PlayerMovilePanel = ({
               hideThumb
               audioRef={audioRef}
               disabledContent
+              audioSeekState={audioSeekState}
             />
           </div>
           <div className="pr-4">

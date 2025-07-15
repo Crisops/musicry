@@ -1,7 +1,7 @@
 import { ChevronDown } from 'lucide-react'
 import type { Song } from '@/types/store.types'
+import type { useAudioSeek } from '@/hooks/use-audio-seek'
 import { useCurrentSong } from '@/hooks/use-current-song'
-import { useAudioContext } from '@/hooks/use-audio-context'
 import Button from '@/components/shared/button'
 import PlaybackControls from '@/components/react/playback-controls'
 import ProgressSlider from '@/components/react/progress-slider'
@@ -9,10 +9,11 @@ import ProgressSlider from '@/components/react/progress-slider'
 interface PlayerCurrentSongMovileProps {
   onExpand: () => void
   currentSong?: Song | null
+  audioSeekState: ReturnType<typeof useAudioSeek>
+  audioRef: React.RefObject<HTMLAudioElement | null>
 }
 
-const PlayerCurrentSongMovile = ({ onExpand, currentSong }: PlayerCurrentSongMovileProps) => {
-  const { audioRef } = useAudioContext()
+const PlayerCurrentSongMovile = ({ onExpand, currentSong, audioSeekState, audioRef }: PlayerCurrentSongMovileProps) => {
   const { playNext, playPrevious } = useCurrentSong({ audioRef })
 
   return (
@@ -56,6 +57,7 @@ const PlayerCurrentSongMovile = ({ onExpand, currentSong }: PlayerCurrentSongMov
                 endContent: ['text-platinum text-xs'],
               }}
               audioRef={audioRef}
+              audioSeekState={audioSeekState}
             />
             <PlaybackControls
               playNext={playNext}
