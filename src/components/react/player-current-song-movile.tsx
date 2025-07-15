@@ -37,8 +37,8 @@ const PlayerCurrentSongMovile = ({ onExpand, currentSong, audioSeekState, audioR
             )}
             <div className="flex w-full items-center">
               <div className="flex flex-col items-start">
-                <h4 className="text-xl font-bold text-white">{currentSong?.title}</h4>
-                <p className="pb-2 text-white/70">{currentSong?.artist}</p>
+                <h4 className="text-medium sm:text-large font-bold text-white">{currentSong?.title}</h4>
+                <p className="sm:text-medium pb-2 text-xs text-white/70">{currentSong?.artist}</p>
               </div>
             </div>
           </div>
