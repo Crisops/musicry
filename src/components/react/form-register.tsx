@@ -1,18 +1,18 @@
+import type { HTMLProps } from 'react'
+import type { ButtonProps } from '@heroui/button'
+import { cn } from '@/lib/utils'
 import Button from '@/components/shared/button'
-import { User } from 'lucide-react'
 
-const FormRegister = () => {
+interface FormRegisterProps extends Omit<ButtonProps, 'children'> {
+  className?: HTMLProps<HTMLButtonElement>['className']
+  children: string | React.ReactNode
+}
+
+const FormRegister = ({ className, children, ...props }: FormRegisterProps) => {
   return (
     <form action="/api/auth/signin" method="POST" data-astro-reload>
-      <Button
-        type="submit"
-        value="google"
-        name="provider"
-        isIconOnly
-        radius="full"
-        className="text-platinum bg-rich-dark-jungle text-small"
-      >
-        <User color="currentColor" size={18} />
+      <Button {...props} type="submit" value="google" name="provider" className={cn('text-small', className)}>
+        {children}
       </Button>
     </form>
   )
