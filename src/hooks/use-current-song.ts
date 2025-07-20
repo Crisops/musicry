@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState, useMemo } from 'react'
 import { useShallow } from 'zustand/react/shallow'
-import { usePlaySong } from '@/hooks/use-store'
+import { useAuth, usePlaySong, usePresence } from '@/hooks/use-store'
 import type { Song } from '@/types/store.types'
 
 interface useCurrentSongProps {
@@ -8,6 +8,7 @@ interface useCurrentSongProps {
 }
 
 export const useCurrentSong = ({ audioRef }: useCurrentSongProps) => {
+  const user = useAuth((state) => state.user)
   const {
     isPlaying,
     currentSong,
@@ -29,6 +30,11 @@ export const useCurrentSong = ({ audioRef }: useCurrentSongProps) => {
       setIsPlaying: state.setIsPlaying,
       setCurrentSong: state.setCurrentSong,
       setShufflePlaylist: state.setShufflePlaylist,
+    })),
+  )
+  const { updateCurrentSong } = usePresence(
+    useShallow((state) => ({
+      updateCurrentSong: state.updateCurrentSong,
     })),
   )
   const [repeatCount, setRepeatCount] = useState<number>(0)
@@ -87,6 +93,7 @@ export const useCurrentSong = ({ audioRef }: useCurrentSongProps) => {
       audioRef.current.src = song.audioUrl
       audioRef.current.load()
       audioRef.current.volume = volume / 100
+      updateCurrentSong(song, user)
     }
   }, [currentSong?.song?.id, shufflePlaylist?.song?.id])
 
