@@ -7,6 +7,8 @@ import FormRegister from '@/components/react/form-register'
   <img src={bird.src} width={200} height={200} alt="Bird Music" />
   <div class="max-w-56 text-center">
     <p class="text-gray-dim text-small mb-2 font-normal">¡Únete y vibra con lo que escuchan los demás!</p>
-    <FormRegister radius="sm" className="text-platinum bg-rich-dark-jungle"> Iniciar sesión </FormRegister>
+    <FormRegister client:visible radius="sm" className="text-platinum bg-rich-dark-jungle">
+      Iniciar sesión
+    </FormRegister>
   </div>
 </div>
