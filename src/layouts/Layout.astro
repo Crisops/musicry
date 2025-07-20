@@ -6,6 +6,7 @@ import AsideLeft from '@/components/astro/aside-left.astro'
 import MobileFooterNav from '@/components/astro/mobile-footer-nav.astro'
 import ToastProvider from '@/components/react/toast-provider'
 import PlayerWrapper from '@/components/react/player-wrapper'
+import PresenceProvider from '@/context/presence-provider'
 ---
 
 <!doctype html>
@@ -20,6 +21,7 @@ import PlayerWrapper from '@/components/react/player-wrapper'
   <body class="bg-rich-black-dark min-h-screen lg:overflow-hidden">
     <div id="app" class="relative h-full lg:h-screen">
       <ToastProvider client:load />
+      <PresenceProvider client:load />
       <aside class="bg-rich-black-light hidden flex-col rounded-tr-xl rounded-br-xl [grid-area:al] lg:flex">
         <AsideLeft />
       </aside>
