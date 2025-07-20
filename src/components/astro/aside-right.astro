@@ -1,5 +1,15 @@
 ---
-
+import { UsersRound } from '@lucide/astro'
+import OnlineUserList from '@/components/react/online-user-list'
+import LoginRequired from '@/components/astro/login-required.astro'
 ---
 
-<h1>Users connected</h1>
+<div class="flex h-full w-full flex-col">
+  <header class="flex h-20 w-full items-center gap-x-2 px-3">
+    <UsersRound class="text-sealsalt" size={22} />
+    <h3 class="text-sealsalt text-large font-semibold">Lo que escuchan</h3>
+  </header>
+  <OnlineUserList client:load transition:persist transition:name="online-users">
+    <LoginRequired />
+  </OnlineUserList>
+</div>
