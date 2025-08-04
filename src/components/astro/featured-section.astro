@@ -3,7 +3,6 @@ import FeaturedSongsList from '@/components/astro/featured-songs-list.astro'
 import MadeForYou from '@/components/astro/made-for-you.astro'
 import Greeting from '@/components/react/greeting'
 import Settings from '@/components/react/settings'
-const user = Astro.locals.user
 ---
 
 <section class="grid-row-1 grid h-full">
@@ -12,7 +11,7 @@ const user = Astro.locals.user
   >
     <div class="relative flex h-24 w-full items-center justify-between px-3">
       <Greeting client:visible className="text-platinum" />
-      <Settings client:visible user={user} />
+      <Settings client:visible />
     </div>
     <div class="flex flex-col px-3 lg:h-0">
       <FeaturedSongsList />
