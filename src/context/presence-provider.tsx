@@ -1,19 +1,30 @@
 import { useEffect } from 'react'
 import { usePresence, useAuth } from '@/hooks/use-store'
 
-export default function PresenceProvider() {
-  const user = useAuth((state) => state.user)
+interface PresenceProviderProps {
+  user: User
+}
+
+export default function PresenceProvider({ user }: PresenceProviderProps) {
+  const { user: userFromStore, setUser } = useAuth((state) => state)
   const { initPresence, disconnect } = usePresence()
 
+  // Inicializa el usuario primero
   useEffect(() => {
-    if (!user) return
+    if (user) {
+      setUser(user)
+    }
+  }, [user, setUser])
 
-    initPresence(user)
+  useEffect(() => {
+    if (!userFromStore) return
+
+    initPresence(userFromStore)
 
     return () => {
       disconnect()
     }
-  }, [user])
+  }, [userFromStore])
 
   return null
 }
