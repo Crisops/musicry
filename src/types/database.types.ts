@@ -46,34 +46,34 @@ export type Database = {
           content: string | null
           created_at: string
           id: string
-          userReceiverId: string | null
-          userSenderId: string | null
+          user_recipient_id: string | null
+          user_sender_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
           id?: string
-          userReceiverId?: string | null
-          userSenderId?: string | null
+          user_recipient_id?: string | null
+          user_sender_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: string
-          userReceiverId?: string | null
-          userSenderId?: string | null
+          user_recipient_id?: string | null
+          user_sender_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "messages_userReceiverId_fkey"
-            columns: ["userReceiverId"]
+            foreignKeyName: "messages_user_recipient_id_fkey"
+            columns: ["user_recipient_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "messages_userSenderId_fkey"
-            columns: ["userSenderId"]
+            foreignKeyName: "messages_user_sender_id_fkey"
+            columns: ["user_sender_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
