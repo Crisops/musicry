@@ -18,7 +18,7 @@ const songs =
 
 <div class="relative flex w-full">
   <div class="relative flex h-full w-full items-end gap-4 sm:px-3 sm:pt-15">
-    <div class="relative h-64 w-full flex-none sm:h-60 sm:w-60">
+    <div class="relative h-64 w-full flex-none sm:h-52 sm:w-52">
       <div class="absolute inset-0 z-10 bg-black/65 sm:hidden"></div>
       {
         album?.imageUrl && (
@@ -28,8 +28,8 @@ const songs =
             transition:name={`playlist ${album.id} image`}
             src={album.imageUrl}
             alt={`${album.title} - ${album.artist}`}
-            width={240}
-            height={240}
+            width={208}
+            height={208}
             class="h-full w-full object-cover"
           />
         )
