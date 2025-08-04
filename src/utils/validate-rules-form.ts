@@ -13,6 +13,10 @@ export type AlbumFormData = Omit<TablesInsert<'albums'>, 'created_at' | 'id' | '
   releaseYear: DateValue | null
 }
 
+export type MessageFormData = {
+  content: TablesInsert<'messages'>['content']
+}
+
 const commonRules = {
   title: {
     required: 'El título es obligatorio y debe contener al menos un carácter válido.',
@@ -116,9 +120,20 @@ export const albumValidationRules: Record<keyof AlbumFormData, RegisterOptions> 
   },
 }
 
+export const messageValidationRules: Record<keyof MessageFormData, RegisterOptions> = {
+  content: {
+    required: 'El mensaje es obligatorio.',
+    minLength: {
+      value: 1,
+      message: 'El mensaje debe tener al menos 1 carácter.',
+    },
+  },
+}
+
 export const validateRulesForm = {
   ...commonRules,
   audioUrl: songValidationRules.audioUrl,
   duration: songValidationRules.duration,
   albumId: songValidationRules.albumId,
+  content: messageValidationRules.content,
 }
