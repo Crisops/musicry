@@ -1,7 +1,18 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import debounce from 'lodash-es/debounce'
-import type { PlaySongStore, Song, UserAuthStore, UserPresenceStore, UserPresenceTrack } from '@/types/store.types'
+import { v4 as uuidv4 } from 'uuid'
+import type {
+  DMBroadcastPayLoad,
+  DMMessage,
+  DMStore,
+  PlaySongStore,
+  Song,
+  TypingEvent,
+  UserAuthStore,
+  UserPresenceStore,
+  UserPresenceTrack,
+} from '@/types/store.types'
 import { supabase } from '@/lib/supabase/client'
 
 export const useAuth = create<UserAuthStore>()(
@@ -217,6 +228,264 @@ export const usePresence = create<UserPresenceStore>()(
       name: 'play-listening',
       partialize: (state) => ({
         currenUserId: state.currenUserId,
+      }),
+    },
+  ),
+)
+
+export const useDMStore = create<DMStore>()(
+  persist(
+    (set, get) => ({
+      activeChats: {},
+      currentUserId: null,
+
+      openDM: async (currentUserId, targetUserId) => {
+        const { activeChats } = get()
+
+        // Ya existe el chat
+        if (activeChats[targetUserId]?.isSubscribed) {
+          return
+        }
+
+        try {
+          // Para verificar que el chat es igual tanto A con B como B con A
+          const chatId = [currentUserId, targetUserId].sort().join('-')
+          const channelName = `dm-${chatId}`
+
+          const channel = supabase.channel(channelName)
+
+          // Configurar los listeners
+          channel
+            .on('broadcast', { event: 'message' }, ({ payload }: { payload: DMBroadcastPayLoad }) => {
+              const { activeChats } = get()
+              const chat = activeChats[targetUserId]
+
+              if (payload.message.user_sender_id === currentUserId) return
+
+              if (!chat) return
+
+              // Evitar duplicados y mensajes propios si ya están
+              const messageExists = chat.messages.some(
+                (m) => m.id === payload.message.id || (!!payload.temp_id && m.id === payload.temp_id),
+              )
+
+              if (messageExists) return
+
+              const updatedMessages = [...chat.messages, payload.message].sort(
+                (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+              )
+
+              set({
+                activeChats: {
+                  ...get().activeChats,
+                  [targetUserId]: {
+                    ...chat,
+                    messages: updatedMessages,
+                    lastMessageAt: payload.message.created_at,
+                  },
+                },
+              })
+            })
+            .on('broadcast', { event: 'typing' }, ({ payload }: { payload: TypingEvent }) => {
+              if (payload.user_id === currentUserId) return
+
+              const { activeChats } = get()
+              const chat = activeChats[targetUserId]
+              if (chat) {
+                set({
+                  activeChats: {
+                    ...get().activeChats,
+                    [targetUserId]: {
+                      ...chat,
+                      isTyping: payload.is_typing,
+                    },
+                  },
+                })
+              }
+            })
+
+          channel.subscribe(async (status) => {
+            if (status === 'SUBSCRIBED') {
+              set({
+                activeChats: {
+                  ...get().activeChats,
+                  [targetUserId]: {
+                    channel,
+                    messages: [],
+                    isSubscribed: true,
+                    isTyping: false,
+                    lastMessageAt: null,
+                    hasLoadingHistory: false,
+                  },
+                },
+                currentUserId,
+              })
+              await get().loadMessageHistory(targetUserId)
+            }
+          })
+        } catch (error) {
+          console.error('[DM] Error opening chat:', error)
+        }
+      },
+      closeDM: async (targetUserId) => {
+        const { activeChats } = get()
+        const chat = activeChats[targetUserId]
+
+        if (chat?.channel) {
+          try {
+            await chat.channel.unsubscribe()
+          } catch (error) {
+            console.error('[DM] Error closing chat:', error)
+          }
+        }
+
+        const { [targetUserId]: removed, ...remainingChats } = activeChats
+
+        set({ activeChats: remainingChats })
+      },
+      sendMessage: async (targetUserId, message) => {
+        const { activeChats, currentUserId } = get()
+        const chat = activeChats[targetUserId]
+
+        if (!chat?.isSubscribed || !currentUserId) {
+          console.warn('[DM] Cannot send message - chat not ready')
+          return
+        }
+
+        try {
+          const tempId = uuidv4()
+          const tempMessage: DMMessage = {
+            id: tempId,
+            user_sender_id: currentUserId,
+            user_recipient_id: targetUserId,
+            content: message,
+            created_at: new Date().toISOString(),
+          }
+
+          set({
+            activeChats: {
+              ...get().activeChats,
+              [targetUserId]: {
+                ...chat,
+                messages: [...chat.messages, tempMessage],
+                lastMessageAt: tempMessage.created_at,
+              },
+            },
+          })
+
+          const brodcatsPayload: DMBroadcastPayLoad = {
+            message: tempMessage,
+            sender: {
+              id: currentUserId,
+              full_name: '',
+              avatar_url: null,
+            },
+            temp_id: tempId,
+          }
+
+          await chat.channel.send({
+            type: 'broadcast',
+            event: 'message',
+            payload: brodcatsPayload,
+          })
+
+          const { error } = await supabase.from('messages').insert({
+            id: tempId,
+            user_sender_id: currentUserId,
+            user_recipient_id: targetUserId,
+            content: message,
+            created_at: tempMessage.created_at,
+          })
+
+          if (error) {
+            console.error('[DM] Error saving message to database:', error)
+            const { activeChats } = get()
+            const currentChat = activeChats[targetUserId]
+            if (currentChat) {
+              const updatedMessages = currentChat.messages.filter((m) => m.id !== tempId)
+              set({
+                activeChats: {
+                  ...get().activeChats,
+                  [targetUserId]: {
+                    ...currentChat,
+                    messages: updatedMessages,
+                  },
+                },
+              })
+            }
+          }
+        } catch (error) {
+          console.error('[DM] Error sending message:', error)
+        }
+      },
+      loadMessageHistory: async (targetUserId) => {
+        const { activeChats, currentUserId } = get()
+        const chat = activeChats[targetUserId]
+
+        if (!chat || chat.hasLoadingHistory || !currentUserId) return
+
+        try {
+          const { data, error } = await supabase
+            .from('messages')
+            .select('*')
+            .or(
+              `and(user_sender_id.eq.${currentUserId},user_recipient_id.eq.${targetUserId}),and(user_sender_id.eq.${targetUserId},user_recipient_id.eq.${currentUserId})`,
+            )
+            .order('created_at', { ascending: true })
+            .limit(50)
+
+          if (error) {
+            console.log('[DM] Error loading message history', error)
+            return
+          }
+
+          set({
+            activeChats: {
+              ...get().activeChats,
+              [targetUserId]: {
+                ...chat,
+                messages: data || [],
+                hasLoadingHistory: true,
+                lastMessageAt: data?.[data.length - 1]?.created_at || null,
+              },
+            },
+          })
+        } catch (error) {
+          console.log('[DM] Error loading message history', error)
+        }
+      },
+      setTyping: async (targetUserId, isTyping) => {
+        const { activeChats, currentUserId } = get()
+        const chat = activeChats[targetUserId]
+
+        if (!chat.isSubscribed && !currentUserId) return
+
+        const chatId = [currentUserId, targetUserId].sort().join('-')
+
+        await chat.channel.send({
+          type: 'broadcast',
+          event: 'typing',
+          payload: {
+            user_id: currentUserId,
+            is_typing: isTyping,
+            chat_id: chatId,
+          },
+        })
+      },
+      getChatWithUser: (targetUserId) => {
+        return get().activeChats[targetUserId] || null
+      },
+      cleanup: async () => {
+        const { activeChats } = get()
+        // Cerrar todos los canales
+        await Promise.all(Object.keys(activeChats).map((userId) => get().closeDM(userId)))
+        set({ activeChats: {}, currentUserId: null })
+      },
+    }),
+    {
+      name: 'messages',
+      partialize: (state) => ({
+        currentUserId: state.currentUserId,
       }),
     },
   ),
