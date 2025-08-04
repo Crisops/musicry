@@ -1,12 +1,20 @@
 ---
 import bird from '@/assets/bird-music.svg'
 import FormRegister from '@/components/react/form-register'
+import type { HTMLAttributes, HTMLTag } from 'astro/types'
+
+interface Props {
+  message: string
+  class?: HTMLAttributes<HTMLTag>['class']
+}
+
+const { message, class: className } = Astro.props
 ---
 
 <div class="flex h-full w-full flex-col items-center justify-center gap-y-4">
   <img src={bird.src} width={200} height={200} alt="Bird Music" />
-  <div class="max-w-56 text-center">
-    <p class="text-gray-dim text-small mb-2 font-normal">¡Únete y vibra con lo que escuchan los demás!</p>
+  <div class={className}>
+    <p class="text-gray-dim text-small mb-2 font-normal">{message}</p>
     <FormRegister client:visible radius="sm" className="text-platinum bg-rich-dark-jungle">
       Iniciar sesión
     </FormRegister>

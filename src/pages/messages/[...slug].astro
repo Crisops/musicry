@@ -1,0 +1,25 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import TopBar from '@/components/astro/top-bar.astro'
+import OnlineUserList from '@/components/react/online-user-list'
+import LoginRequired from '@/components/astro/login-required.astro'
+
+const { slug: targetuserId } = Astro.params
+---
+
+<Layout>
+  <TopBar />
+  <section class="top-night h-full w-full bg-linear-to-b from-[#161C25]">
+    <OnlineUserList
+      className={{ base: 'grid-cols-[320px_1fr]', scrollbar: 'border-gray-dim max-w-xs border-r pb-26' }}
+      type="messages"
+      client:load
+      selectedUserId={targetuserId}
+    >
+      <LoginRequired
+        class="max-w-96 text-center"
+        message="¡No te pierdas las conversaciones musicales! Inicia sesión para ver quién está online y qué están escuchando ahora mismo."
+      />
+    </OnlineUserList>
+  </section>
+</Layout>

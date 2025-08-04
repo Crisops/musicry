@@ -9,7 +9,7 @@ import LoginRequired from '@/components/astro/login-required.astro'
     <UsersRound class="text-sealsalt" size={22} />
     <h3 class="text-sealsalt text-large font-semibold">Lo que escuchan</h3>
   </header>
-  <OnlineUserList client:load transition:persist transition:name="online-users">
-    <LoginRequired />
+  <OnlineUserList type="room" client:load transition:persist transition:name="online-users">
+    <LoginRequired class="max-w-56 text-center" message="¡Únete y vibra con lo que escuchan los demás!" />
   </OnlineUserList>
 </div>
