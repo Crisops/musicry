@@ -10,7 +10,10 @@ interface FormMessageProps {
 }
 
 const FormMessage = ({ currentUserId, targetUserId }: FormMessageProps) => {
-  const { registerField, handleSubmit, handleInputChange, handleSendMessage } = useDMChat(currentUserId, targetUserId)
+  const { registerField, handleSubmit, handleInputChange, handleSendMessage, errors } = useDMChat(
+    currentUserId,
+    targetUserId,
+  )
 
   const onSubmit = handleSubmit((data) => {
     if (!data.content) return
@@ -24,18 +27,21 @@ const FormMessage = ({ currentUserId, targetUserId }: FormMessageProps) => {
           <Textarea
             {...registerField}
             onChange={(e) => handleInputChange(e, e.target.value)}
+            errorMessage={errors.content?.message}
+            isInvalid={!!errors.content}
             radius="sm"
             minRows={1}
             disableAutosize
             variant="flat"
             classNames={{
               inputWrapper: [
-                'bg-rich-dark-jungle data-[hover=true]:bg-rich-dark-jungle group-data-[focus=true]:bg-rich-dark-jungle py-1.5',
+                'bg-rich-dark-jungle data-[hover=true]:bg-rich-dark-jungle group-data-[focus=true]:bg-rich-dark-jungle py-1.5 group-data-[invalid=true]:!bg-red-500/10 group-data-[invalid=true]:data-[hover=true]:!bg-red-500/15',
               ],
               input: ['h-8 group-data-[has-value=true]:text-sealsalt'],
             }}
           />
           <Button
+            isDisabled={!!errors.content}
             type="submit"
             isIconOnly
             radius="sm"
