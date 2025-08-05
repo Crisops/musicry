@@ -30,23 +30,28 @@ export const useDMChat = (currentUserId: Tables<'users'>['id'], targetUserId: Ta
   )
 
   const chat = getChatWithUser(targetUserId)
+
   const { registerField, handleSubmit, errors, isSubmitting, reset } = useForm<MessageFormData>({
     initialForm: {
       content: '',
     },
   })
+
   const [isTypingLocal, setIsTypingLocal] = useState(false)
   const { onChange, ...rest } = registerField('content')
 
   // Enriquecer mensajes con información de usuarios
   const enrichedMessages = useMemo((): EnrichedMessage[] => {
-    if (!chat?.messages || !allUsersInRoom) return []
-
-    return chat.messages.map((message) => ({
+    if (!chat?.messages || !allUsersInRoom) {
+      return []
+    }
+    const enriched = chat.messages.map((message) => ({
       ...message,
       senderInfo: allUsersInRoom[message.user_sender_id!] || null,
       recipientInfo: allUsersInRoom[message.user_recipient_id!] || null,
     }))
+
+    return enriched
   }, [chat?.messages, allUsersInRoom])
 
   useEffect(() => {

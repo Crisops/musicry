@@ -23,7 +23,6 @@ const ChatHeader = ({ user, currentUserId, targetUserId, onExit }: ChatHeaderPro
 
   const handleCloseDM = async () => {
     await closeDM(targetUserId)
-    console.log('se cierra el chat')
     onExit()
   }
 

@@ -1,10 +1,11 @@
-import { useEffect, useState, type HTMLProps } from 'react'
+import { useEffect, useRef, useState, type HTMLProps } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import type { Tables } from '@/types/database.types'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/use-store'
 import { useDMList, type EnrichedUser } from '@/hooks/use-dm-list'
 import AnimatedChatView from '@/components/react/animated-chat-view'
+import EmptyMessages from '@/components/react/empty-messages'
 import OnlineUserItemDescription from '@/components/react/online-user-item-description'
 import OnlineUserItem from '@/components/react/online-user-item'
 
@@ -20,20 +21,32 @@ const OnlineUserList = ({ children: componentLoginRequired, className, type, sel
 
   const loggedUser = useAuth((state) => state.user)
   const [selectedUser, setSelectedUser] = useState<EnrichedUser | null>(null)
+  const userClosedChatRef = useRef<boolean>(false)
 
   useEffect(() => {
-    if (!selectedUserId || userList.length === 0 || !selectedUser) return
+    if (userList.length === 0 || !selectedUserId || userClosedChatRef.current) {
+      return
+    }
 
     const foundUser = userList.find((user) => user.user.id === selectedUserId)
-    if (foundUser) setSelectedUser(foundUser)
+    if (foundUser) {
+      setSelectedUser(foundUser)
+    } else {
+      setSelectedUser(null)
+    }
   }, [selectedUserId, userList])
 
   const handleUserClick = (item: EnrichedUser) => {
+    if (selectedUser?.user.id === item.user.id) return
     setSelectedUser(item)
+    userClosedChatRef.current = false
+    window.history.pushState({}, '', `/messages/${item.user.id}`)
   }
 
   const handleExitChat = () => {
     setSelectedUser(null)
+    userClosedChatRef.current = true
+    window.history.pushState({}, '', '/messages')
   }
 
   if (!loggedUser) return componentLoginRequired
@@ -70,9 +83,11 @@ const OnlineUserList = ({ children: componentLoginRequired, className, type, sel
         </div>
       </div>
       <AnimatePresence mode="wait">
-        {type === 'messages' && (
+        {type === 'messages' && selectedUser ? (
           <AnimatedChatView selectedUser={selectedUser} loggedUser={loggedUser} onExitChat={handleExitChat} />
-        )}
+        ) : type === 'messages' ? (
+          <EmptyMessages />
+        ) : null}
       </AnimatePresence>
     </div>
   )
