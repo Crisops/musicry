@@ -68,7 +68,6 @@ const ButtonPlay = ({ id, sizeIcon = 16, source, ...props }: ButtonPropsPlay) =>
     }
     setCurrentSong(result.data)
     if (shuffle && result.data) {
-      console.log('result.data', result.data)
       const shuffled = shuffleMix<Song>(result.data.playlist)
       setShufflePlaylist({ song: result.data.song, playlist: shuffled })
     }
