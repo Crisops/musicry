@@ -122,7 +122,7 @@ export const albumValidationRules: Record<keyof AlbumFormData, RegisterOptions> 
 
 export const messageValidationRules: Record<keyof MessageFormData, RegisterOptions> = {
   content: {
-    required: 'El mensaje es obligatorio.',
+    required: 'Escribe algo para enviar tu mensaje...',
     minLength: {
       value: 1,
       message: 'El mensaje debe tener al menos 1 carácter.',
