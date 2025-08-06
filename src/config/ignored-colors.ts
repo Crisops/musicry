@@ -6,6 +6,7 @@ export const IGNORED_COLORS_ALBUM: FastAverageColorIgnoredColor = [
   [71, 48, 75, 255],
   [70, 49, 21, 255],
   [16, 23, 20, 255],
+  [134, 107, 119],
 ]
 
 export const IGNORED_COLORS_SONG_PANEL_MOBILE: FastAverageColorIgnoredColor = [
