@@ -9,7 +9,7 @@ interface OnlineUserProps {
   user: UserPresenceTrack & { isOnline: boolean }
   showIconSong: boolean
   children: React.ReactNode
-  className?: Record<'root' | 'wrapperInfoUser', HTMLProps<HTMLDivElement>['className']>
+  className?: Partial<Record<'root' | 'wrapperInfoUser', HTMLProps<HTMLDivElement>['className']>>
   avatarSize?: 'sm' | 'md' | 'lg'
   onUserClick?: () => void
 }
