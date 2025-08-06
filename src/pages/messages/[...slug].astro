@@ -11,7 +11,9 @@ const { slug: targetuserId } = Astro.params
   <TopBar />
   <section class="top-night h-full w-full bg-linear-to-b from-[#161C25]">
     <OnlineUserList
-      className={{ base: 'grid-cols-[320px_1fr]', scrollbar: 'border-gray-dim max-w-xs border-r pb-26' }}
+      className={{
+        scrollbar: 'border-gray-dim border-r',
+      }}
       type="messages"
       client:load
       selectedUserId={targetuserId}

@@ -9,7 +9,7 @@ interface OnlineUserProps {
   user: UserPresenceTrack & { isOnline: boolean }
   showIconSong: boolean
   children: React.ReactNode
-  className?: Record<'root', HTMLProps<HTMLDivElement>['className']>
+  className?: Record<'root' | 'wrapperInfoUser', HTMLProps<HTMLDivElement>['className']>
   avatarSize?: 'sm' | 'md' | 'lg'
   onUserClick?: () => void
 }
@@ -48,7 +48,7 @@ const OnlineUserItem = ({
             alt={user.full_name ?? ''}
           />
         </Badge>
-        <div className="flex w-full flex-col">
+        <div className={cn('w-full flex-col', className?.wrapperInfoUser)}>
           <div className="flex items-center gap-x-1.5">
             <span className={`${user.isOnline ? 'text-sealsalt' : 'text-gray-davy'} text-small font-semibold`}>
               {user.full_name}

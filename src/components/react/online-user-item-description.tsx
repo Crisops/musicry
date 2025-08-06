@@ -11,11 +11,10 @@ interface OnlineUserItemDescriptionProps {
 }
 
 const OnlineUserItemDescription = ({ user, loggedUserId, type, enrichedUser }: OnlineUserItemDescriptionProps) => {
-  const isCurrentUser = user.id === loggedUserId
   const isListening = type === 'room' && user.current_song && user.isOnline
   const isLastMessage = type === 'messages' && user.isOnline && enrichedUser?.last_message
   const isOnline = type === 'messages' && user.isOnline
-  const showLastSeen = !user.isOnline && !isCurrentUser && !user.current_song
+  const showLastSeen = !user.isOnline
 
   let description: React.ReactNode = null
 
