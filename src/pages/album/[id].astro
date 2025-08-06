@@ -35,6 +35,7 @@ const album = await getAlbumById(request, cookies, id)
 
 <script>
   import { extractDominantColor } from '@/utils/color-extractor'
+  import { IGNORED_COLORS_ALBUM } from '@/config/ignored-colors'
 
   const getColorImage = async () => {
     const image = document.getElementById('album-image') as HTMLImageElement | null
@@ -45,13 +46,7 @@ const album = await getAlbumById(request, cookies, id)
     try {
       const applyColor = async () => {
         const color = await extractDominantColor(image, {
-          ignoredColor: [
-            [255, 255, 255, 255],
-            [0, 0, 0, 255],
-            [71, 48, 75, 255],
-            [70, 49, 21, 255],
-            [16, 23, 20, 255],
-          ],
+          ignoredColor: IGNORED_COLORS_ALBUM,
         })
         if (color) {
           const { hex } = color
