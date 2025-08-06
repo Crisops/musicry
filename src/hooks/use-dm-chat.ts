@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { debounce } from 'lodash-es'
 import type { Tables } from '@/types/database.types'
@@ -38,71 +38,76 @@ export const useDMChat = (currentUserId: Tables<'users'>['id'], targetUserId: Ta
   })
 
   const [isTypingLocal, setIsTypingLocal] = useState(false)
+  const debouncedStopTypingRef = useRef<ReturnType<typeof debounce>>(null)
   const { onChange, ...rest } = registerField('content')
 
-  // Enriquecer mensajes con información de usuarios
+  useEffect(() => {
+    debouncedStopTypingRef.current = debounce(() => {
+      setTyping(targetUserId, false)
+      setIsTypingLocal(false)
+    }, 1000)
+
+    return () => {
+      debouncedStopTypingRef.current?.cancel()
+    }
+  }, [targetUserId, setTyping])
+
   const enrichedMessages = useMemo((): EnrichedMessage[] => {
     if (!chat?.messages || !allUsersInRoom) {
       return []
     }
-    const enriched = chat.messages.map((message) => ({
+    return chat.messages.map((message) => ({
       ...message,
       senderInfo: allUsersInRoom[message.user_sender_id!] || null,
       recipientInfo: allUsersInRoom[message.user_recipient_id!] || null,
     }))
-
-    return enriched
   }, [chat?.messages, allUsersInRoom])
 
   useEffect(() => {
-    if (currentUserId && targetUserId) {
-      openDM(currentUserId, targetUserId)
-    }
+    if (!currentUserId || !targetUserId) return
+    openDM(currentUserId, targetUserId)
 
     return () => {
-      if (targetUserId) {
-        closeDM(targetUserId)
-      }
+      closeDM(targetUserId)
     }
   }, [currentUserId, targetUserId])
 
-  // Debounced typing indicator
-  const debouncedStopTyping = useCallback(
-    debounce(() => {
-      setTyping(targetUserId, false)
-      setIsTypingLocal(false)
-    }, 1000),
-    [targetUserId, setTyping],
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>, value: string) => {
+      onChange(e)
+
+      if (value.length > 0 && !isTypingLocal) {
+        setTyping(targetUserId, true)
+        setIsTypingLocal(true)
+      }
+
+      if (value.length === 0) {
+        setTyping(targetUserId, false)
+        setIsTypingLocal(false)
+        debouncedStopTypingRef.current?.cancel()
+      } else {
+        debouncedStopTypingRef.current?.()
+      }
+    },
+    [onChange, isTypingLocal, targetUserId, setTyping],
   )
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, value: string) => {
-    onChange(e)
-    if (value.length > 0 && !isTypingLocal) {
-      setTyping(targetUserId, true)
-      setIsTypingLocal(true)
-    }
+  const handleSendMessage = useCallback(
+    async ({ content }: { content: Tables<'messages'>['content'] }) => {
+      if (!content?.trim()) return
 
-    if (value.length === 0) {
-      setTyping(targetUserId, false)
-      setIsTypingLocal(false)
-      debouncedStopTyping.cancel()
-    } else {
-      debouncedStopTyping()
-    }
-  }
-
-  const handleSendMessage = async ({ content }: { content: Tables<'messages'>['content'] }) => {
-    if (!content) return
-    try {
-      reset()
-      await sendMessage(targetUserId, content.trim())
-      setTyping(targetUserId, false)
-      setIsTypingLocal(false)
-      debouncedStopTyping.cancel()
-    } catch (error) {
-      console.error('Error sending message:', error)
-    }
-  }
+      try {
+        reset()
+        await sendMessage(targetUserId, content.trim())
+        setTyping(targetUserId, false)
+        setIsTypingLocal(false)
+        debouncedStopTypingRef.current?.cancel()
+      } catch (error) {
+        console.error('Error sending message:', error)
+      }
+    },
+    [reset, sendMessage, targetUserId, setTyping],
+  )
 
   return {
     messages: enrichedMessages,
