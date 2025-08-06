@@ -8,5 +8,10 @@ const albums = await getAllAlbums(request, cookies, 6)
 ---
 
 <div class="grid-section relative w-full">
-  {albums.length > 0 && albums.map((album) => <MadeForYouAlbum {...album} />)}
+  {
+    albums.length > 0 &&
+      albums.map((album) => (
+        <MadeForYouAlbum id={album.id} title={album.title} artist={album.artist} imageUrl={album.imageUrl} />
+      ))
+  }
 </div>

@@ -3,9 +3,14 @@ import { Image } from 'astro:assets'
 import type { Tables } from '@/types/database.types'
 import ButtonPlay from '@/components/react/button-play'
 
-interface Props extends Tables<'albums'> {}
+interface Props {
+  id: Tables<'albums'>['id']
+  title: Tables<'albums'>['title']
+  artist: Tables<'albums'>['artist']
+  imageUrl: Tables<'albums'>['imageUrl']
+}
 
-const { id, title, artist, imageUrl }: Props = Astro.props
+const { id, title, artist, imageUrl } = Astro.props
 ---
 
 <article
