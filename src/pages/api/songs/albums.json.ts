@@ -18,7 +18,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 
   const { data: songData, error: songError } = await supabase
     .from('songs')
-    .select('id, title, artist, imageUrl, audioUrl, duration, album:albums!songs_albumId_fkey(id)')
+    .select('id, title, artist, image_url, audio_url, duration, album:albums!songs_albumId_fkey(id)')
     .eq('id', id)
     .single()
 
@@ -33,8 +33,8 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 
   const { data: playlist, error: playlistError } = await supabase
     .from('songs')
-    .select('id, title, artist, imageUrl, audioUrl, duration, album:albums!songs_albumId_fkey(id)')
-    .eq('albumId', songData.album.id)
+    .select('id, title, artist, image_url, audio_url, duration, album:albums!songs_albumId_fkey(id)')
+    .eq('album_id', songData.album.id)
 
   if (playlistError) {
     return new Response(JSON.stringify(null), {

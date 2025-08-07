@@ -7,10 +7,10 @@ interface Props {
   id: Tables<'albums'>['id']
   title: Tables<'albums'>['title']
   artist: Tables<'albums'>['artist']
-  imageUrl: Tables<'albums'>['imageUrl']
+  image_url: Tables<'albums'>['image_url']
 }
 
-const { id, title, artist, imageUrl } = Astro.props
+const { id, title, artist, image_url: imageUrl } = Astro.props
 ---
 
 <article
@@ -49,6 +49,8 @@ const { id, title, artist, imageUrl } = Astro.props
     <h4 class="text-medium text-platinum truncate font-medium" transition:name={`playlist ${id} title`}>
       {title}
     </h4>
-    <span class="text-gray-dim text-xs" transition:name={`playlist ${id} artist`}>{artist}</span>
+    <div class="max-w-28">
+      <span class="text-gray-dim block truncate text-xs" transition:name={`playlist ${id} artist`}>{artist}</span>
+    </div>
   </div>
 </article>

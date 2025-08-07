@@ -21,12 +21,12 @@ const songs =
     <div class="relative h-64 w-full flex-none sm:h-52 sm:w-52">
       <div class="absolute inset-0 z-10 bg-black/65 sm:hidden"></div>
       {
-        album?.imageUrl && (
+        album?.image_url && (
           <Image
             id="album-image"
             crossorigin="anonymous"
             transition:name={`playlist ${album.id} image`}
-            src={album.imageUrl}
+            src={album.image_url}
             alt={`${album.title} - ${album.artist}`}
             width={208}
             height={208}
@@ -39,9 +39,9 @@ const songs =
       <div>
         <h5 class="text-platinum text-small hidden font-normal sm:block">Albúm</h5>
       </div>
-      <div class="max-w-sm p-3 sm:max-w-xl sm:p-0">
+      <div class="max-w-xs p-3 sm:max-w-xl sm:p-0">
         <h1
-          class="text-platinum text-4xl font-extrabold sm:text-5xl sm:font-bold md:text-6xl"
+          class="text-platinum text-4xl font-extrabold text-balance sm:text-5xl sm:font-bold md:text-6xl"
           transition:name={`playlist ${album?.id} title`}
         >
           {album?.title}

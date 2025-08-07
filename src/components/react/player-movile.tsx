@@ -59,8 +59,8 @@ export const PlayerMovile = () => {
 
   useEffect(() => {
     const getColor = async () => {
-      if (currentSong?.song?.imageUrl) {
-        const color = await extractDominantColor(currentSong.song.imageUrl, {
+      if (currentSong?.song?.image_url) {
+        const color = await extractDominantColor(currentSong.song.image_url, {
           ignoredColor: [
             [255, 255, 255, 255],
             [0, 0, 0, 255],
@@ -72,7 +72,7 @@ export const PlayerMovile = () => {
     }
 
     getColor()
-  }, [currentSong?.song?.imageUrl])
+  }, [currentSong?.song?.image_url])
 
   return (
     <motion.div

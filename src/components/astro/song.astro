@@ -7,10 +7,10 @@ interface Props {
   id: Tables<'songs'>['id']
   title: Tables<'songs'>['title']
   artist: Tables<'songs'>['artist']
-  imageUrl: Tables<'songs'>['imageUrl']
+  image_url: Tables<'songs'>['image_url']
 }
 
-const { index, id, title, artist, imageUrl }: Props = Astro.props
+const { index, id, title, artist, image_url: imageUrl } = Astro.props
 ---
 
 <article

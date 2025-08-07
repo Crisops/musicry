@@ -163,8 +163,8 @@ export type Database = {
           id: string
           title: string
           artist: string
-          imageurl: string
-          releaseyear: string
+          image_url: string
+          release_year: string
           created_at: string
         }[]
       }
@@ -174,11 +174,11 @@ export type Database = {
           id: string
           title: string
           artist: string
-          imageurl: string
-          audiourl: string
+          image_url: string
+          audio_url: string
           duration: number
           created_at: string
-          albumid: string
+          album_id: string
         }[]
       }
     }
