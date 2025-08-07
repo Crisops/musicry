@@ -29,10 +29,10 @@ const FormCreateAlbum = ({ onCancel, onAddItem }: FormCreateAlbumProps) => {
   })
   const { onOpenChange: closeModal } = useModal()
 
-  const { onChange, ref, ...props } = registerField('imageUrl')
+  const { onChange, ref, ...props } = registerField('image_url')
 
   const onSubmit = handleSubmit(async (data) => {
-    const { imageUrl, releaseYear, ...formData } = data
+    const { image_url: imageUrl, release_year: releaseYear, ...formData } = data
 
     if (!user || !imageUrl || !releaseYear) return
 
@@ -53,8 +53,8 @@ const FormCreateAlbum = ({ onCancel, onAddItem }: FormCreateAlbumProps) => {
 
     const newAlbum: TablesInsert<'albums'> = {
       id: idAlbum,
-      imageUrl: url,
-      releaseYear: releaseYear.toDate(getLocalTimeZone()).toISOString(),
+      image_url: url,
+      release_year: releaseYear.toDate(getLocalTimeZone()).toISOString(),
       ...formData,
     }
 
@@ -94,7 +94,7 @@ const FormCreateAlbum = ({ onCancel, onAddItem }: FormCreateAlbumProps) => {
           onChange={onChange}
           {...props}
           ref={ref}
-          errorMessage={errors.imageUrl?.message}
+          errorMessage={errors.image_url?.message}
         />
       </div>
       <div className="flex w-full flex-col gap-5">
@@ -113,9 +113,9 @@ const FormCreateAlbum = ({ onCancel, onAddItem }: FormCreateAlbumProps) => {
         />
         <Controller
           control={control}
-          name="releaseYear"
+          name="release_year"
           rules={{
-            validate: albumValidationRules.releaseYear.validate,
+            validate: albumValidationRules.release_year.validate,
           }}
           render={({ field: { value, ...field }, fieldState }) => (
             <DateInput

@@ -16,8 +16,8 @@ const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
     useSongForm()
   const [albums, setAlbums] = useState<Tables<'albums'>[]>([])
 
-  const { onChange, ref, ...props } = registerField('imageUrl')
-  const { onChange: onChangeAudio, ...audioRest } = registerField('audioUrl')
+  const { onChange, ref, ...props } = registerField('image_url')
+  const { onChange: onChangeAudio, ...audioRest } = registerField('audio_url')
 
   useEffect(() => {
     const fetchAlbums = async () => {
@@ -48,15 +48,15 @@ const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
           onChange={onChange}
           {...props}
           ref={ref}
-          errorMessage={errors.imageUrl?.message}
+          errorMessage={errors.image_url?.message}
         />
       </div>
       <div className="flex w-full flex-col gap-5">
         <Input
           {...audioRest}
           type="file"
-          isInvalid={!!errors.audioUrl}
-          errorMessage={errors.audioUrl?.message}
+          isInvalid={!!errors.audio_url}
+          errorMessage={errors.audio_url?.message}
           label="Archivo de audio"
           accept="audio/*"
           onChange={(e) => {
@@ -88,10 +88,10 @@ const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
           errorMessage={errors.duration?.message}
         />
         <Select
-          {...registerField('albumId')}
+          {...registerField('album_id')}
           label="Álbum (opcional)"
-          isInvalid={!!errors.albumId}
-          errorMessage={errors.albumId?.message}
+          isInvalid={!!errors.album_id}
+          errorMessage={errors.album_id?.message}
           items={albums}
         />
         <div className="flex justify-end gap-2">

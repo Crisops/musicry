@@ -19,24 +19,24 @@ export type Database = {
           artist: string | null
           created_at: string
           id: string
-          imageUrl: string | null
-          releaseYear: string | null
+          image_url: string | null
+          release_year: string | null
           title: string | null
         }
         Insert: {
           artist?: string | null
           created_at?: string
           id?: string
-          imageUrl?: string | null
-          releaseYear?: string | null
+          image_url?: string | null
+          release_year?: string | null
           title?: string | null
         }
         Update: {
           artist?: string | null
           created_at?: string
           id?: string
-          imageUrl?: string | null
-          releaseYear?: string | null
+          image_url?: string | null
+          release_year?: string | null
           title?: string | null
         }
         Relationships: []
@@ -82,39 +82,39 @@ export type Database = {
       }
       songs: {
         Row: {
-          albumId: string | null
+          album_id: string | null
           artist: string | null
-          audioUrl: string | null
+          audio_url: string | null
           created_at: string
           duration: number | null
           id: string
-          imageUrl: string | null
+          image_url: string | null
           title: string | null
         }
         Insert: {
-          albumId?: string | null
+          album_id?: string | null
           artist?: string | null
-          audioUrl?: string | null
+          audio_url?: string | null
           created_at?: string
           duration?: number | null
           id?: string
-          imageUrl?: string | null
+          image_url?: string | null
           title?: string | null
         }
         Update: {
-          albumId?: string | null
+          album_id?: string | null
           artist?: string | null
-          audioUrl?: string | null
+          audio_url?: string | null
           created_at?: string
           duration?: number | null
           id?: string
-          imageUrl?: string | null
+          image_url?: string | null
           title?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "songs_albumId_fkey"
-            columns: ["albumId"]
+            columns: ["album_id"]
             isOneToOne: false
             referencedRelation: "albums"
             referencedColumns: ["id"]
@@ -156,6 +156,17 @@ export type Database = {
       count_unique_artists: {
         Args: Record<PropertyKey, never>
         Returns: number
+      }
+      get_random_albums: {
+        Args: { album_limit?: number }
+        Returns: {
+          id: string
+          title: string
+          artist: string
+          imageurl: string
+          releaseyear: string
+          created_at: string
+        }[]
       }
       get_random_songs_with_album: {
         Args: { song_limit?: number }

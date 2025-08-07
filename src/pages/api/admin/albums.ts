@@ -9,7 +9,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   const { data, error } = await supabase
     .from('albums')
     .insert(formData)
-    .select('id, title, artist, imageUrl, release_year:releaseYear, songs:songs!songs_albumId_fkey(id, title)')
+    .select('id, title, artist, image_url, release_year, songs:songs!songs_albumId_fkey(id, title)')
     .single()
 
   if (error) {
