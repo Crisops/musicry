@@ -46,7 +46,7 @@ const album = await getAlbumById(request, cookies, id)
     try {
       const applyColor = async () => {
         const color = await extractDominantColor(image, {
-          algorithm: 'sqrt',
+          algorithm: 'simple',
           ignoredColor: IGNORED_COLORS_ALBUM,
         })
         if (color) {
