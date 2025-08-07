@@ -3,7 +3,9 @@ import { Library, ListMusic, UsersRound, User } from '@lucide/astro'
 import StastsCard from '@/components/astro/stasts-card.astro'
 import { createClient } from '@/lib/supabase/server'
 
-const supabase = await createClient(Astro.request, Astro.cookies)
+const { request, cookies } = Astro
+
+const supabase = await createClient(request, cookies)
 
 const [albums, songs, artists, users] = await Promise.all([
   supabase.from('albums').select('*', { count: 'exact', head: true }),
@@ -14,28 +16,8 @@ const [albums, songs, artists, users] = await Promise.all([
 ---
 
 <div class="grid grid-cols-2 grid-rows-2 gap-2 xl:grid-cols-4 xl:grid-rows-1">
-  <StastsCard
-    icon={ListMusic}
-    title="Canciones totales"
-    value={songs.count}
-    type="songs"
-  />
-  <StastsCard
-    icon={Library}
-    title="Albunes totales"
-    value={albums.count}
-    type="albums"
-  />
-  <StastsCard
-    icon={UsersRound}
-    title="Artistas totales"
-    value={artists.data}
-    type="artists"
-  />
-  <StastsCard
-    icon={User}
-    title="Usuarios totales"
-    value={users.count}
-    type="users"
-  />
+  <StastsCard icon={ListMusic} title="Canciones totales" value={songs.count} type="songs" />
+  <StastsCard icon={Library} title="Albunes totales" value={albums.count} type="albums" />
+  <StastsCard icon={UsersRound} title="Artistas totales" value={artists.data} type="artists" />
+  <StastsCard icon={User} title="Usuarios totales" value={users.count} type="users" />
 </div>

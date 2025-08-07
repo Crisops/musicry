@@ -28,10 +28,10 @@ const PlayerCurrentSongMovile = ({ onExpand, currentSong, audioSeekState, audioR
       >
         <div className="flex w-full flex-col items-center justify-center gap-10">
           <div className="flex flex-col items-center justify-center gap-2">
-            {currentSong && currentSong.imageUrl && (
+            {currentSong && currentSong.image_url && (
               <img
                 className="pointer-events-none aspect-square h-auto w-96 object-cover md:w-104"
-                src={currentSong.imageUrl}
+                src={currentSong.image_url}
                 alt={`${currentSong.title} - ${currentSong.artist}`}
               />
             )}

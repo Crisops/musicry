@@ -108,9 +108,10 @@ export const SongFormProvider = ({ children, onAddItem }: SongFormProviderProps)
 
   const onSubmit = useCallback(
     async (data: SongFormData) => {
-      const { imageUrl, audioUrl, ...rest } = data
+      const { image_url: imageUrl, audio_url: audioUrl, ...rest } = data
 
       if (!user || !imageUrl || !audioUrl) return
+
       const idSong = uuidv4()
       const folder = `${user.id}/${idSong}`
       const [image, audio] = await Promise.all([
@@ -126,8 +127,8 @@ export const SongFormProvider = ({ children, onAddItem }: SongFormProviderProps)
 
       const newSong: TablesInsert<'songs'> = {
         id: idSong,
-        imageUrl: image.url,
-        audioUrl: audio.url,
+        image_url: image.url,
+        audio_url: audio.url,
         ...rest,
       }
 

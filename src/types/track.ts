@@ -4,8 +4,8 @@ export interface BaseTrackRow {
   id: Tables<'songs'>['id'] | Tables<'albums'>['id']
   title: Tables<'songs'>['title'] | Tables<'albums'>['title']
   artist: Tables<'songs'>['artist'] | Tables<'albums'>['artist']
-  imageUrl: Tables<'songs'>['imageUrl'] | Tables<'albums'>['imageUrl']
-  release_year: Tables<'songs'>['created_at'] | Tables<'albums'>['releaseYear']
+  image_url: Tables<'songs'>['image_url'] | Tables<'albums'>['image_url']
+  release_year: Tables<'songs'>['created_at'] | Tables<'albums'>['release_year']
 }
 
 export type Column = {

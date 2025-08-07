@@ -19,7 +19,7 @@ const album = await getAlbumById(request, cookies, id)
     <div id="gradient-bg" class="absolute h-80 w-full sm:h-full"></div>
     <AlbumDetail album={album} />
     <div class="flex items-center justify-between px-3 py-5 sm:justify-start">
-      <AlbumDetailMovile imageUrl={album?.imageUrl ?? ''} title={album?.title ?? ''} artist={album?.artist ?? ''} />
+      {album && <AlbumDetailMovile imageUrl={album.image_url} title={album.title} artist={album.artist} />}
       <ButtonPlay
         client:load
         id={id}

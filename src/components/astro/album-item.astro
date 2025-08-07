@@ -7,22 +7,26 @@ interface Props {
   id: Tables<'albums'>['id']
   title: Tables<'albums'>['title']
   artist: Tables<'albums'>['artist']
-  imageUrl: Tables<'albums'>['imageUrl']
+  image_url: Tables<'albums'>['image_url']
 }
 
-const { id, title, artist, imageUrl }: Props = Astro.props
+const { id, title, artist, image_url: imageUrl } = Astro.props
 ---
 
 <li class="hover:bg-rich-dark-jungle/30 transition-background flex-grow">
   <Link href={`/album/${id}`}>
     <div class="relative aspect-square h-auto w-11">
-      <Image
-        class="absolute h-full w-full rounded-md object-cover"
-        src={imageUrl ?? ''}
-        alt={title}
-        width={44}
-        height={44}
-      />
+      {
+        imageUrl && (
+          <Image
+            class="absolute h-full w-full rounded-md object-cover"
+            src={imageUrl}
+            alt={title}
+            width={44}
+            height={44}
+          />
+        )
+      }
     </div>
     <div class="flex-initial flex-col items-start justify-center">
       <h4 class="text-sealsalt text-small font-semibold">

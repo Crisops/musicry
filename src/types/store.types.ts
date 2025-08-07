@@ -6,7 +6,7 @@ export type UserAuthStore = {
   setUser: (user: User) => void
 }
 
-export type Song = Omit<Tables<'songs'>, 'albumId' | 'created_at'> & {
+export type Song = Omit<Tables<'songs'>, 'album_id' | 'created_at'> & {
   album: {
     id: Tables<'albums'>['id']
   }
@@ -38,7 +38,7 @@ export type UserPresenceTrack = {
   id: Tables<'users'>['id']
   full_name: Tables<'users'>['full_name']
   avatar: Tables<'users'>['avatar_url']
-  current_song: Omit<Song, 'audioUrl' | 'imageUrl' | 'album'> | null
+  current_song: Omit<Song, 'audio_url' | 'image_url' | 'album'> | null
   last_seen: Tables<'users'>['last_seen']
 }
 

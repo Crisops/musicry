@@ -17,10 +17,10 @@ const CurrentSong = ({ className }: CurrentSongProps) => {
   return (
     <article className={cn('flex', className)}>
       <div className="relative aspect-square h-auto w-11">
-        {song?.imageUrl && (
+        {song?.image_url && (
           <img
             className="absolute h-full w-full rounded-md object-cover"
-            src={song.imageUrl}
+            src={song.image_url}
             alt={`${song.title} - ${song.artist}`}
             width={44}
             height={44}

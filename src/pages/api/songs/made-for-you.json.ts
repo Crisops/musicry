@@ -18,7 +18,7 @@ export const GET: APIRoute = async ({ request, cookies }) => {
 
   const { data: playlist, error } = await supabase
     .from('songs')
-    .select('id, title, artist, imageUrl, audioUrl, duration, album:albums!songs_albumId_fkey(id)')
+    .select('id, title, artist, image_url, audio_url, duration, album:albums!songs_albumId_fkey(id)')
     .eq('albumId', id)
 
   if (error) {

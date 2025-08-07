@@ -1,18 +1,12 @@
 import { createClient } from '@/lib/supabase/server'
+import type { Tables } from '@/types/database.types'
 import type { AstroCookies } from 'astro'
 
-type Song = {
-  id: string
-  title: string
-  artist: string
-  imageurl: string
-  audiourl: string
-  duration: number
-  created_at: string
-  albumid: string
-}
-
-export const getAllSongsRandom = async (request: Request, cookies: AstroCookies, limit?: number): Promise<Song[]> => {
+export const getAllSongsRandom = async (
+  request: Request,
+  cookies: AstroCookies,
+  limit?: number,
+): Promise<Tables<'songs'>[]> => {
   try {
     const supabase = await createClient(request, cookies)
 

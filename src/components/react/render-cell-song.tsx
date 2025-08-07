@@ -19,7 +19,7 @@ export const renderCellSong = <T extends BaseTrackRow>(
     case 'index':
       return <IndexOrPlay trackId={track.id} index={(track as any).index} />
     case 'title':
-      return <SongItem imageUrl={track.imageUrl} title={track.title} artist={track.artist} />
+      return <SongItem imageUrl={track.image_url} title={track.title} artist={track.artist} />
     case 'release_year':
       return <span>{formatDate(track.release_year)}</span>
     case 'songs':

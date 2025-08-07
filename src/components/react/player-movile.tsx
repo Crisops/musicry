@@ -7,7 +7,6 @@ import { useAudioSeek } from '@/hooks/use-audio-seek'
 import { usePlaySong } from '@/hooks/use-store'
 import PlayerMovilePanel from '@/components/react/player-movile-panel'
 import PlayerCurrentSongMovile from '@/components/react/player-current-song-movile'
-import { IGNORED_COLORS_SONG_PANEL_MOBILE } from '@/config/ignored-colors'
 
 export const PlayerMovile = () => {
   const { isPlaying, currentSong } = usePlaySong(
@@ -60,16 +59,20 @@ export const PlayerMovile = () => {
 
   useEffect(() => {
     const getColor = async () => {
-      if (currentSong?.song?.imageUrl) {
-        const color = await extractDominantColor(currentSong.song.imageUrl, {
-          ignoredColor: IGNORED_COLORS_SONG_PANEL_MOBILE,
+      if (currentSong?.song?.image_url) {
+        const color = await extractDominantColor(currentSong.song.image_url, {
+          ignoredColor: [
+            [255, 255, 255, 255],
+            [0, 0, 0, 255],
+            [18, 23, 20, 255],
+          ],
         })
         setColor(color)
       }
     }
 
     getColor()
-  }, [currentSong?.song?.imageUrl])
+  }, [currentSong?.song?.image_url])
 
   return (
     <motion.div

@@ -3,14 +3,14 @@ import type { RegisterOptions } from 'react-hook-form'
 import { DEFAULT_IMAGE_CONFIG } from '@/config/file-upload'
 import { getLocalTimeZone, type DateValue } from '@internationalized/date'
 
-export type SongFormData = Omit<TablesInsert<'songs'>, 'created_at' | 'id' | 'imageUrl' | 'audioUrl'> & {
-  imageUrl: File[] | null
-  audioUrl: FileList | null
+export type SongFormData = Omit<TablesInsert<'songs'>, 'created_at' | 'id' | 'image_url' | 'audio_url'> & {
+  image_url: File[] | null
+  audio_url: FileList | null
 }
 
-export type AlbumFormData = Omit<TablesInsert<'albums'>, 'created_at' | 'id' | 'imageUrl'> & {
-  imageUrl: File[] | null
-  releaseYear: DateValue | null
+export type AlbumFormData = Omit<TablesInsert<'albums'>, 'created_at' | 'id' | 'image_url'> & {
+  image_url: File[] | null
+  release_year: DateValue | null
 }
 
 export type MessageFormData = {
@@ -49,7 +49,7 @@ const commonRules = {
       message: 'El nombre del artista no puede exceder los 100 caracteres.',
     },
   },
-  imageUrl: {
+  image_url: {
     required: 'Debes seleccionar una imagen',
     validate: (value: File[]) => {
       const file = value[0]
@@ -66,7 +66,7 @@ const commonRules = {
 
 export const songValidationRules: Record<keyof SongFormData, RegisterOptions> = {
   ...commonRules,
-  albumId: {
+  album_id: {
     validate: (value: any) => {
       if (!value || value === '') return true
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -84,7 +84,7 @@ export const songValidationRules: Record<keyof SongFormData, RegisterOptions> = 
       message: 'La duración debe ser un número entero positivo sin espacios ni símbolos.',
     },
   },
-  audioUrl: {
+  audio_url: {
     required: 'Debes seleccionar un audio.',
     validate: (value: any) => {
       if (value instanceof FileList) {
@@ -104,7 +104,7 @@ export const songValidationRules: Record<keyof SongFormData, RegisterOptions> = 
 
 export const albumValidationRules: Record<keyof AlbumFormData, RegisterOptions> = {
   ...commonRules,
-  releaseYear: {
+  release_year: {
     required: 'El año de lanzamiento es obligatorio.',
     validate: (value) => {
       if (!value) return 'La fecha es obligatoria.'
@@ -132,8 +132,8 @@ export const messageValidationRules: Record<keyof MessageFormData, RegisterOptio
 
 export const validateRulesForm = {
   ...commonRules,
-  audioUrl: songValidationRules.audioUrl,
+  audio_url: songValidationRules.audio_url,
   duration: songValidationRules.duration,
-  albumId: songValidationRules.albumId,
+  album_id: songValidationRules.album_id,
   content: messageValidationRules.content,
 }
