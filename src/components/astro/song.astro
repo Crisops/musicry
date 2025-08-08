@@ -15,6 +15,7 @@ const { index, id, title, artist, image_url: imageUrl } = Astro.props
 
 <article
   id={id}
+  data-song-id={id}
   class={`group transition-background bg-rich-black-light/55 lg:bg-rich-black-light lg:hover:bg-rich-dark-jungle/60 rounded-tl-small rounded-bl-small rounded-br-small relative  w-full items-center gap-2 overflow-hidden ${index >= 6 ? 'hidden lg:flex' : 'flex'}`}
 >
   <div class="relative aspect-square h-auto w-16 flex-none">
@@ -34,8 +35,22 @@ const { index, id, title, artist, image_url: imageUrl } = Astro.props
     <ButtonPlay
       client:load
       id={id}
+      data-button-play-id={id}
       className="data-[hover=true]:opacity-disabled rounded-small h-8 w-8 min-w-8 data-[hover=true]:hover:opacity-100"
       source="featured"
     />
   </div>
 </article>
+<script>
+  if (window.matchMedia('(max-width: 1024px)').matches) {
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement
+      const article = target.closest('article[data-song-id]') as HTMLElement
+      if (!article) return
+
+      const songId = article.dataset.songId
+      const buttonPlay = document.querySelector(`button[data-button-play-id="${songId}"]`) as HTMLButtonElement
+      buttonPlay?.click()
+    })
+  }
+</script>
