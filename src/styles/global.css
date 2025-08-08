@@ -36,6 +36,48 @@
   }
 }
 
+@layer utilities {
+  @keyframes equalizer-wave {
+    0% {
+      transform: scaleY(0.3);
+      opacity: 0.7;
+    }
+    15% {
+      transform: scaleY(1.2);
+      opacity: 1;
+    }
+    30% {
+      transform: scaleY(0.8);
+      opacity: 0.9;
+    }
+    45% {
+      transform: scaleY(1.5);
+      opacity: 1;
+    }
+    60% {
+      transform: scaleY(0.4);
+      opacity: 0.8;
+    }
+    75% {
+      transform: scaleY(1.1);
+      opacity: 1;
+    }
+    90% {
+      transform: scaleY(0.6);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scaleY(0.3);
+      opacity: 0.7;
+    }
+  }
+
+  .equalizer-bar {
+    transform-origin: bottom;
+    animation: equalizer-wave 2.1s infinite ease-in-out;
+  }
+}
+
 html {
   font-family: 'CircularStd', system-ui, sans-serif;
 }
