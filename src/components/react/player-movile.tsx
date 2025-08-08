@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useTransform, animate, type PanInfo } from 'framer-motion'
 import { useShallow } from 'zustand/react/shallow'
+import { IGNORED_COLORS_SONG_PANEL_MOBILE } from '@/config/ignored-colors'
 import { extractDominantColor, type ColorResult } from '@/utils/color-extractor'
 import { useAudioContext } from '@/hooks/use-audio-context'
 import { useAudioSeek } from '@/hooks/use-audio-seek'
@@ -24,6 +25,7 @@ export const PlayerMovile = () => {
   const positionX = useTransform(y, [-80, 0], ['0rem', '0.5rem'])
   const [isExpanded, setIsExpanded] = useState(false)
   const [color, setColor] = useState<ColorResult | null>()
+  const lastValidSongId = useRef<string | undefined>(undefined)
 
   const handleExpand = useCallback(() => {
     animate(y, isExpanded ? 0 : -280, { type: 'spring', stiffness: 300, damping: 30 })
@@ -58,16 +60,17 @@ export const PlayerMovile = () => {
   }, [y])
 
   useEffect(() => {
+    const songId = currentSong?.song?.id
+
+    if (songId === lastValidSongId.current) return
+
     const getColor = async () => {
       if (currentSong?.song?.image_url) {
         const color = await extractDominantColor(currentSong.song.image_url, {
-          ignoredColor: [
-            [255, 255, 255, 255],
-            [0, 0, 0, 255],
-            [18, 23, 20, 255],
-          ],
+          ignoredColor: IGNORED_COLORS_SONG_PANEL_MOBILE,
         })
         setColor(color)
+        lastValidSongId.current = songId
       }
     }
 
