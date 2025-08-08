@@ -3,20 +3,21 @@ import FeaturedSongsList from '@/components/astro/featured-songs-list.astro'
 import MadeForYou from '@/components/astro/made-for-you.astro'
 import Greeting from '@/components/react/greeting'
 import Settings from '@/components/react/settings'
+import Trending from '@/components/astro/trending.astro'
 ---
 
 <section class="grid-row-1 grid h-full">
   <div
-    class="lg:scrollbar lg:scrollbar-w-1 lg:scrollbar-thumb-rounded-full lg:scrollbar-thumb-rich-dark-jungle lg:overflow-y-auto"
+    class="lg:scrollbar lg:scrollbar-w-1 lg:scrollbar-thumb-rounded-full lg:scrollbar-thumb-rich-dark-jungle flex flex-col lg:overflow-y-auto"
   >
-    <div class="relative flex h-24 w-full items-center justify-between px-3">
+    <div class="relative flex h-24 w-full flex-shrink-0 items-center justify-between px-3">
       <Greeting client:visible className="text-platinum" />
       <Settings client:visible />
     </div>
-    <div class="flex flex-col px-3 lg:h-0">
+    <div class="flex min-h-0 flex-1 flex-col px-3">
       <FeaturedSongsList />
       <MadeForYou />
-      <!-- <Trending /> -->
+      <Trending />
     </div>
   </div>
 </section>

@@ -6,6 +6,9 @@ interface Props {
   album: TrackAlbumPageColumns | null
 }
 
+const searchParams = Astro.url.searchParams
+const from = searchParams.get('from')
+
 const { album } = Astro.props
 
 const releaseYear = album?.release_year?.split('-')[0]
@@ -25,7 +28,7 @@ const songs =
           <Image
             id="album-image"
             crossorigin="anonymous"
-            transition:name={`playlist ${album.id} image`}
+            transition:name={`${from} playlist ${album.id} image`}
             src={album.image_url}
             alt={`${album.title} - ${album.artist}`}
             width={208}
@@ -42,14 +45,14 @@ const songs =
       <div class="max-w-xs p-3 sm:max-w-xl sm:p-0">
         <h1
           class="text-platinum text-4xl font-extrabold text-balance sm:text-5xl sm:font-bold md:text-6xl"
-          transition:name={`playlist ${album?.id} title`}
+          transition:name={`${from} playlist ${album?.id} title`}
         >
           {album?.title}
         </h1>
       </div>
       <div class="hidden sm:block">
         <p class="text-platinum text-small flex font-light">
-          <span class="block max-w-48 truncate font-medium" transition:name={`playlist ${album?.id} artist`}
+          <span class="block max-w-48 truncate font-medium" transition:name={`${from} playlist ${album?.id} artist`}
             >{album?.artist}</span
           >
           <span class="mx-1 font-medium">•</span>

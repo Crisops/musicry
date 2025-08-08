@@ -1,12 +1,16 @@
 ---
-import MadeForYouAlbum from '@/components/astro/made-for-you-album.astro'
+import TrendingAlbum from '@/components/astro/trending-album.astro'
 import { getAllAlbums } from '@/lib/supabase/resources/albums'
 
 const { request, cookies } = Astro
 
-const albums = await getAllAlbums(request, cookies)
+const albums = await getAllAlbums(request, cookies, 6)
 ---
 
 <div class="grid-section relative w-full">
-  {albums.map((album) => <MadeForYouAlbum {...album} />)}
+  {
+    albums.map((album) => (
+      <TrendingAlbum id={album.id} title={album.title} artist={album.artist} image_url={album.image_url} />
+    ))
+  }
 </div>

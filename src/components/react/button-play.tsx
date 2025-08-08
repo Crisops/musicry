@@ -13,7 +13,7 @@ import Button from '@/components/shared/button'
 interface ButtonPropsPlay extends ButtonProps {
   id: Tables<'songs'>['id'] | Tables<'albums'>['id']
   sizeIcon?: number
-  source: 'featured' | 'made-for-you' | 'playlist' | 'albums'
+  source: 'featured' | 'made-for-you' | 'playlist' | 'albums' | 'trending'
 }
 
 const ButtonPlay = ({ id, sizeIcon = 16, source, ...props }: ButtonPropsPlay) => {
