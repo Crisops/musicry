@@ -21,8 +21,8 @@ const commonRules = {
   title: {
     required: 'El título es obligatorio y debe contener al menos un carácter válido.',
     pattern: {
-      value: /^[a-zA-ZÀ-ÿ0-9\s]+(?:'[a-zA-ZÀ-ÿ\s]+)*$/,
-      message: 'El título solo puede contener letras, números y espacios.',
+      value: /^[a-zA-ZÀ-ÿ0-9]+(?:\.\s*[a-zA-ZÀ-ÿ0-9]+)?(?:\s[a-zA-ZÀ-ÿ0-9]+(?:\.\s*[a-zA-ZÀ-ÿ0-9]+)?)*$/,
+      message: 'El título solo puede contener letras, números, espacios simples',
     },
     minLength: {
       value: 3,

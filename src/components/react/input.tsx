@@ -11,7 +11,7 @@ const Input = (props: InputProps) => {
           'bg-night group-data-[focus=true]:bg-night data-[hover=true]:bg-night/90 group-data-[invalid=true]:!bg-red-500/10 group-data-[invalid=true]:data-[hover=true]:!bg-red-500/15',
         ],
         label: ['text-gray-dim'],
-        input: ['group-data-[has-value=true]:text-sealsalt'],
+        input: ['group-data-[has-value=true]:text-sealsalt group-data-[invalid=true]:placeholder:!text-danger'],
         description: ['text-gray-dim'],
         helperWrapper: ['max-w-md'],
       }}

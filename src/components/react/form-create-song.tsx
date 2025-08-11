@@ -39,7 +39,7 @@ const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
   }, [])
 
   return (
-    <form id="form-create-song" className="p-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="p-4" onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-8">
         <FileUpload
           type="file"
@@ -78,21 +78,21 @@ const FormCreateSong = ({ onCancel }: FormCreateSongProps) => {
           description="Escribe el nombre del artista o artistas. Si hay más de uno, sepáralos con comas (Ej: Karol G, Feid, Bizarrap, etc.)"
         />
         <Input
-          className="pointer-events-none"
-          isReadOnly
           {...registerField('duration')}
+          className="pointer-events-none"
           value={durationValue?.toString() || ''}
           label="Duración"
           placeholder="Se calculará automáticamente (en segundos)"
           isInvalid={!!errors.duration}
           errorMessage={errors.duration?.message}
+          isReadOnly
         />
         <Select
           {...registerField('album_id')}
-          label="Álbum (opcional)"
           isInvalid={!!errors.album_id}
           errorMessage={errors.album_id?.message}
           items={albums}
+          label="Álbum (opcional)"
         />
         <div className="flex justify-end gap-2">
           <Button

@@ -34,6 +34,7 @@ const TrackListAlbum = ({ songs }: TrackListAlbumProps) => {
               'data-[selected=true]:text-platinum',
               'group-aria-[selected=false]/tr:group-data-[hover=true]/tr:before:bg-gray-500/20',
               'group-aria-[selected=true]/tr:group-data-[hover=true]/tr:before:bg-gray-500/40',
+              'group-data-[last=true]/tr:pb-30 lg:group-data-[last=true]/tr:pb-2',
             ],
             tr: ['text-gray-dim'],
           }}
