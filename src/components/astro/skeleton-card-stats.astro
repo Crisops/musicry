@@ -1,0 +1,21 @@
+---
+import Skeleton from '@/components/shared/skeleton'
+---
+
+<div class="grid grid-cols-2 grid-rows-2 gap-2 xl:grid-cols-4 xl:grid-rows-1">
+  {
+    Array.from({ length: 4 }).map((_, index) => (
+      <Skeleton
+        client:visible
+        classNames={{
+          base: 'rounded-lg max-h-16 sm:max-h-[76px] md:max-h-[84px]',
+          wrapperBase: 'flex w-full items-center gap-x-2 p-2 sm:p-3 md:p-4',
+          wrapperContent: 'flex flex-col gap-y-1 w-full h-full justify-evenly',
+          image: 'rounded-md h-12 w-14 sm:h-13 sm:w-16 md:size-14',
+          title: 'rounded-small h-1.5 w-22 sm:h-2 sm:w-24 md:h-2.5 md:w-32',
+          description: 'h-7 w-full rounded-xs',
+        }}
+      />
+    ))
+  }
+</div>

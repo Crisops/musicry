@@ -3,12 +3,15 @@ import DashboardStats from '@/components/astro/dashboard-stats.astro'
 import HeaderDashboard from '@/components/astro/header-dashboard.astro'
 import LayoutDashboard from '@/layouts/layout-dashboard.astro'
 import TabsWrapperContent from '@/components/astro/tabs-wrapper-content.astro'
+import SkeletonCardStats from '@/components/astro/skeleton-card-stats.astro'
 ---
 
 <LayoutDashboard>
   <div class="relative flex h-full w-full flex-col">
     <HeaderDashboard />
-    <DashboardStats />
+    <DashboardStats server:defer>
+      <SkeletonCardStats slot="fallback" />
+    </DashboardStats>
     <TabsWrapperContent />
   </div>
 </LayoutDashboard>
