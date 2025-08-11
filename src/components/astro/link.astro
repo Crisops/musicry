@@ -1,16 +1,20 @@
 ---
+import type { HTMLAttributes } from 'astro/types'
+
 interface Props {
-  href: string
+  class?: HTMLAttributes<'a'>['class']
+  href: HTMLAttributes<'a'>['href']
 }
 
-const { href }: Props = Astro.props
+const { href, class: className }: Props = Astro.props
 
 const isActive = Astro.url.pathname === href
+
+const baseClasses =
+  'tap-highlight-transparent hover:opacity-hover active:opacity-disabled text-small lg:hover:bg-rich-dark-jungle/30 relative flex flex-col lg:flex-row lg:inline-flex h-full w-full items-center justify-center gap-1 no-underline outline-hidden transition-opacity lg:justify-start lg:p-2 lg:pl-3'
+const activeClass = isActive ? 'text-platinum' : 'text-gray-dim'
 ---
 
-<a
-  href={href}
-  class={`tap-highlight-transparent hover:opacity-hover active:opacity-disabled ${isActive ? 'text-platinum' : 'text-gray-dim'}  text-small lg:hover:bg-rich-dark-jungle/30 relative flex flex-col lg:flex-row lg:inline-flex h-full w-full items-center justify-center gap-1 no-underline outline-hidden transition-opacity lg:justify-start lg:p-2 lg:pl-3`}
->
+<a href={href} class:list={[baseClasses, activeClass, className]}>
   <slot />
 </a>
