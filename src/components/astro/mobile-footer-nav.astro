@@ -1,9 +1,15 @@
 ---
 import { menuItems } from '@/types/links'
 import Link from '@/components/astro/link.astro'
+
+const { pathname } = Astro.url
+
+const isLibrary = pathname === '/library'
+
+const bgColor = isLibrary ? 'bg-rich-black-light' : 'bg-rich-black-light/90'
 ---
 
-<footer class="bg-rich-black-light/90 fixed bottom-0 left-0 h-14 w-full lg:hidden">
+<footer class={`${bgColor} fixed bottom-0 left-0 h-14 w-full lg:hidden`}>
   <nav class="h-full w-full">
     <ul class="flex h-full w-full items-center justify-evenly gap-2">
       {

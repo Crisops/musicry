@@ -1,0 +1,42 @@
+---
+import AlbumItem from '@/components/astro/album-item.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getAllAlbums } from '@/lib/supabase/resources/albums'
+
+const { request, cookies } = Astro
+
+const albums = await getAllAlbums(request, cookies)
+---
+
+<Layout>
+  <div class="min-h-full w-full">
+    <header class="flex h-24 items-center pl-2">
+      <h1 class="text-sealsalt text-3xl font-bold">Musica</h1>
+    </header>
+    <div class="pb-32 pl-2">
+      <nav class="flex h-full w-full">
+        <ul class="flex w-full flex-col gap-4">
+          {
+            albums.map((album) => (
+              <AlbumItem
+                id={album.id}
+                title={album.title}
+                artist={album.artist}
+                image_url={album.image_url}
+                classNames={{
+                  link: 'flex flex-row items-center justify-start gap-1.5',
+                  image: 'rounded-none',
+                  imageWrapper: 'w-14',
+                }}
+                imageConfig={{
+                  width: 56,
+                  height: 56,
+                }}
+              />
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+</Layout>
