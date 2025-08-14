@@ -1,5 +1,7 @@
+import { useDevice } from '@/hooks/use-device'
 import { ToastProvider as HeroToastProvider } from '@heroui/toast'
 
 export default function ToastProvider() {
-  return <HeroToastProvider placement="bottom-center" />
+  const { width } = useDevice()
+  return <HeroToastProvider placement="bottom-center" toastOffset={width <= 1024 ? 50 : 0} />
 }
