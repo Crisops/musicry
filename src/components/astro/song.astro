@@ -1,6 +1,7 @@
 ---
 import type { Tables } from '@/types/database.types'
 import ButtonPlay from '@/components/react/button-play'
+import { Image } from 'astro:assets'
 
 interface Props {
   index: number
@@ -19,7 +20,7 @@ const { index, id, title, artist, image_url: imageUrl } = Astro.props
   class={`group transition-background bg-rich-black-light/55 lg:bg-rich-black-light lg:hover:bg-rich-dark-jungle/60 rounded-tl-small rounded-bl-small rounded-br-small relative  w-full items-center gap-2 overflow-hidden ${index >= 6 ? 'hidden lg:flex' : 'flex'}`}
 >
   <div class="relative aspect-square h-auto w-16 flex-none">
-    <img src={imageUrl} alt="song" class="absolute h-full w-full object-cover" />
+    {imageUrl && <Image src={imageUrl} alt="song" class="absolute h-full w-full object-cover" width={64} height={64} />}
   </div>
   <div class="flex flex-auto flex-col pr-1">
     <h4 class="text-platinum md:text-small text-xs font-semibold">
