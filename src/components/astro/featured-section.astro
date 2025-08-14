@@ -4,6 +4,7 @@ import MadeForYou from '@/components/astro/made-for-you.astro'
 import Greeting from '@/components/react/greeting'
 import Settings from '@/components/react/settings'
 import Trending from '@/components/astro/trending.astro'
+import SkeletonFeaturedSongList from '@/components/skeletons/skeleton-featured-song-list.astro'
 ---
 
 <section class="grid-row-1 grid h-full">
@@ -15,7 +16,9 @@ import Trending from '@/components/astro/trending.astro'
       <Settings client:visible />
     </div>
     <div class="flex min-h-0 flex-1 flex-col px-3">
-      <FeaturedSongsList />
+      <FeaturedSongsList server:defer>
+        <SkeletonFeaturedSongList slot="fallback" />
+      </FeaturedSongsList>
       <MadeForYou />
       <Trending />
     </div>

@@ -3,18 +3,16 @@ import DashboardStats from '@/components/astro/dashboard-stats.astro'
 import HeaderDashboard from '@/components/astro/header-dashboard.astro'
 import LayoutDashboard from '@/layouts/layout-dashboard.astro'
 import TabsWrapperContent from '@/components/astro/tabs-wrapper-content.astro'
-import SkeletonCardStats from '@/components/astro/skeleton-card-stats.astro'
-import SkeletonTableDashboard from '@/components/astro/skeleton-table-dashboard.astro'
+import SkeletonCardStats from '@/components/skeletons/skeleton-card-stats.astro'
+import SkeletonTableDashboard from '@/components/skeletons/skeleton-table-dashboard.astro'
 ---
 
 <LayoutDashboard>
   <div class="relative flex h-full w-full flex-col">
     <HeaderDashboard />
-    <!-- <div class="h-60"></div> -->
     <DashboardStats server:defer>
       <SkeletonCardStats slot="fallback" />
     </DashboardStats>
-
     <TabsWrapperContent server:defer>
       <SkeletonTableDashboard slot="fallback" />
     </TabsWrapperContent>

@@ -1,0 +1,22 @@
+---
+import Skeleton from '@/components/shared/skeleton'
+---
+
+<div class="relative grid w-full grid-cols-2 grid-rows-3 gap-x-4 gap-y-4 md:grid-cols-3 xl:grid-cols-4 xl:grid-rows-2">
+  {
+    Array.from({ length: 8 }).map((_, index) => (
+      <div class={`skeleton-item animate-fade-in-up`} style={`animation-delay: ${index * 150}ms`}>
+        <Skeleton
+          classNames={{
+            base: 'rounded-tl-small rounded-bl-small rounded-br-small',
+            wrapperBase: 'flex w-full items-center gap-x-2',
+            wrapperContent: 'flex flex-col gap-y-2 w-full h-full justify-center',
+            image: 'size-16',
+            title: 'rounded-xs h-2 w-22 sm:h-2 sm:w-24 md:h-2.5 md:w-32',
+            description: 'h-3 w-2/5 rounded-xs',
+          }}
+        />
+      </div>
+    ))
+  }
+</div>

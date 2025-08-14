@@ -1,5 +1,6 @@
 ---
 import MadeForYouList from '@/components/astro/made-for-you-list.astro'
+import SkeletonAlbumMadeList from '@/components/skeletons/skeleton-album-main.astro'
 ---
 
 <section class="relative w-full">
@@ -7,5 +8,7 @@ import MadeForYouList from '@/components/astro/made-for-you-list.astro'
     <h4 class="text-platinum text-xl font-bold lg:text-2xl">Hecho para ti</h4>
     <a href="/albums/all" class="text-gray-dim lg:text-small font-norma text-sm hover:underline">Ver todo</a>
   </div>
-  <MadeForYouList />
+  <MadeForYouList server:defer>
+    <SkeletonAlbumMadeList slot="fallback" />
+  </MadeForYouList>
 </section>
