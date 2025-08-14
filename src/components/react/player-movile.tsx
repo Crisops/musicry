@@ -10,10 +10,11 @@ import PlayerMovilePanel from '@/components/react/player-movile-panel'
 import PlayerCurrentSongMovile from '@/components/react/player-current-song-movile'
 
 export const PlayerMovile = () => {
-  const { isPlaying, currentSong } = usePlaySong(
+  const { isPlaying, currentSong, setIsPlaying } = usePlaySong(
     useShallow((state) => ({
       isPlaying: state.isPlaying,
       currentSong: state.shuffle ? state.shufflePlaylist : state.currentSong,
+      setIsPlaying: state.setIsPlaying,
     })),
   )
   const { audioRef } = useAudioContext()
@@ -24,6 +25,7 @@ export const PlayerMovile = () => {
   const borderRadius = useTransform(y, [-80, 0], ['0px', '6px'])
   const positionX = useTransform(y, [-80, 0], ['0rem', '0.5rem'])
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isClosed, setIsClosed] = useState(false)
   const [color, setColor] = useState<ColorResult | null>()
   const lastValidSongId = useRef<string | undefined>(undefined)
 
@@ -45,9 +47,20 @@ export const PlayerMovile = () => {
       if (offset < -120) {
         animate(y, -280, { type: 'spring', stiffness: 300, damping: 30 })
         setIsExpanded(true)
+      } else if (offset > 85) {
+        animate(y, window.innerHeight, {
+          type: 'spring',
+          stiffness: 300,
+          damping: 30,
+          onComplete: () => {
+            setIsPlaying(false)
+            setIsClosed(true)
+          },
+        })
       } else {
         animate(y, 0, { type: 'spring', stiffness: 300, damping: 30 })
         setIsExpanded(false)
+        setIsClosed(false)
       }
     },
     [y],
@@ -63,6 +76,11 @@ export const PlayerMovile = () => {
     const songId = currentSong?.song?.id
 
     if (songId === lastValidSongId.current) return
+
+    if (isClosed) {
+      setIsClosed(false)
+      y.set(0)
+    }
 
     const getColor = async () => {
       if (currentSong?.song?.image_url) {
@@ -95,7 +113,7 @@ export const PlayerMovile = () => {
       onDragEnd={handleDragEnd}
       className={`fixed z-40 touch-none overflow-hidden rounded-md shadow-lg lg:hidden ${
         isExpanded ? 'inset-x-0' : 'bottom-14'
-      } ${!currentSong?.song ? 'hidden' : 'block'}`}
+      } ${!currentSong?.song || isClosed ? 'hidden' : 'block'}`}
     >
       <div className="h-full w-full">
         {isExpanded ? (
