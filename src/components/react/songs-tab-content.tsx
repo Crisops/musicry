@@ -1,7 +1,4 @@
-import {
-  trackSongsPanelColumns,
-  type TrackSongsListPanelRows,
-} from '@/types/track'
+import { trackSongsPanelColumns, type TrackSongsListPanelRows } from '@/types/track'
 import TopTableDashboard from '@/components/react/top-table-dashboard'
 import TrackList from '@/components/react/track-list'
 
@@ -12,12 +9,7 @@ interface SongsTabContentProps {
   appendItem: (item: TrackSongsListPanelRows) => void
 }
 
-const SongsTabContent = ({
-  tap,
-  songs,
-  removeItem,
-  appendItem,
-}: SongsTabContentProps) => {
+const SongsTabContent = ({ tap, songs, removeItem, appendItem }: SongsTabContentProps) => {
   return (
     <div className="grid-row-1 grid h-full">
       <div className="scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-rich-dark-jungle overflow-y-auto">

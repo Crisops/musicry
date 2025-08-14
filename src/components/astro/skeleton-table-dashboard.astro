@@ -1,0 +1,32 @@
+---
+import { Skeleton } from '@heroui/skeleton'
+---
+
+<div class="mt-10 h-full w-full">
+  <div class="mb-3 flex h-9 w-full justify-start">
+    <div class="bg-rich-black-light rounded-small flex h-9 w-52 items-center">
+      <Skeleton
+        className="rounded-medium bg-night before:via-rich-dark-jungle after:bg-night before:border-bg-night h-7 w-25"
+      />
+    </div>
+  </div>
+  <div class="bg-rich-black-light rounded-small h-full w-full px-1 py-3">
+    <div class="p-4">
+      <div class="flex h-48 w-full justify-between">
+        <div class="flex h-full w-52 flex-col gap-y-1">
+          <Skeleton
+            className="rounded-small bg-night before:via-rich-dark-jungle after:bg-night before:border-bg-night h-2.5 w-3/4"
+          />
+          <Skeleton
+            className="rounded-small bg-night before:via-rich-dark-jungle after:bg-night before:border-bg-night h-2 w-2/3"
+          />
+        </div>
+        <div class="rounded-small bg-rich-dark-light flex h-10 w-36 items-center justify-end sm:justify-center">
+          <Skeleton
+            className="rounded-small bg-night before:via-rich-dark-jungle after:bg-night before:border-bg-night h-2.5 w-10 sm:w-3/4"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
