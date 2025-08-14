@@ -1,5 +1,4 @@
 ---
-import { Library } from '@lucide/astro'
 import { getAllAlbums } from '@/lib/supabase/resources/albums'
 import AlbumItem from '@/components/astro/album-item.astro'
 
@@ -8,26 +7,18 @@ const { request, cookies } = Astro
 const albums = await getAllAlbums(request, cookies)
 ---
 
-<div class="flex h-full w-full flex-col">
-  <div class="flex h-14 w-full items-center gap-1 pl-3">
-    <Library size={25} color="var(--color-platinum)" />
-    <div class="flex">
-      <span class="text-sealsalt text-medium font-semibold">Albunes</span>
-    </div>
-  </div>
-  <div class="grid-row-1 grid h-full">
-    <div class="scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-rich-dark-jungle overflow-y-auto">
-      <div class="flex h-0 flex-col">
-        <nav class="w-full">
-          <ul class="flex flex-col gap-1">
-            {
-              albums.map((album) => (
-                <AlbumItem id={album.id} title={album.title} artist={album.artist} image_url={album.image_url} />
-              ))
-            }
-          </ul>
-        </nav>
-      </div>
+<div class="grid-row-1 grid h-full">
+  <div class="scrollbar scrollbar-w-1 scrollbar-thumb-rounded-full scrollbar-thumb-rich-dark-jungle overflow-y-auto">
+    <div class="flex h-0 flex-col">
+      <nav class="w-full">
+        <ul class="flex flex-col gap-1">
+          {
+            albums.map((album) => (
+              <AlbumItem id={album.id} title={album.title} artist={album.artist} image_url={album.image_url} />
+            ))
+          }
+        </ul>
+      </nav>
     </div>
   </div>
 </div>

@@ -1,7 +1,19 @@
 ---
+import { Library } from '@lucide/astro'
 import MenuItem from '@/components/astro/menu-item.astro'
 import AlbumList from '@/components/astro/album-list.astro'
+import SkeletonAsideLeft from '@/components/skeletons/skeleton-aside-left.astro'
 ---
 
 <MenuItem />
-<AlbumList />
+<div class="flex h-full w-full flex-col">
+  <div class="flex h-14 w-full items-center gap-1 pl-3">
+    <Library size={25} color="var(--color-platinum)" />
+    <div class="flex">
+      <span class="text-sealsalt text-medium font-semibold">Albunes</span>
+    </div>
+  </div>
+  <AlbumList server:defer>
+    <SkeletonAsideLeft slot="fallback" />
+  </AlbumList>
+</div>
