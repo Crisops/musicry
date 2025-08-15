@@ -1,0 +1,45 @@
+---
+import { Home, Music2 } from '@lucide/astro'
+import Layout from '@/layouts/Layout.astro'
+import Button from '@/components/shared/button'
+---
+
+<Layout>
+  <div class="flex h-screen items-center justify-center">
+    <div class="space-y-8 px-4 text-center">
+      <div class="flex animate-bounce justify-center">
+        <Music2 class="h-24 w-24" color="var(--color-blue-argentinian)" />
+      </div>
+
+      <div class="mb-8 flex flex-col gap-4">
+        <h1 class="text-sealsalt text-7xl font-bold">404</h1>
+        <h2 class="text-sealsalt text-2xl font-semibold">Página no encontrada</h2>
+        <p class="text-gray-dim mx-auto max-w-md">
+          La página que buscas no existe o ha sido movida. Te ayudamos a encontrar el camino de regreso.
+        </p>
+      </div>
+
+      <div class="flex items-center justify-center">
+        <Button
+          client:visible
+          id="back-to-home"
+          variant="flat"
+          className="bg-rich-black-light data-[hover=true]:bg-rich-black-dark text-sealsalt w-full sm:w-auto"
+        >
+          <Home class="mr-2 h-4 w-4" />
+          Volver a la página principal
+        </Button>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { navigate } from 'astro:transitions/client'
+
+  const btnBackToHome = document.getElementById('back-to-home')
+
+  btnBackToHome?.addEventListener('click', () => {
+    navigate('/')
+  })
+</script>
