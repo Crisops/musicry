@@ -10,6 +10,7 @@ type AlbumItem = {
   image: HTMLAttributes<'img'>['class']
   title: HTMLAttributes<'h4'>['class']
   artist: HTMLAttributes<'p'>['class']
+  wrapperContent: HTMLAttributes<'div'>['class']
 }
 
 type ImageConfig = {
@@ -44,7 +45,7 @@ const { id, title, artist, image_url: imageUrl, classNames, imageConfig } = Astr
         )
       }
     </div>
-    <div class="flex-initial flex-col items-start justify-center">
+    <div class:list={['flex-initial flex-col items-start justify-center', classNames?.wrapperContent]}>
       <h4 class:list={['text-sealsalt text-small font-semibold', classNames?.title]}>
         {title}
       </h4>

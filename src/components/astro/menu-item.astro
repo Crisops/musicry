@@ -6,9 +6,9 @@ import Link from '@/components/astro/link.astro'
 <div class="border-rich-black-dark flex h-28 flex-col border-b-8">
   {
     menuItems.slice(0, 2).map((item) => (
-      <Link href={item.href}>
+      <Link class="min-lg:max-2xl:justify-center" href={item.href}>
         <item.icon size={20} />
-        <span>{item.name}</span>
+        <span class="min-lg:max-2xl:hidden">{item.name}</span>
       </Link>
     ))
   }

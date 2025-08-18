@@ -7,9 +7,11 @@ import SkeletonAsideLeft from '@/components/skeletons/skeleton-aside-left.astro'
 
 <MenuItem />
 <div class="flex h-full w-full flex-col">
-  <div class="flex h-14 w-full items-center gap-1 pl-3">
+  <div
+    class="flex h-14 w-full items-center gap-1 pl-3 min-lg:max-2xl:justify-center min-lg:max-2xl:gap-0 min-lg:max-2xl:pl-0"
+  >
     <Library size={25} color="var(--color-platinum)" />
-    <div class="flex">
+    <div class="flex min-lg:max-2xl:hidden">
       <span class="text-sealsalt text-medium font-semibold">Albunes</span>
     </div>
   </div>

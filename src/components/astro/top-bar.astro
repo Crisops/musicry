@@ -1,8 +1,13 @@
 ---
 import AuthUser from '@/components/react/auth-user'
+import { Image } from 'astro:assets'
+import logo from '@/assets/musicry.png'
 ---
 
 <header id="settings-top-bar" class="bg-rich-black-light hidden h-24 items-center justify-between px-5 lg:flex">
-  <h2 class="text-platinum text-large font-bold">Musicry</h2>
+  <div class="flex items-center gap-x-2">
+    <Image src={logo} alt="Musicry" width={32} height={32} />
+    <h2 class="text-platinum text-large font-bold">Musicry</h2>
+  </div>
   <AuthUser client:visible className="hidden md:flex" />
 </header>
