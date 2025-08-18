@@ -24,20 +24,16 @@ const OnlineUserList = ({ children: componentLoginRequired, className, type, sel
   const userClosedChatRef = useRef<boolean>(false)
 
   useEffect(() => {
-    if (userList.length === 0 || !selectedUserId || userClosedChatRef.current) {
-      return
+    if (!selectedUser && userClosedChatRef.current) return
+    if (selectedUserId && !selectedUser) {
+      const foundUser = userList.find((user) => user.user.id === selectedUserId)
+      if (foundUser) {
+        setSelectedUser(foundUser)
+      }
     }
-
-    const foundUser = userList.find((user) => user.user.id === selectedUserId)
-    if (foundUser) {
-      setSelectedUser(foundUser)
-    } else {
-      setSelectedUser(null)
-    }
-  }, [selectedUserId, userList])
+  }, [selectedUser, userList])
 
   const handleUserClick = (item: EnrichedUser) => {
-    if (selectedUser?.user.id === item.user.id) return
     setSelectedUser(item)
     userClosedChatRef.current = false
     window.history.pushState({}, '', `/messages/${item.user.id}`)
