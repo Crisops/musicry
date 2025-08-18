@@ -4,7 +4,16 @@ import TopBar from '@/components/astro/top-bar.astro'
 import FeaturedSection from '@/components/astro/featured-section.astro'
 ---
 
-<Layout>
+<Layout
+  title="Musicry - Tu música, tu mundo"
+  description="Descubre, escucha y comparte música como nunca antes. Únete a Musicry"
+  og={{
+    title: 'Musicry - Tu música, tu mundo',
+    description: 'Descubre, escucha y comparte música como nunca antes. Únete a Musicry',
+    url: 'https://musicry.vercel.app',
+    image: 'https://updkpelnjajgwiyrzyhm.supabase.co/storage/v1/object/public/open-graph/og-musicry.jpg',
+  }}
+>
   <div
     class="from-blue-argentinian via-night to-night absolute block h-screen w-full bg-linear-150 from-5% blur-xl lg:hidden"
   >

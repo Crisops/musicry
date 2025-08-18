@@ -14,7 +14,16 @@ if (!id) return
 const album = await getAlbumById(request, cookies, id)
 ---
 
-<Layout>
+<Layout
+  title={`${album?.title} - Álbum de ${album?.artist} | Musicry`}
+  description={`Escucha ${album?.title} de ${album?.artist} en Musicry`}
+  og={{
+    title: `${album?.title} - Álbum de ${album?.artist} | Musicry`,
+    description: `${album?.artist} · Álbum · ${album?.release_year?.split('-')[0]} · ${album?.songs.length} canción(es)`,
+    url: `https://musicry.vercel.app/album/${id}`,
+    image: album?.image_url ?? '',
+  }}
+>
   <section class="relative flex h-full w-full flex-col">
     <div id="gradient-bg" class="absolute h-80 w-full sm:h-full"></div>
     <AlbumDetail album={album} />

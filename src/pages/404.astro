@@ -4,7 +4,16 @@ import Layout from '@/layouts/Layout.astro'
 import Button from '@/components/shared/button'
 ---
 
-<Layout>
+<Layout
+  title="404 - Página no encontrada"
+  description="La página que buscas no existe o ha sido movida. Te ayudamos a encontrar el camino de regreso."
+  og={{
+    title: '404 - Página no encontrada',
+    description: 'La página que buscas no existe o ha sido movida. Te ayudamos a encontrar el camino de regreso.',
+    url: 'https://musicry.vercel.app/404',
+    image: 'https://updkpelnjajgwiyrzyhm.supabase.co/storage/v1/object/public/open-graph/og-musicry.jpg',
+  }}
+>
   <div class="flex h-screen items-center justify-center">
     <div class="space-y-8 px-4 text-center">
       <div class="flex animate-bounce justify-center">

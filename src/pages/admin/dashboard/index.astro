@@ -7,7 +7,16 @@ import SkeletonCardStats from '@/components/skeletons/skeleton-card-stats.astro'
 import SkeletonTableDashboard from '@/components/skeletons/skeleton-table-dashboard.astro'
 ---
 
-<LayoutDashboard>
+<LayoutDashboard
+  title="Dashboard"
+  description="Administra tu música en Musicry"
+  og={{
+    title: 'Dashboard',
+    description: 'Administra tu música en Musicry',
+    url: 'https://musicry.vercel.app/admin/dashboard',
+    image: 'https://updkpelnjajgwiyrzyhm.supabase.co/storage/v1/object/public/open-graph/og-musicry.jpg',
+  }}
+>
   <div class="relative flex h-full w-full flex-col">
     <HeaderDashboard />
     <DashboardStats server:defer>

@@ -20,4 +20,5 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   integrations: [react()],
+  site: 'https://musicry.vercel.app',
 })

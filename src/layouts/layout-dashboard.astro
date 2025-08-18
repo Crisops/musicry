@@ -2,6 +2,19 @@
 import '@/styles/global.css'
 import { ClientRouter } from 'astro:transitions'
 import ToastProvider from '@/components/react/toast-provider'
+
+interface Props {
+  title: string
+  description: string
+  og: {
+    title: string
+    description: string
+    url: string
+    image: string
+  }
+}
+
+const { title, description, og } = Astro.props
 ---
 
 <!doctype html>
@@ -10,8 +23,25 @@ import ToastProvider from '@/components/react/toast-provider'
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content={description} />
+    <meta property="og:site_name" content="Musicry" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={og.title} />
+    <meta property="og:description" content={og.description} />
+    <meta property="og:url" content={og.url} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content={og.image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@musicry" />
+    <meta name="twitter:creator" content="@crisopsdev" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta
+      name="twitter:image"
+      content="https://updkpelnjajgwiyrzyhm.supabase.co/storage/v1/object/public/open-graph/og-musicry.jpg"
+    />
     <ClientRouter fallback="none" />
-    <title>Dashboard</title>
+    <title>{title}</title>
   </head>
   <body class="bg-rich-black-dark">
     <div class="relative h-screen">

@@ -5,7 +5,16 @@ import OnlineUserList from '@/components/react/online-user-list'
 import LoginRequired from '@/components/astro/login-required.astro'
 ---
 
-<Layout>
+<Layout
+  title={`Bandeja de entrada · Chats`}
+  description={`Diviertete con tus amigos y comparte tus gustos musicales en Musicry`}
+  og={{
+    title: `Bandeja de entrada · Chats`,
+    description: `Diviertete con tus amigos y comparte tus gustos musicales en Musicry`,
+    url: `https://musicry.vercel.app/messages`,
+    image: 'https://updkpelnjajgwiyrzyhm.supabase.co/storage/v1/object/public/open-graph/og-musicry.jpg',
+  }}
+>
   <TopBar />
   <section class="top-night h-full w-full bg-linear-to-b from-[#161C25]">
     <OnlineUserList

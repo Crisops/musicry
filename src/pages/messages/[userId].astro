@@ -7,7 +7,16 @@ import LoginRequired from '@/components/astro/login-required.astro'
 const { userId: targetuserId } = Astro.params
 ---
 
-<Layout>
+<Layout
+  title={`Bandeja de entrada · Chats`}
+  description={`Mensajes con ${targetuserId} en Musicry`}
+  og={{
+    title: `Bandeja de entrada · Chats`,
+    description: `Mensajes con ${targetuserId} en Musicry.`,
+    url: `https://musicry.vercel.app/messages/${targetuserId}`,
+    image: 'https://updkpelnjajgwiyrzyhm.supabase.co/storage/v1/object/public/open-graph/og-musicry.jpg',
+  }}
+>
   <TopBar />
   <section class="top-night h-full w-full bg-linear-to-b from-[#161C25]">
     <OnlineUserList
